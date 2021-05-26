@@ -1,0 +1,13 @@
+.mainHome {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+
+.mainHomeContents {
+    width: 100%;
+    max-width: 1280px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
