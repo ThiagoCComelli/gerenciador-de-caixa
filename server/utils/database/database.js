@@ -12,14 +12,14 @@ const con = mysql.createConnection({
 const databaseFunctions = {
     createUser: createUser = async ({cpf,nome,email,senha}) => {
         const res = await new Promise((resolve, reject) => {
-            bcrypt.genSalt(process.env.SALT_ROUNDS, (err,salt) => {
+            bcrypt.genSalt(Number(String(process.env.SALT_ROUNDS)), (err,salt) => {
                 if (err) resolve(err)
                 bcrypt.hash(senha, salt, (err_, hash) => {
                     if (err_) resolve(err_)
 
                     con.query(`INSERT INTO usuarios VALUES ("${cpf}","${nome}","${email}","${hash}");`, (err,result) => {
                         if(result === undefined) {
-                            resolve({"message":"Usuario ja cadastrado!","status":400})
+                            resolve({"message":"Usuario ja cadastrado!","status":200})
                         } else {
                             resolve({"message":"Usuario criado com sucesso!","status":200})
                         }

@@ -6,7 +6,8 @@
     height: 70px;
     justify-content: center;
     background-color: #fff;
-    border-bottom: solid 1px gainsboro;
+    border-bottom: solid 1px #4286F5;
+    z-index: 9999999;
 }
 
 .mainNavbarContents {
@@ -19,5 +20,8 @@
 }
 
 .mainNavbarContents h2 {
-    font-weight: 400;
+    cursor: pointer;
+    font-weight: 700;
+    color: #4286F5;
+    text-transform: uppercase;
 }

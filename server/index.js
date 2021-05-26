@@ -11,14 +11,15 @@ app.use(bodyParser.json())
 
 app.post('/user/register', async (req,res) => {
     if(req.body.data) {
-        const response = await createUser(req.body.data) 
+        const response = await createUser(req.body.data)
+        console.log(response) 
         res.status(response.status).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
     }
 })
 
-app.get('/user/login', async (req,res) => {
+app.post('/user/login', async (req,res) => {
     if(req.body.data) {
         const response = await loginUser(req.body.data)
         res.status(response.status).send(response)

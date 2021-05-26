@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './NewItem.css'
 
 const NewItem = ({handleNewItem}) => {
-    const [newItem, setNewItem] = useState({numero:0,titulo:"",descricao:"",modalidade:"Manual",tipo:"Entrada",valor:0})
+    const [newItem, setNewItem] = useState({numero:0,titulo:"",descricao:"",modalidade:"Manual",tipo:"Entrada",valor:0,data:null})
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -46,6 +46,10 @@ const NewItem = ({handleNewItem}) => {
                         <div className="mainNewItemSectionItem">
                             <span>Valor:</span>
                             <input id="valor" onChange={handleChange} min={0} type="number" required></input>
+                        </div>
+                        <div className="mainNewItemSectionItem">
+                            <span>Data:</span>
+                            <input id="data" onChange={handleChange} type="date" required></input>
                         </div>
                         <div className="mainNewItemSectionItem">
                             <span></span>

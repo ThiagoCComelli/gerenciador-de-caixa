@@ -16,6 +16,7 @@ const ItemsTable = ({items}) => {
                             <th>Modalidade</th>
                             <th>Tipo</th>
                             <th>Valor</th>
+                            <th>Data</th>
                             <th>Edição</th>
                         </tr>
                         {items.map((item,index) => {
@@ -28,6 +29,7 @@ const ItemsTable = ({items}) => {
                                     <td>{item.modalidade}</td>
                                     <td>{item.tipo}</td>
                                     <td>R${item.valor}</td>
+                                    <td>{item.data}</td>
                                     <td><EditIcon className="cursor"/><DeleteIcon className="cursor"/></td>
                                 </tr>
                                 </>

@@ -1,0 +1,101 @@
+import React, {useState} from 'react'
+import {loginAPI,registerAPI} from '../../api/auth'
+import './Login.css'
+
+const LoginDiv = ({handleChange,changeScreen}) => {
+    return (
+        <>
+        <h3>Entre na sua conta</h3>
+        <div className="formLoginDiv">
+            <div className="formLoginDivInput">
+                <span>cpf</span>
+                <input id="cpf" onChange={handleChange} type="text" required></input>
+            </div>
+            <div className="formLoginDivInput">
+                <span>Senha</span>
+                <input id="senha" onChange={handleChange} type="password" required></input>
+            </div>
+            <div className="formLoginDivForgot">
+                <small></small>
+                <small onClick={() => {changeScreen(false)}}>Criar uma conta!</small>
+            </div>
+            <div className="formLoginDivButton">
+                <button type="submit">Log in</button>
+            </div>
+        </div>
+        </>
+    )
+}
+
+const RegisterDiv = ({handleChange,changeScreen}) => {
+    return (
+        <>
+        <h3>Crie uma conta</h3>
+        <div className="formLoginDiv">
+            <div className="formLoginDivInput">
+                <span>Nome completo</span>
+                <input id="nome" onChange={handleChange} type="text" required></input>
+            </div>
+            <div className="formLoginDivInput">
+                <span>Cpf</span>
+                <input id="cpf" onChange={handleChange} type="text" required></input>
+            </div>
+            <div className="formLoginDivInput">
+                <span>Email</span>
+                <input id="email" onChange={handleChange} type="email" required></input>
+            </div>
+            <div className="formLoginDivInput">
+                <span>Senha</span>
+                <input id="senha" onChange={handleChange} type="password" required></input>
+            </div>
+            <div className="formLoginDivInput">
+                <span>Confirme a senha</span>
+                <input id="senhaDenovo" onChange={handleChange} type="password" required></input>
+            </div>
+            <div className="formLoginDivForgot">
+                <small></small>
+                <small onClick={() => {changeScreen(true)}}>Faca login!</small>
+            </div>
+            <div className="formLoginDivButton">
+                <button type="submit">Register</button>
+            </div>
+        </div>
+        </>
+    )
+}
+
+export default function Login(){
+    const [state,setState] = useState(true)
+    const [dados,setDados] = useState({email:"",senha:"",senhaDenovo:"",cpf:"",nome:""})
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        var res
+
+        if(state) {
+            res = await loginAPI({"data":{"email": dados.cpf,"senha": dados.senha}})
+        } else {
+            res = await registerAPI({"data":{"cpf":dados.cpf,"nome":dados.nome,"email":dados.email,"senha":dados.senha}})
+        }
+
+        console.log(res)
+        
+        if(res.data.token) {
+            localStorage.setItem("authToken", res.data.token)
+        }
+    }
+
+    const handleChange = (e) => {
+        setDados({...dados, [e.target.id]: e.target.value})
+    }
+
+    return(
+        <>
+        <div className="mainLogin">
+            <form onSubmit={handleSubmit} className="formLogin">
+                {state ? <LoginDiv handleChange={handleChange} changeScreen={setState}/> : <RegisterDiv handleChange={handleChange} changeScreen={setState}/>}
+            </form>
+        </div>
+        </>
+    )
+}
