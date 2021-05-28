@@ -2,6 +2,7 @@
     width: 100vw;
     display: flex;
     justify-content: center;
+    padding-top: 80px;
 }
 
 .mainHomeContents {
@@ -9,5 +10,66 @@
     max-width: 1280px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
+    padding: 60px;
+    background-color: #fff;
+    border: solid 3px #4286F5;
+}
+
+.mainHomeContents h3 {
+    font-weight: 600;
+    font-size: 2rem;
+}
+
+.mainHomeContentsItemsBox {
+    width: 100%;
+    border: solid 1px gainsboro;
+    display: grid;
+    gap: 15px;
+    padding: 15px;
+    grid-template-columns: repeat(5,1fr);
+}
+
+.mainHomeContentsItems {
+    width: 100%;
+    padding-top: 100%;
+    border: solid 1px #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.mainHomeContentsItems:hover {
+    border: solid 1px #4286F5;
+    cursor: pointer;
+}
+
+.mainHomeContentsBox {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    word-break: keep-all;
+    text-align: center;
+    padding: 10px;
+}
+
+.mainHomeContentsBox:hover * {
+    color: #4286F5;
+}
+
+.mainHomeContentsBox small {
+    margin-top: 10px;
+}
+
+.mainHomeContentsBox span {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
 }

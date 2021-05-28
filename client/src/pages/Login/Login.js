@@ -1,5 +1,8 @@
 import React, {useState} from 'react'
-import {loginAPI,registerAPI} from '../../api/auth'
+import {useHistory} from 'react-router-dom'
+import {loginAPI,registerAPI} from '../../utils/api/auth'
+import {useDispatch} from 'react-redux'
+import {signIn} from '../../actions'
 import './Login.css'
 
 const LoginDiv = ({handleChange,changeScreen}) => {
@@ -67,21 +70,23 @@ const RegisterDiv = ({handleChange,changeScreen}) => {
 export default function Login(){
     const [state,setState] = useState(true)
     const [dados,setDados] = useState({email:"",senha:"",senhaDenovo:"",cpf:"",nome:""})
+    const dispatch = useDispatch()
+    const history = useHistory()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         var res
 
         if(state) {
-            res = await loginAPI({"data":{"email": dados.cpf,"senha": dados.senha}})
+            res = await loginAPI({"data":{"cpf": dados.cpf,"senha": dados.senha}})
         } else {
             res = await registerAPI({"data":{"cpf":dados.cpf,"nome":dados.nome,"email":dados.email,"senha":dados.senha}})
         }
-
-        console.log(res)
         
         if(res.data.token) {
+            dispatch(signIn(res.data.user))
             localStorage.setItem("authToken", res.data.token)
+            history.push("/")
         }
     }
 

@@ -1,0 +1,13 @@
+.mainDashboard {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+
+.mainDashboardContents {
+    width: 100%;
+    max-width: 1280px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

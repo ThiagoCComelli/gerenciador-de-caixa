@@ -1,9 +1,29 @@
-import React from 'react';
+import React, {useEffect,useState} from 'react';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import './ItemsTable.css'
 
 const ItemsTable = ({items}) => {
+    const [allItems,setAllItems] = useState([])
+
+    const formatDate = (date) => {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        return [day, month, year].join('-');
+    }
+
+    useEffect(() => {
+        setAllItems(items.sort((a,b) => b.data - a.data))
+    },[items])
+
     return (
         <div className="mainItemsTable">
             <div className="mainItemsTableContents">
@@ -19,7 +39,7 @@ const ItemsTable = ({items}) => {
                             <th>Data</th>
                             <th>Edição</th>
                         </tr>
-                        {items.map((item,index) => {
+                        {allItems.map((item,index) => {
                             return (
                                 <>
                                 <tr className={item.tipo} key={index}>
@@ -29,7 +49,7 @@ const ItemsTable = ({items}) => {
                                     <td>{item.modalidade}</td>
                                     <td>{item.tipo}</td>
                                     <td>R${item.valor}</td>
-                                    <td>{item.data}</td>
+                                    <td>{formatDate(item.data)}</td>
                                     <td><EditIcon className="cursor"/><DeleteIcon className="cursor"/></td>
                                 </tr>
                                 </>
@@ -41,13 +61,5 @@ const ItemsTable = ({items}) => {
         </div>
     );
 }
-
-// numero	
-// titulo	
-// descrição	
-// modalidade(manual ou recorrente)	
-// tipo(entrada ou saida)	
-// valor	
-// edits(deletar ou modificar)	
 
 export default ItemsTable;

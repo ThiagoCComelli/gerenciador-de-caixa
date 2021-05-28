@@ -29,19 +29,34 @@ const databaseFunctions = {
         })
         return res
     },
-    loginUser: loginUser = async ({email,senha}) => {
+    loginUser: loginUser = async ({cpf,senha}) => {
         const res = await new Promise((resolve, reject) => {
-            con.query(`SELECT * FROM usuarios WHERE usuarios.email = "${email}";`, async (err,result,fields) => {
-                if(result === undefined) resolve({"message":"Falha na autenticacao!","status":400})
+            con.query(`SELECT * FROM usuarios WHERE usuarios.cpf = "${cpf}";`, async (err,result,fields) => {
+                if(result[0] === undefined) resolve({"message":"Falha na autenticacao!","status":200})
                 if(await bcrypt.compare(senha,result[0].senha)) {
-                    const token = createToken(result[0].email,result[0].nome)
-                    resolve({"message":"Usuario logado com sucesso!","status":200,"token":token})
+                    const token = createToken(result[0].cpf,result[0].nome)
+                    delete result[0]["senha"]
+                    resolve({"message":"Usuario logado com sucesso!","status":200,"token":token,"user":result[0]})
                 } else {
-                    resolve({"message":"Falha na autenticacao!","status":400})
+                    resolve({"message":"Falha na autenticacao!","status":200})
                 }
             })
         })
         
+        return res
+    },
+    verifyUser: verifyUser = async({token}) => {
+        const res = await verifyToken(token)
+        if(res.user) {
+            res.user = await new Promise((resolve,reject) => {
+                con.query(`SELECT * FROM usuarios WHERE usuarios.cpf = "${res.user.cpf}";`, async (err,result,fields) => {
+                    if(result[0] === undefined) resolve({"message":"Falha na busca!","status":200})
+                    delete result[0]["senha"]
+                    resolve(result[0])
+                })
+            })
+            
+        }
         return res
     }
 }

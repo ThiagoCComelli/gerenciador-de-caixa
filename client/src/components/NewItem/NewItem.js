@@ -10,7 +10,12 @@ const NewItem = ({handleNewItem}) => {
     }
 
     const handleChange = (e) => {
-        setNewItem({...newItem, [e.target.id]: e.target.value})
+        if(e.target.id === "data") {
+            var utcDate = new Date(e.target.value)
+            setNewItem({...newItem, [e.target.id]: new Date(utcDate.getTime() + utcDate.getTimezoneOffset() * 60000)})
+        } else {
+            setNewItem({...newItem, [e.target.id]: e.target.value})
+        }
     }
 
     return (
@@ -45,7 +50,7 @@ const NewItem = ({handleNewItem}) => {
                         </div>
                         <div className="mainNewItemSectionItem">
                             <span>Valor:</span>
-                            <input id="valor" onChange={handleChange} min={0} type="number" required></input>
+                            <input id="valor" onChange={handleChange} min={0} step="0.01" type="number" required></input>
                         </div>
                         <div className="mainNewItemSectionItem">
                             <span>Data:</span>

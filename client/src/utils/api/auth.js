@@ -6,9 +6,13 @@ const loginAPI = async (data) => {
 }
 
 const registerAPI = async (data) => {
-    console.log(data)
     const result = await axios.post('http://localhost:8080/user/register', data)
     return result
 }
 
-export {loginAPI,registerAPI}
+const verifyTokenAPI = async (data) => {
+    const result = await axios.post('http://localhost:8080/user/verify', data)
+    return result
+}
+
+export {loginAPI,registerAPI,verifyTokenAPI}

@@ -6,7 +6,7 @@
     height: 70px;
     justify-content: center;
     background-color: #fff;
-    border-bottom: solid 1px #4286F5;
+    border-bottom: solid 3px #4286F5;
     z-index: 9999999;
 }
 
@@ -16,6 +16,7 @@
     height: 100%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 0 20px;
 }
 
@@ -24,4 +25,10 @@
     font-weight: 700;
     color: #4286F5;
     text-transform: uppercase;
+}
+
+.mainNavbarContents span {
+    text-transform: uppercase;
+    font-weight: 400;
+    cursor: pointer;
 }
