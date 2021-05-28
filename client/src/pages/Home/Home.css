@@ -38,6 +38,25 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    overflow: hidden;
+}
+
+.mainHomeContentsBoxButton button {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    border: solid 1px rgb(214, 0, 0, 0.76);
+    padding: 5px 10px;
+    background-color: rgba(214, 0, 0, 0.76);
+    color: #fff;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all .2s;
+}
+
+.mainHomeContentsBoxButton button:hover {
+    border: solid 1px rgb(214, 0, 0);
+    background-color: rgb(214, 0, 0);
 }
 
 .mainHomeContentsItems:hover {
@@ -45,7 +64,10 @@
     cursor: pointer;
 }
 
+
 .mainHomeContentsBox {
+    /* transform: translateY(-35px); */
+    background-color: #fff;
     position: absolute;
     display: flex;
     justify-content: center;
@@ -58,6 +80,7 @@
     word-break: keep-all;
     text-align: center;
     padding: 10px;
+    transition: all .2s ease-in-out;
 }
 
 .mainHomeContentsBox:hover * {

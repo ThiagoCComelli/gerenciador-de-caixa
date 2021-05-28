@@ -3,7 +3,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import './ItemsTable.css'
 
-const ItemsTable = ({items}) => {
+const ItemsTable = ({items,handleDelete}) => {
     const [allItems,setAllItems] = useState([])
 
     const formatDate = (date) => {
@@ -21,7 +21,11 @@ const ItemsTable = ({items}) => {
     }
 
     useEffect(() => {
-        setAllItems(items.sort((a,b) => b.data - a.data))
+        items.map((item,index) => {
+            var res = new Date(item.dataMomento)
+            return items[index].dataMomento = res
+        })
+        setAllItems(items.sort((a,b) => b.dataMomento - a.dataMomento))
     },[items])
 
     return (
@@ -43,14 +47,14 @@ const ItemsTable = ({items}) => {
                             return (
                                 <>
                                 <tr className={item.tipo} key={index}>
-                                    <td>{item.numero}</td>
+                                    <td>{item.id}</td>
                                     <td>{item.titulo}</td>
                                     <td>{item.descricao}</td>
                                     <td>{item.modalidade}</td>
                                     <td>{item.tipo}</td>
                                     <td>R${item.valor}</td>
-                                    <td>{formatDate(item.data)}</td>
-                                    <td><EditIcon className="cursor"/><DeleteIcon className="cursor"/></td>
+                                    <td>{formatDate(item.dataMomento)}</td>
+                                    <td><EditIcon className="cursor"/><DeleteIcon onClick={() => {handleDelete(item.id)}} className="cursor"/></td>
                                 </tr>
                                 </>
                             )
