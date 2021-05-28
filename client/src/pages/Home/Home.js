@@ -1,5 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import AddIcon from '@material-ui/icons/Add';
+import {useDispatch} from 'react-redux'
+import {putPost} from '../../actions'
 import './Home.css'
 
 const Account = ({conta}) => {
@@ -15,8 +17,12 @@ const Account = ({conta}) => {
 }
 
 const NewAccount = () => {
+    const dispatch = useDispatch()
+
     return (
-        <div className="mainHomeContentsItems">
+        <div onClick={() => {
+            dispatch(putPost("NEW_POST"))
+        }} className="mainHomeContentsItems">
             <div className="mainHomeContentsBox">
                 <AddIcon style={{fontSize: 45}}/>
                 <h4>Nova conta</h4>

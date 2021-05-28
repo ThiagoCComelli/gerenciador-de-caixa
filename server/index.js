@@ -11,6 +11,7 @@ app.use(cors())
 app.use(bodyParser.json())
 
 app.post('/user/register', async (req,res) => {
+    console.log(req.body)
     if(req.body.data) {
         const response = await createUser(req.body.data)
         res.status(response.status).send(response)
@@ -20,6 +21,7 @@ app.post('/user/register', async (req,res) => {
 })
 
 app.post('/user/login', async (req,res) => {
+    console.log(req.body)
     if(req.body.data) {
         const response = await loginUser(req.body.data)
         res.status(response.status).send(response)
@@ -29,6 +31,7 @@ app.post('/user/login', async (req,res) => {
 })
 
 app.post('/user/verify', async (req,res) => {
+    console.log(req.body)
     if(req.body.data) {
         const response = await verifyUser(req.body.data)
         res.status(response.status).send(response)

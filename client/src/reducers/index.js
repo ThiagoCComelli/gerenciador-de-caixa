@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux'
-import {userReducer} from './reducers'
+import {userReducer,modalInterface} from './reducers'
 
 const allReducers = combineReducers({
-    user: userReducer
+    user: userReducer,
+    post: modalInterface
 })
 
 export default allReducers

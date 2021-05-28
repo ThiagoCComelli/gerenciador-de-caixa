@@ -4,6 +4,7 @@ import Dashboard from '../pages/Dashboard/Dashboard'
 import Login from '../pages/Login/Login'
 import Home from '../pages/Home/Home'
 import Navbar from './Navbar/Navbar'
+import Modal from './Modal/Modal'
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute'
 import {verifyTokenAPI} from '../utils/api/auth'
 import {useDispatch,useSelector} from 'react-redux'
@@ -11,6 +12,7 @@ import {signIn} from '../actions'
 import './App.css';
 
 function App() {
+  const havePost = useSelector(state => state.post)
   const isLogged = useSelector(state => state.user)
   const [state,setState] = useState(false)
   const dispatch = useDispatch()
@@ -54,6 +56,7 @@ function App() {
           <Route path="/login" exact component={Login} />
         </Switch>
       </Router>
+      {havePost ? <Modal component={havePost} /> : null}
     </div>
   )
 }

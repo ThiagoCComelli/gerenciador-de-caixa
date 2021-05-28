@@ -9,4 +9,15 @@ const userReducer = (state = null, action) => {
     }
 }
 
-export {userReducer}
+const modalInterface = (state = null, action) => {
+    switch (action.type) {
+        case 'PUT_POST':
+            return action.payload
+        case 'REMOVE_POST':
+            return null
+        default:
+            return state;
+    }
+}
+
+export {userReducer,modalInterface}
