@@ -23,14 +23,14 @@ DROP TABLE IF EXISTS `contas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `contas` (
-  `id` varchar(255) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(255) NOT NULL,
   `descricao` varchar(255) NOT NULL,
   `usuario_cpf` char(14) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `usuario_cpf` (`usuario_cpf`),
   CONSTRAINT `contas_ibfk_1` FOREIGN KEY (`usuario_cpf`) REFERENCES `usuarios` (`cpf`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -42,4 +42,4 @@ CREATE TABLE `contas` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-26 14:59:59
+-- Dump completed on 2021-05-31 20:03:30

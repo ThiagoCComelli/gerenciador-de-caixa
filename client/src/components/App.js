@@ -25,13 +25,17 @@ function App() {
 
     const setup = async () => {
       if(localStorage.getItem("authToken") !== null) {
-        await verify().then((res) => {
-          if(res.data.message === "Token verificado!") {
-            dispatch(signIn(res.data.user))
-          } else {
-            localStorage.removeItem("authToken")
-          }
-        })
+        try {
+          await verify().then((res) => {
+            if(res.data.message === "Token verificado!") {
+              dispatch(signIn(res.data.user))
+            } else {
+              localStorage.removeItem("authToken")
+            }
+          })
+        } catch {
+          
+        }
       }
   
       setState(isLogged)

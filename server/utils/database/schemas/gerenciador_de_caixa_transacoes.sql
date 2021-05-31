@@ -25,19 +25,19 @@ DROP TABLE IF EXISTS `transacoes`;
 CREATE TABLE `transacoes` (
   `id` int NOT NULL AUTO_INCREMENT,
   `usuario_cpf` varchar(14) NOT NULL,
-  `conta_id` varchar(255) NOT NULL,
+  `conta_id` int NOT NULL,
   `titulo` varchar(255) NOT NULL,
   `descricao` varchar(255) NOT NULL,
   `modalidade` enum('Manual','Recorrente') NOT NULL,
   `tipo` enum('Entrada','Saida') NOT NULL,
-  `valor` bigint NOT NULL,
+  `valor` float NOT NULL,
   `dataMomento` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `usuario_cpf` (`usuario_cpf`),
   KEY `conta_id` (`conta_id`),
   CONSTRAINT `transacoes_ibfk_1` FOREIGN KEY (`usuario_cpf`) REFERENCES `usuarios` (`cpf`),
   CONSTRAINT `transacoes_ibfk_2` FOREIGN KEY (`conta_id`) REFERENCES `contas` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +49,4 @@ CREATE TABLE `transacoes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-26 14:59:59
+-- Dump completed on 2021-05-31 20:03:30

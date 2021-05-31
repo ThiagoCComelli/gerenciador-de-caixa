@@ -1,11 +1,10 @@
 import React, {useEffect,useState} from 'react';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import {randomstring} from 'randomstring-js'
 import './ItemsTable.css'
 
-const ItemsTable = ({items,handleDelete}) => {
-    const [allItems,setAllItems] = useState([])
-
+const Item = ({item, handleDelete}) => {
     const formatDate = (date) => {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -20,6 +19,23 @@ const ItemsTable = ({items,handleDelete}) => {
         return [day, month, year].join('-');
     }
 
+    return (
+        <tr className={item.tipo}>
+            <td>{item.id}</td>
+            <td>{item.titulo}</td>
+            <td>{item.descricao}</td>
+            <td>{item.modalidade}</td>
+            <td>{item.tipo}</td>
+            <td>R${item.valor}</td>
+            <td>{formatDate(item.dataMomento)}</td>
+            <td><EditIcon className="cursor"/><DeleteIcon onClick={() => {handleDelete(item.id)}} className="cursor"/></td>
+        </tr>
+    )
+}
+
+const ItemsTable = ({items,handleDelete}) => {
+    const [allItems,setAllItems] = useState([])
+
     useEffect(() => {
         items.map((item,index) => {
             var res = new Date(item.dataMomento)
@@ -33,7 +49,7 @@ const ItemsTable = ({items,handleDelete}) => {
             <div className="mainItemsTableContents">
                 <table>
                     <tbody>
-                        <tr key={-1}>
+                        <tr key={randomstring()}>
                             <th>Numero</th>
                             <th>Titulo</th>
                             <th>Descrição</th>
@@ -43,20 +59,9 @@ const ItemsTable = ({items,handleDelete}) => {
                             <th>Data</th>
                             <th>Edição</th>
                         </tr>
-                        {allItems.map((item,index) => {
+                        {allItems.map((item) => {
                             return (
-                                <>
-                                <tr className={item.tipo} key={index}>
-                                    <td>{item.id}</td>
-                                    <td>{item.titulo}</td>
-                                    <td>{item.descricao}</td>
-                                    <td>{item.modalidade}</td>
-                                    <td>{item.tipo}</td>
-                                    <td>R${item.valor}</td>
-                                    <td>{formatDate(item.dataMomento)}</td>
-                                    <td><EditIcon className="cursor"/><DeleteIcon onClick={() => {handleDelete(item.id)}} className="cursor"/></td>
-                                </tr>
-                                </>
+                                <Item item={item} handleDelete={handleDelete} key={randomstring()}/>
                             )
                         })}
                     </tbody>

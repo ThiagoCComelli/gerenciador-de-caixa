@@ -72,7 +72,11 @@ const Home = () => {
 
     const getAccountsFromAPI = async () => {
         const res = await getAccounts(user.cpf,localStorage.getItem("authToken"))
-        setContas(res.data.accounts)
+        try {
+            setContas(res.data.accounts)
+        } catch {
+            
+        }
     }
 
     useEffect(() => {

@@ -18,16 +18,23 @@ const Dashboard = (props) => {
     const handleDelete = async (id) => {
         const res = await deleteTransaction(user.cpf,id,localStorage.getItem("authToken"))
         
-        if(res.data.message === "Delete feito com sucesso!") {
-            setItems(items.filter(item => item.id !== id))
+        try {
+            if(res.data.message === "Delete feito com sucesso!") {
+                setItems(items.filter(item => item.id !== id))
+            }
+        } catch {
+
         }
+        
     }
 
     useEffect(() => {
 
         const getTransacoes = async () => {
             const res = await getTransactions(user.cpf, props.location.state.id,localStorage.getItem("authToken"))
-            setItems(res.data.transactions)
+            if(res) {
+                setItems(res.data.transactions)
+            }
         }
         
         if(props.location.state === undefined) {

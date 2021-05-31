@@ -83,11 +83,16 @@ export default function Login(){
             res = await registerAPI({"data":{"cpf":dados.cpf,"nome":dados.nome,"email":dados.email,"senha":dados.senha}})
         }
         
-        if(res.data.token) {
-            dispatch(signIn(res.data.user))
-            localStorage.setItem("authToken", res.data.token)
-            history.push("/")
+        try {
+            if(res.data.token) {
+                dispatch(signIn(res.data.user))
+                localStorage.setItem("authToken", res.data.token)
+                history.push("/")
+            }
+        } catch {
+            
         }
+        
     }
 
     const handleChange = (e) => {

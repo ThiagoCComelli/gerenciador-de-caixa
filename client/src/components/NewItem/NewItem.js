@@ -1,20 +1,36 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {newTransaction} from '../../utils/api/db'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import './NewItem.css'
 
+const Tag = ({tag,handleRemoveTag}) => {
+    return (
+        <>
+        <div className="mainNewItemsTag">
+            <span>{tag}</span>
+            <HighlightOffIcon onClick={() => {handleRemoveTag(tag)}} className="tagIcon" style={{cursor: "pointer",fontSize: 15, color: "#000"}}/>
+        </div>
+        </>
+    )
+}
+
 const NewItem = ({handleNewItem,accountId}) => {
-    const [newItem, setNewItem] = useState({id:0,title:"",description:"",model:"Manual",type:"Entrada",value:0,date:null})
+    const [newItem, setNewItem] = useState({id:0,title:"",description:"",model:"Manual",type:"Entrada",value:0,date:null,tags:[]})
+    const [tags,setTags] = useState([])
     const user = useSelector(state => state.user)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
+        var objNewItem = newItem
+        objNewItem.tags = tags
+
         const res = await newTransaction({data:{
             account: {
                 id: accountId
             },
-            transaction: newItem,
+            transaction: objNewItem,
             user: user,
             token: localStorage.getItem("authToken")
         }})
@@ -23,6 +39,20 @@ const NewItem = ({handleNewItem,accountId}) => {
             handleNewItem(res.data.account)
         }
 
+    }
+
+    const handleTags = (e) => {
+        if(e.key === "Tab" || e.key === "Enter") {
+            e.preventDefault()
+            if (e.target.value !== "") {
+                setTags([...tags,e.target.value.toLowerCase()])
+                e.target.value = ""
+            }
+        }
+    }
+
+    const handleRemoveTag = (nome) => {
+        setTags(tags.filter((tag) => tag !== nome))
     }
 
     const handleChange = (e) => {
@@ -47,6 +77,14 @@ const NewItem = ({handleNewItem,accountId}) => {
                         <div className="mainNewItemSectionItem">
                             <span>Descrição:</span>
                             <input id="description" onChange={handleChange} type="text" required></input>
+                        </div>
+                    </div>
+                    <div className="mainNewItemSection">
+                        <div className="mainNewItemsTagDiv">
+                            {tags.map((tag) => {
+                                return <Tag handleRemoveTag={handleRemoveTag} tag={tag} key={tag.id} />
+                            })}
+                            <input placeholder="Ex: comida" onKeyDown={(e) => {handleTags(e)}} className="mainNewItemsTagInput"></input>
                         </div>
                     </div>
                     <div className="mainNewItemSection">
