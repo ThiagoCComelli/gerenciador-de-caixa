@@ -63,7 +63,7 @@ const Home = () => {
     const user = useSelector(state => state.user)
 
     const handleDelete = async (id) => {
-        const res = await deleteAccount(user.cpf,id,localStorage.getItem("authToken"))
+        const res = await deleteAccount(user.email,id,localStorage.getItem("authToken"))
 
         if(res.data.message === "Delete feito com sucesso!") {
             setContas(contas.filter(item => item.id !== id))
@@ -71,7 +71,7 @@ const Home = () => {
     }
 
     const getAccountsFromAPI = async () => {
-        const res = await getAccounts(user.cpf,localStorage.getItem("authToken"))
+        const res = await getAccounts(user.email,localStorage.getItem("authToken"))
         try {
             setContas(res.data.accounts)
         } catch {

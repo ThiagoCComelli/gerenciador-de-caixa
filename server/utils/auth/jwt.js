@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken')
 
 const jwtFunctions = {
-    createToken: createToken = (cpf,nome) => {
+    createToken: createToken = (email,nome) => {
         const token = jwt.sign({
             nome: nome,
-            cpf: cpf
+            email: email
         }, process.env.JWT_KEY, {expiresIn: "24h"})
         return token
     },

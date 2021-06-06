@@ -10,10 +10,10 @@ const newAccount = async (data) => {
     
 }
 
-const getAccounts = async (cpf,token) => {
+const getAccounts = async (email,token) => {
     try {
         const result = await axios.get('http://localhost:8080/user/get-accounts', {params: {
-            id: cpf,
+            email: email,
             token: token
         }})
         return result
@@ -33,11 +33,11 @@ const newTransaction = async (data) => {
     
 }
 
-const getTransactions = async (cpf,account_id,token) => {
+const getTransactions = async (email,account_id,token) => {
     try {
         const result = await axios.get('http://localhost:8080/user/get-transactions', {params: {
             account_id: account_id,
-            cpf: cpf,
+            email: email,
             token: token
         }})
         return result
@@ -47,11 +47,11 @@ const getTransactions = async (cpf,account_id,token) => {
     
 }
 
-const deleteTransaction = async(cpf,id,token) => {
+const deleteTransaction = async(email,id,token) => {
     try {
         const result = await axios.delete('http://localhost:8080/user/delete-transaction', {params: {
             id: id,
-            cpf: cpf,
+            email: email,
             token: token
         }})
         return result
@@ -61,11 +61,11 @@ const deleteTransaction = async(cpf,id,token) => {
     
 }
 
-const deleteAccount = async(cpf,id,token) => {
+const deleteAccount = async(email,id,token) => {
     try {
         const result = await axios.delete('http://localhost:8080/user/delete-account', {params: {
             id: id,
-            cpf: cpf,
+            email: email,
             token: token
         }})
         return result

@@ -10,14 +10,14 @@ const con = mysql.createConnection({
 })
 
 const databaseFunctions = {
-    createUser: createUser = async ({cpf,nome,email,senha}) => {
+    createUser: createUser = async ({nome,email,senha}) => {
         const res = await new Promise((resolve, reject) => {
             bcrypt.genSalt(Number(String(process.env.SALT_ROUNDS)), (err,salt) => {
                 if (err) resolve(err)
                 bcrypt.hash(senha, salt, (err_, hash) => {
                     if (err_) resolve(err_)
 
-                    con.query(`INSERT INTO usuarios VALUES ("${cpf}","${nome}","${email}","${hash}");`, (err,result) => {
+                    con.query(`INSERT INTO usuarios VALUES (NULL,"${nome}","${email}","${hash}");`, (err,result) => {
                         if(result === undefined) {
                             resolve({"message":"Usuario ja cadastrado!","status":200})
                         } else {
@@ -29,12 +29,12 @@ const databaseFunctions = {
         })
         return res
     },
-    loginUser: loginUser = async ({cpf,senha}) => {
+    loginUser: loginUser = async ({email,senha}) => {
         const res = await new Promise((resolve, reject) => {
-            con.query(`SELECT * FROM usuarios WHERE usuarios.cpf = "${cpf}";`, async (err,result,fields) => {
+            con.query(`SELECT * FROM usuarios WHERE usuarios.email = "${email}";`, async (err,result,fields) => {
                 if(result[0] === undefined) resolve({"message":"Falha na autenticacao!","status":200})
                 if(await bcrypt.compare(senha,result[0].senha)) {
-                    const token = createToken(result[0].cpf,result[0].nome)
+                    const token = createToken(result[0].email,result[0].nome)
                     delete result[0]["senha"]
                     resolve({"message":"Usuario logado com sucesso!","status":200,"token":token,"user":result[0]})
                 } else {
@@ -49,7 +49,7 @@ const databaseFunctions = {
         const res = await verifyToken(token)
         if(res.user) {
             res.user = await new Promise((resolve,reject) => {
-                con.query(`SELECT * FROM usuarios WHERE usuarios.cpf = "${res.user.cpf}";`, async (err,result,fields) => {
+                con.query(`SELECT * FROM usuarios WHERE usuarios.email = "${res.user.email}";`, async (err,result,fields) => {
                     if(result[0] === undefined) resolve({"message":"Falha na busca!","status":200})
                     delete result[0]["senha"]
                     resolve(result[0])
@@ -64,9 +64,9 @@ const databaseFunctions = {
         if(res.user === undefined) {
             return res
         } 
-        if(user.cpf === res.user.cpf) {
+        if(user.email === res.user.email) {
             res = await new Promise((resolve,reject) => {
-                con.query(`INSERT INTO contas VALUES (DEFAULT,"${account.title}","${account.description}","${user.cpf}");`, async (err,result,field) => {
+                con.query(`INSERT INTO contas VALUES (DEFAULT,"${account.title}","${account.description}","${user.email}");`, async (err,result,field) => {
                     if(result === undefined) {
                         resolve({"message":"Erro na criacao!","status":200})
                     } else {
@@ -80,13 +80,13 @@ const databaseFunctions = {
         } 
         return res
     },
-    getAccounts: getAccounts = async({id,token}) => {
+    getAccounts: getAccounts = async({email,token}) => {
         var res = await verifyToken(token)
         if(res.user === undefined) {
             return res
-        } else if(id === res.user.cpf) {
+        } else if(email === res.user.email) {
             res = await new Promise((resolve,reject) => {
-                con.query(`SELECT * FROM contas WHERE contas.usuario_cpf = "${id}";`, async (err,result,fields) => {
+                con.query(`SELECT * FROM contas WHERE contas.usuario_email = "${email}";`, async (err,result,fields) => {
                     if(result === undefined) resolve({"message":"Falha na busca!","status":200})
                     resolve({"message":"Busca feita com sucesso!","status":200,"accounts":result})
                 })
@@ -115,14 +115,14 @@ const databaseFunctions = {
         var res = await verifyToken(token)
         if(res.user === undefined) {
             return res
-        } else if(user.cpf === res.user.cpf) {
+        } else if(user.email === res.user.email) {
             res = await new Promise((resolve,reject) => {
-                con.query(`INSERT INTO transacoes VALUES (DEFAULT,"${user.cpf}","${account.id}","${transaction.title}","${transaction.description}","${transaction.model}","${transaction.type}","${transaction.value}","${transaction.date}");`, async (err,result,field) => {
+                con.query(`INSERT INTO transacoes VALUES (DEFAULT,"${user.email}","${account.id}","${transaction.title}","${transaction.description}","${transaction.model}","${transaction.type}","${transaction.value}","${transaction.date}");`, async (err,result,field) => {
                     if(result === undefined) {
                         resolve({"message":"Erro na criacao!","status":200})
                     } else {
                         transaction.tags.map((tag) => {
-                            con.query(`INSERT INTO tags VALUES (DEFAULT, "${tag}", "${result.insertId}")`, async (err,result,fields) => {
+                            con.query(`INSERT INTO tags VALUES (DEFAULT, "${tag}", "${result.insertId}","${account.id}")`, async (err,result,fields) => {
                                 if(result === undefined) {
                                     resolve({"message":"Erro na criacao!","status":200})
                                 }
@@ -140,13 +140,13 @@ const databaseFunctions = {
         }
         return res
     },
-    getTransactions: getTransactions = async({cpf,account_id,token}) => {
+    getTransactions: getTransactions = async({email,account_id,token}) => {
         var res = await verifyToken(token)
         if(res.user === undefined) {
             return res
-        } else if(cpf === res.user.cpf) {
+        } else if(email === res.user.email) {
             res = await new Promise((resolve,reject) => {
-                con.query(`SELECT * FROM transacoes WHERE transacoes.usuario_cpf = "${cpf}" AND transacoes.conta_id = "${account_id}";`, async (err,result,fields) => {
+                con.query(`SELECT * FROM transacoes WHERE transacoes.usuario_email = "${email}" AND transacoes.conta_id = "${account_id}";`, async (err,result,fields) => {
                     if(result === undefined) resolve({"message":"Falha na busca!","status":200})
                     resolve({"message":"Busca feita com sucesso!","status":200,"transactions":result})
                 })
@@ -154,14 +154,14 @@ const databaseFunctions = {
         }
         return res
     },
-    deleteTransaction: deleteTransaction = async({id,token,cpf}) => {
+    deleteTransaction: deleteTransaction = async({id,token,email}) => {
         var res = await verifyToken(token)
         if(res.user === undefined) {
             return res
-        } else if(cpf === res.user.cpf) {
+        } else if(email === res.user.email) {
             await deleteTags(id)
             res = await new Promise((resolve,reject) => {
-                con.query(`DELETE FROM transacoes WHERE transacoes.id = "${id}" AND transacoes.usuario_cpf = "${cpf}";`, async (err,result,fields) => {
+                con.query(`DELETE FROM transacoes WHERE transacoes.id = "${id}" AND transacoes.usuario_email = "${email}";`, async (err,result,fields) => {
                     if(result === undefined) resolve({"message":"Falha na busca!","status":200})
                     resolve({"message":"Delete feito com sucesso!","status":200})
                 })
@@ -169,17 +169,20 @@ const databaseFunctions = {
         }
         return res
     },
-    deleteAccount: deleteAccount = async({id,token,cpf}) => {
+    deleteAccount: deleteAccount = async({id,token,email}) => {
         var res = await verifyToken(token)
         if(res.user === undefined) {
             return res
-        } else if(cpf === res.user.cpf) {
+        } else if(email === res.user.email) {
             res = await new Promise((resolve,reject) => {
-                con.query(`DELETE FROM transacoes WHERE transacoes.conta_id = "${id}" AND transacoes.usuario_cpf = "${cpf}";`, async (err,result,fields) => {
-                    if(result === undefined) resolve({"message":"Falha na busca!","status":200})
-                    con.query(`DELETE FROM contas WHERE contas.id = "${id}" AND contas.usuario_cpf = "${cpf}";`, async (err,result,fields) => {
-                        if(result === undefined) resolve({"message":"Falha na busca!","status":200})
-                        resolve({"message":"Delete feito com sucesso!","status":200})
+                con.query(`DELETE FROM tags WHERE tags.conta_id = "${id}";`, (err,result,fields) => {
+                    if(result === undefined) resolve({"message":"Falha no delete!","status":200})
+                    con.query(`DELETE FROM transacoes WHERE transacoes.conta_id = "${id}";`, async (err,result,fields) => {
+                        if(result === undefined) resolve({"message":"Falha no delete","status":200})
+                        con.query(`DELETE FROM contas WHERE contas.id = "${id}";`, async (err,result,fields) => {
+                            if(result === undefined) resolve({"message":"Falha no delete","status":200})
+                            resolve({"message":"Delete feito com sucesso!","status":200})
+                        })
                     })
                 })
             })

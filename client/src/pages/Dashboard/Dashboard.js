@@ -16,7 +16,7 @@ const Dashboard = (props) => {
     }
 
     const handleDelete = async (id) => {
-        const res = await deleteTransaction(user.cpf,id,localStorage.getItem("authToken"))
+        const res = await deleteTransaction(user.email,id,localStorage.getItem("authToken"))
         
         try {
             if(res.data.message === "Delete feito com sucesso!") {
@@ -31,7 +31,7 @@ const Dashboard = (props) => {
     useEffect(() => {
 
         const getTransacoes = async () => {
-            const res = await getTransactions(user.cpf, props.location.state.id,localStorage.getItem("authToken"))
+            const res = await getTransactions(user.email, props.location.state.id,localStorage.getItem("authToken"))
             if(res) {
                 setItems(res.data.transactions)
             }

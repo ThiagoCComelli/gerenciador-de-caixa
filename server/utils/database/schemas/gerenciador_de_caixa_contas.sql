@@ -26,11 +26,11 @@ CREATE TABLE `contas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(255) NOT NULL,
   `descricao` varchar(255) NOT NULL,
-  `usuario_cpf` char(14) NOT NULL,
+  `usuario_email` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `usuario_cpf` (`usuario_cpf`),
-  CONSTRAINT `contas_ibfk_1` FOREIGN KEY (`usuario_cpf`) REFERENCES `usuarios` (`cpf`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `usuario_email` (`usuario_email`),
+  CONSTRAINT `contas_ibfk_1` FOREIGN KEY (`usuario_email`) REFERENCES `usuarios` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -42,4 +42,4 @@ CREATE TABLE `contas` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-31 20:03:30
+-- Dump completed on 2021-06-06 16:00:47

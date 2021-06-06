@@ -11,8 +11,8 @@ const LoginDiv = ({handleChange,changeScreen}) => {
         <h3>Entre na sua conta</h3>
         <div className="formLoginDiv">
             <div className="formLoginDivInput">
-                <span>cpf</span>
-                <input id="cpf" onChange={handleChange} type="text" required></input>
+                <span>email</span>
+                <input id="email" onChange={handleChange} type="text" required></input>
             </div>
             <div className="formLoginDivInput">
                 <span>Senha</span>
@@ -40,10 +40,6 @@ const RegisterDiv = ({handleChange,changeScreen}) => {
                 <input id="nome" onChange={handleChange} type="text" required></input>
             </div>
             <div className="formLoginDivInput">
-                <span>Cpf</span>
-                <input id="cpf" onChange={handleChange} type="text" required></input>
-            </div>
-            <div className="formLoginDivInput">
                 <span>Email</span>
                 <input id="email" onChange={handleChange} type="email" required></input>
             </div>
@@ -69,7 +65,7 @@ const RegisterDiv = ({handleChange,changeScreen}) => {
 
 export default function Login(){
     const [state,setState] = useState(true)
-    const [dados,setDados] = useState({email:"",senha:"",senhaDenovo:"",cpf:"",nome:""})
+    const [dados,setDados] = useState({email:"",senha:"",senhaDenovo:"",nome:""})
     const dispatch = useDispatch()
     const history = useHistory()
 
@@ -78,9 +74,9 @@ export default function Login(){
         var res
 
         if(state) {
-            res = await loginAPI({"data":{"cpf": dados.cpf,"senha": dados.senha}})
+            res = await loginAPI({"data":{"email": dados.email,"senha": dados.senha}})
         } else {
-            res = await registerAPI({"data":{"cpf":dados.cpf,"nome":dados.nome,"email":dados.email,"senha":dados.senha}})
+            res = await registerAPI({"data":{"nome":dados.nome,"email":dados.email,"senha":dados.senha}})
         }
         
         try {

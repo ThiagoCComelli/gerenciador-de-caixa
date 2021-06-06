@@ -9,6 +9,10 @@ const PORT = process.env.PORT
 app.use(cors())
 app.use(bodyParser.json())
 
+app.get('/', (req,res) => {
+    res.status(200).send({msg: "ok"})
+})
+
 app.post('/user/register', async (req,res) => {
     if(req.body.data) {
         const response = await createUser(req.body.data)
@@ -46,7 +50,7 @@ app.post('/user/new-account', async (req,res) => {
 })
 
 app.get('/user/get-accounts', async (req,res) => {
-    if(req.query.id) {
+    if(req.query.email) {
         const response = await getAccounts(req.query)
         res.status(response.status).send(response)
     } else {
@@ -64,7 +68,7 @@ app.post('/user/new-transaction', async (req,res) => {
 })
 
 app.get('/user/get-transactions', async (req,res) => {
-    if(req.query.account_id && req.query.cpf) {
+    if(req.query.account_id && req.query.email) {
         const response = await getTransactions(req.query)
         res.status(response.status).send(response)
     } else {
@@ -73,7 +77,7 @@ app.get('/user/get-transactions', async (req,res) => {
 })
 
 app.delete('/user/delete-transaction', async (req,res) => {
-    if(req.query.id && req.query.cpf) {
+    if(req.query.id && req.query.email) {
         const response = await deleteTransaction(req.query)
         res.status(response.status).send(response)
     } else {
@@ -82,7 +86,7 @@ app.delete('/user/delete-transaction', async (req,res) => {
 })
 
 app.delete('/user/delete-account', async (req,res) => {
-    if(req.query.id && req.query.cpf) {
+    if(req.query.id && req.query.email) {
         const response = await deleteAccount(req.query)
         res.status(response.status).send(response)
     } else {
