@@ -57,10 +57,15 @@ const ModalEditTransaction = ({props}) => {
         } 
 
         res().then((data) => {
-            if(data.data.tag !== null) {
-                // eslint-disable-next-line
-                setTags(tags.filter((tag) => tag.id != data.data.tag.id))
+            try {
+                if(data.data.tag !== null) {
+                    // eslint-disable-next-line
+                    setTags(tags.filter((tag) => tag.id != data.data.tag.id))
+                }
+            } catch {
+                dispatch(putNotification("SERVER_ERROR"))
             }
+            
         })
     }
 
@@ -73,14 +78,20 @@ const ModalEditTransaction = ({props}) => {
             token: localStorage.getItem("authToken")
         }})
 
-        if(res.data.message === "Update feito com sucesso!") {
-            props.handleUpdate(state)
-            dispatch(putNotification("EDIT_TRANSACTION_SUCCESS"))
-            dispatch(removePost())
-        } else {
-            dispatch(putNotification("EDIT_TRANSACTION_ERROR"))
+        try {
+            if(res.data.message === "Update feito com sucesso!") {
+                props.handleUpdate(state)
+                dispatch(putNotification("EDIT_TRANSACTION_SUCCESS"))
+                dispatch(removePost())
+            } else {
+                dispatch(putNotification("EDIT_TRANSACTION_ERROR"))
+                
+            }
+        } catch {
+            dispatch(putNotification("SERVER_ERROR"))
 
         }
+        
         
     }
 

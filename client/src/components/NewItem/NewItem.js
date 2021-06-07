@@ -26,12 +26,18 @@ const NewItem = ({handleNewItem,accountId}) => {
             token: localStorage.getItem("authToken")
         }})
 
-        if(res.data.account !== undefined) {
-            dispatch(putNotification("NEW_TRANSACTION_SUCCESS"))
-            handleNewItem(res.data.account)
-        } else {
-            dispatch(putNotification("NEW_TRANSACTION_ERROR"))
+        try {
+            if(res.data.account !== undefined) {
+                dispatch(putNotification("NEW_TRANSACTION_SUCCESS"))
+                handleNewItem(res.data.account)
+            } else {
+                dispatch(putNotification("NEW_TRANSACTION_ERROR"))
+            }
+        } catch {
+            dispatch(putNotification("SERVER_ERROR"))
+
         }
+        
 
     }
 

@@ -39,7 +39,7 @@ const Dashboard = (props) => {
                 
             }
         } catch {
-            dispatch(putNotification("DELETE_TRANSACTION_ERROR"))
+            dispatch(putNotification("SERVER_ERROR"))
 
         }
         
@@ -70,7 +70,7 @@ const Dashboard = (props) => {
         <div className="mainDashboard">
             <div className="mainDashboardContents">
                 <h1>Conta: {props.location.state.nome}</h1>
-                <small>Descricao: {props.location.state.descricao}</small>
+                <small>Descrição: {props.location.state.descricao}</small>
                 <NewItem accountId={props.location.state.id} handleNewItem={handleNewItem}/>
                 <ItemsTable handleUpdate={handleUpdate} handleDelete={handleDelete} items={items}/>
             </div>

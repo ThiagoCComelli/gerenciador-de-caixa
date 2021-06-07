@@ -68,12 +68,18 @@ const Home = () => {
     const handleDelete = async (id) => {
         const res = await deleteAccount(user.email,id,localStorage.getItem("authToken"))
 
-        if(res.data.message === "Delete feito com sucesso!") {
-            dispatch(putNotification("DELETE_ACCOUNT_SUCCESS"))
-            setContas(contas.filter(item => item.id !== id))
-        } else {
-            dispatch(putNotification("DELETE_ACCOUNT_ERROR"))
+        try {
+            if(res.data.message === "Delete feito com sucesso!") {
+                dispatch(putNotification("DELETE_ACCOUNT_SUCCESS"))
+                setContas(contas.filter(item => item.id !== id))
+            } else {
+                dispatch(putNotification("DELETE_ACCOUNT_ERROR"))
+            }
+        } catch {
+            dispatch(putNotification("SERVER_ERROR"))
+            
         }
+        
     }
 
     const getAccountsFromAPI = async () => {
@@ -81,7 +87,7 @@ const Home = () => {
         try {
             setContas(res.data.accounts)
         } catch {
-            
+            dispatch(putNotification("SERVER_ERROR"))
         }
     }
 

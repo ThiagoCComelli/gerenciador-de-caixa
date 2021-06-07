@@ -16,3 +16,9 @@
 .mainDashboardContents h1 {
     text-transform: uppercase;
 }
+
+@media screen and (max-width: 627px) {
+    .mainDashboardContents {
+        padding: 10px;
+    }
+}

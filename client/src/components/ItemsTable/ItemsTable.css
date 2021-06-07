@@ -35,3 +35,9 @@
 .mainItemsTableContents table tr:nth-child(odd).Saida {
     background-color: #ca23345e;
 }
+
+@media screen and (max-width: 627px) {
+    td, th {
+        font-size: 8px;
+    }
+}

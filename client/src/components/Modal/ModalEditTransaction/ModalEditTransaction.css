@@ -89,3 +89,13 @@
     border: solid 1px gainsboro;
 
 }
+
+@media screen and (max-width: 670px) {
+    .mainModalEditTransactionSection {
+        flex-direction: column;
+    }
+
+    .mainModalEditTransactionBox {
+        padding: 30px;
+    }
+}

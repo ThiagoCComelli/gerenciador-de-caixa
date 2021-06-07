@@ -85,9 +85,13 @@ export default function Login(){
                 dispatch(putNotification("LOGIN_SUCCESS"))
                 localStorage.setItem("authToken", res.data.token)
                 history.push("/")
+            } else {
+                dispatch(putNotification("LOGIN_ERROR"))
+
             }
-        } catch {
-            dispatch(putNotification("LOGIN_ERROR"))
+        } catch (e){
+            window.alert(res)
+            dispatch(putNotification("SERVER_ERROR"))
             
         }
         

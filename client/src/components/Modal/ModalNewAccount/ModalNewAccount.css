@@ -72,3 +72,10 @@
     background-color: #4286F5;
     cursor: pointer;
 }
+
+@media screen and (max-width: 670px) {
+
+    .mainModalNewAccountBox {
+        padding: 30px;
+    }
+}
