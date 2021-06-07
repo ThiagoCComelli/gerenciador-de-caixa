@@ -18,7 +18,7 @@
 - [x] Criação de transações
     - [x] Adicionar campo de tags para as transações
     - [x] Edição de transações
-- [ ] Pop-ups de notificação para operações
+- [x] Pop-ups de notificação para operações
 - [ ] Tratamento dos dados para melhor visualização (gráficos e previsões)
 - [ ] Leitura de entradas e saidas a partir de extratos em PDF ou Excel
 - [ ] ...
