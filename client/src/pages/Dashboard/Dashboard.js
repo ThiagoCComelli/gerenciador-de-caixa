@@ -15,6 +15,16 @@ const Dashboard = (props) => {
         setItems([...items,newItem])
     }
 
+    const handleUpdate = (state) => {
+        setItems(items.map((item) => {
+            if(item.id !== state.id) return item
+            for(let [key] of Object.entries(state)) {
+                item[key] = state[key]
+            }
+            return item
+        }))
+    }
+
     const handleDelete = async (id) => {
         const res = await deleteTransaction(user.email,id,localStorage.getItem("authToken"))
         
@@ -55,7 +65,7 @@ const Dashboard = (props) => {
                 <h1>Conta: {props.location.state.nome}</h1>
                 <small>Descricao: {props.location.state.descricao}</small>
                 <NewItem accountId={props.location.state.id} handleNewItem={handleNewItem}/>
-                <ItemsTable handleDelete={handleDelete} items={items}/>
+                <ItemsTable handleUpdate={handleUpdate} handleDelete={handleDelete} items={items}/>
             </div>
         </div>
     );

@@ -1,19 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {newTransaction} from '../../utils/api/db'
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import Tag from '../Tag/Tag'
 import './NewItem.css'
-
-const Tag = ({tag,handleRemoveTag}) => {
-    return (
-        <>
-        <div className="mainNewItemsTag">
-            <span>{tag}</span>
-            <HighlightOffIcon onClick={() => {handleRemoveTag(tag)}} className="tagIcon" style={{cursor: "pointer",fontSize: 15, color: "#000"}}/>
-        </div>
-        </>
-    )
-}
 
 const NewItem = ({handleNewItem,accountId}) => {
     const [newItem, setNewItem] = useState({id:0,title:"",description:"",model:"Manual",type:"Entrada",value:0,date:null,tags:[]})
@@ -45,7 +34,7 @@ const NewItem = ({handleNewItem,accountId}) => {
         if(e.key === "Tab" || e.key === "Enter") {
             e.preventDefault()
             if (e.target.value !== "") {
-                setTags([...tags,e.target.value.toLowerCase()])
+                setTags([...tags,{titulo:e.target.value.toLowerCase()}])
                 e.target.value = ""
             }
         }
@@ -97,7 +86,7 @@ const NewItem = ({handleNewItem,accountId}) => {
                         </div>
                         <div className="mainNewItemSectionItem">
                             <span>Tipo:</span>
-                            <select id="type" onChange={handleChange} name="modalide">
+                            <select id="type" onChange={handleChange} name="tipo">
                                 <option value="Entrada">Entrada</option>
                                 <option value="Saida">Saida</option>
                             </select>

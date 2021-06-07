@@ -83,26 +83,3 @@
     background-color: #FAFAFA;
 }
 
-.mainNewItemsTag {
-    cursor: pointer;
-    background-color: #e7e7e7;
-    font-size: 10px;
-    padding: 2px 3px 2px 10px;
-    display: flex;
-    height: 20px;
-    font-family: 900;
-    align-items: center;
-    border-radius: 20px;
-    gap: 5px;
-    border: solid 1px #FAFAFA;
-    transition: all .2s ease-in-out;
-}
-
-.mainNewItemsTag:hover {
-    border: solid 1px #4286F5;
-}
-
-.tagIcon:hover * {
-    color: #4286F5;
-    transition: all .2s ease-in-out;
-}

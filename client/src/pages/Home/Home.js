@@ -47,7 +47,7 @@ const NewAccount = () => {
 
     return (
         <div onClick={() => {
-            dispatch(putPost("NEW_POST"))
+            dispatch(putPost({id: "NEW_POST", content: null}))
         }} className="mainHomeContentsItems">
             <div className="mainHomeContentsBox">
                 <AddIcon style={{fontSize: 45}}/>

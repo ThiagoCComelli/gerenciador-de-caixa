@@ -111,6 +111,36 @@ const databaseFunctions = {
         })
         return res
     },
+    deleteTag: deleteTag = async ({id,email,token}) => {
+        var res = await verifyToken(token)
+        if(res.user === undefined) {
+            return res
+        } else if(email === res.user.email) {
+            res = await new Promise((resolve,reject) => {
+                con.query(`DELETE FROM tags WHERE tags.id = "${id}";`, async (err,result,fields) => {
+                    if(result === undefined) resolve({"message":"Falha na busca!","status":200})
+                    resolve({"message":"Delete feito com sucesso!","status":200,"tag":{id:id}})
+                })
+            })
+        }
+        
+        return res
+    },
+    newTag: newTag = async ({token,user,tag,transaction}) => {
+        var res = await verifyToken(token)
+        if(res.user === undefined) {
+            return res
+        } else if(user.email === res.user.email) {
+            res = await new Promise((resolve,reject) => {
+                con.query(`INSERT INTO tags VALUES (DEFAULT, "${tag.titulo}","${transaction.id}","${transaction.conta_id}");`, async (err,result,field) => {
+                    if(result === undefined) resolve({"message":"Falha na busca!","status":200})
+                    resolve({"message":"Insert feito com sucesso!","status":200,"tag":{id:result.insertId,titulo:tag.titulo,transacao_id:transaction.id,conta_id:transaction.conta_id}})
+                })
+            })
+        }
+        
+        return res
+    },
     newTransaction: newTransaction = async({account,transaction,user,token}) => {
         var res = await verifyToken(token)
         if(res.user === undefined) {
@@ -122,7 +152,7 @@ const databaseFunctions = {
                         resolve({"message":"Erro na criacao!","status":200})
                     } else {
                         transaction.tags.map((tag) => {
-                            con.query(`INSERT INTO tags VALUES (DEFAULT, "${tag}", "${result.insertId}","${account.id}")`, async (err,result,fields) => {
+                            con.query(`INSERT INTO tags VALUES (DEFAULT, "${tag.titulo}", "${result.insertId}","${account.id}")`, async (err,result,fields) => {
                                 if(result === undefined) {
                                     resolve({"message":"Erro na criacao!","status":200})
                                 }
@@ -130,9 +160,16 @@ const databaseFunctions = {
                         })
                         con.query(`SELECT * FROM transacoes WHERE transacoes.id = ${result.insertId}`, async (err,result,field) => {
                             if(result[0] === undefined) resolve({"message":"Falha na busca! (apos a cricao)","status":200})
-                            var obj = {"message":"Transacao criada com sucesso!","status":200,"account":result[0]}
-                            obj.account.tags = await getTags(result[0].id)
-                            resolve(obj)
+
+                            const result_ = async () => {
+                                return Promise.all(result.map(async(item) => {
+                                    item.tags = await getTags(item.id)
+                                }))
+                            }
+        
+                            result_().then(() => {
+                                resolve({"message":"Transacao criada com sucesso!","status":200,"account":result[0]})
+                            })
                         })
                     }
                 })
@@ -148,7 +185,14 @@ const databaseFunctions = {
             res = await new Promise((resolve,reject) => {
                 con.query(`SELECT * FROM transacoes WHERE transacoes.usuario_email = "${email}" AND transacoes.conta_id = "${account_id}";`, async (err,result,fields) => {
                     if(result === undefined) resolve({"message":"Falha na busca!","status":200})
-                    resolve({"message":"Busca feita com sucesso!","status":200,"transactions":result})
+                                        
+                    const result_ = async () => {
+                        return Promise.all(result.map(async(item) => item.tags = await getTags(item.id)))
+                    }
+
+                    result_().then(() => {
+                        resolve({"message":"Busca feita com sucesso!","status":200,"transactions":result})
+                    })
                 })
             })
         }
@@ -164,6 +208,20 @@ const databaseFunctions = {
                 con.query(`DELETE FROM transacoes WHERE transacoes.id = "${id}" AND transacoes.usuario_email = "${email}";`, async (err,result,fields) => {
                     if(result === undefined) resolve({"message":"Falha na busca!","status":200})
                     resolve({"message":"Delete feito com sucesso!","status":200})
+                })
+            })
+        }
+        return res
+    },
+    updateTransaction: updateTransaction = async({token,user,transaction}) => {
+        var res = await verifyToken(token)
+        if(res.user === undefined) {
+            return res
+        } else if(user.email === res.user.email) {
+            res = await new Promise((resolve,reject) => {
+                con.query(`UPDATE transacoes SET descricao="${transaction.descricao}", titulo="${transaction.titulo}", modalidade="${transaction.modalidade}", tipo="${transaction.tipo}", valor="${transaction.valor}" WHERE id="${transaction.id}" AND usuario_email="${user.email}";`, async (err,result,fields) => {
+                    if(result === undefined) resolve({"message":"Falha na busca!","status":200})
+                    resolve({"message":"Update feito com sucesso!","status":200})
                 })
             })
         }

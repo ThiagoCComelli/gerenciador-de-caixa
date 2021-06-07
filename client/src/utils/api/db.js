@@ -75,5 +75,36 @@ const deleteAccount = async(email,id,token) => {
     
 }
 
+const newTag = async(data) => {
+    try {
+        const result = await axios.post('http://localhost:8080/user/new-tag', data)
+        return result
+    } catch {
+        return null
+    }
+}
 
-export {newAccount,getAccounts,newTransaction,getTransactions,deleteTransaction,deleteAccount}
+const deleteTag = async(email,id,token) => {
+    try {
+        const result = await axios.delete('http://localhost:8080/user/delete-tag', {params: {
+            id: id,
+            email: email,
+            token: token
+        }})
+        return result
+    } catch {
+        return null
+    }
+}
+
+const updateTransaction = async(data) => {
+    try {
+        const result = await axios.post('http://localhost:8080/user/update-transaction', data)
+        return result
+    } catch {
+        return null
+    }
+}
+
+
+export {newAccount,getAccounts,newTransaction,getTransactions,deleteTransaction,deleteAccount,newTag,deleteTag,updateTransaction}

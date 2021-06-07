@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const {createUser,loginUser,verifyUser,newAccount,getAccounts,newTransaction, deleteTransaction, deleteAccount} = require('./utils/database/database')
+const {createUser,loginUser,verifyUser,newAccount,getAccounts,newTransaction, deleteTransaction, deleteAccount, newTag, updateTransaction} = require('./utils/database/database')
 const app = express()
 const PORT = process.env.PORT
 
@@ -88,6 +88,33 @@ app.delete('/user/delete-transaction', async (req,res) => {
 app.delete('/user/delete-account', async (req,res) => {
     if(req.query.id && req.query.email) {
         const response = await deleteAccount(req.query)
+        res.status(response.status).send(response)
+    } else {
+        res.status(400).send({"message":"Bad Request"})
+    }
+})
+
+app.post('/user/new-tag', async (req,res) => {
+    if(req.body.data) {
+        const response = await newTag(req.body.data)
+        res.status(response.status).send(response)
+    } else {
+        res.status(400).send({"message":"Bad Request"})
+    }
+})
+
+app.delete('/user/delete-tag', async (req,res) => {
+    if(req.query.id && req.query.email) {
+        const response = await deleteTag(req.query)
+        res.status(response.status).send(response)
+    } else {
+        res.status(400).send({"message":"Bad Request"})
+    }
+})
+
+app.post('/user/update-transaction', async (req,res) => {
+    if(req.body.data) {
+        const response = await updateTransaction(req.body.data)
         res.status(response.status).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})

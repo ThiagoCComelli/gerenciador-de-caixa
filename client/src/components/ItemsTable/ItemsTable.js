@@ -1,10 +1,14 @@
 import React, {useEffect,useState} from 'react';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import {putPost} from '../../actions'
+import {useDispatch} from 'react-redux'
 import {randomstring} from 'randomstring-js'
 import './ItemsTable.css'
 
-const Item = ({item, handleDelete}) => {
+const Item = ({item, setItems, handleUpdate, handleDelete}) => {
+    const dispatch = useDispatch()
+
     const formatDate = (date) => {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -19,6 +23,14 @@ const Item = ({item, handleDelete}) => {
         return [day, month, year].join('-');
     }
 
+    const handleModal = () => {
+        dispatch(putPost({id:"EDIT_TRAN",props:{
+            item: item,
+            setItems: setItems,
+            handleUpdate: handleUpdate
+        }}))
+    }
+
     return (
         <tr className={item.tipo}>
             <td>{item.id}</td>
@@ -28,12 +40,12 @@ const Item = ({item, handleDelete}) => {
             <td>{item.tipo}</td>
             <td>R${item.valor}</td>
             <td>{formatDate(item.dataMomento)}</td>
-            <td><EditIcon className="cursor"/><DeleteIcon onClick={() => {handleDelete(item.id)}} className="cursor"/></td>
+            <td><EditIcon onClick={() => {handleModal()}} className="cursor"/><DeleteIcon onClick={() => {handleDelete(item.id)}} className="cursor"/></td>
         </tr>
     )
 }
 
-const ItemsTable = ({items,handleDelete}) => {
+const ItemsTable = ({items,handleDelete,handleUpdate}) => {
     const [allItems,setAllItems] = useState([])
 
     useEffect(() => {
@@ -61,7 +73,7 @@ const ItemsTable = ({items,handleDelete}) => {
                         </tr>
                         {allItems.map((item) => {
                             return (
-                                <Item item={item} handleDelete={handleDelete} key={randomstring()}/>
+                                <Item item={item} items={items} handleUpdate={handleUpdate} handleDelete={handleDelete} key={randomstring()}/>
                             )
                         })}
                     </tbody>
