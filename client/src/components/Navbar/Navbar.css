@@ -8,6 +8,7 @@
     background-color: #fff;
     border-bottom: solid 3px #4286F5;
     z-index: 9999999;
+    box-shadow: 0px 0px 17px -10px rgba(0,0,0,0.75);
 }
 
 .mainNavbarContents {

@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {loginAPI,registerAPI} from '../../utils/api/auth'
 import {useDispatch} from 'react-redux'
-import {signIn} from '../../actions'
+import {signIn,putNotification} from '../../actions'
 import './Login.css'
 
 const LoginDiv = ({handleChange,changeScreen}) => {
@@ -82,10 +82,12 @@ export default function Login(){
         try {
             if(res.data.token) {
                 dispatch(signIn(res.data.user))
+                dispatch(putNotification("LOGIN_SUCCESS"))
                 localStorage.setItem("authToken", res.data.token)
                 history.push("/")
             }
         } catch {
+            dispatch(putNotification("LOGIN_ERROR"))
             
         }
         

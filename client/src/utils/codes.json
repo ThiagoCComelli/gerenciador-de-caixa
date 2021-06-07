@@ -1,0 +1,68 @@
+{
+    "LOGIN_SUCCESS" : {
+        "title": "Logado com sucesso!",
+        "description": "Agora voce tem acesso ao sistema",
+        "status": "success"
+    },
+    "LOGIN_ERROR": {
+        "title": "Falha no login!",
+        "description": "Senha ou email incorrentos",
+        "status": "error"
+    },
+    "SIGN_OUT": {
+        "title": "Conta desconectada!",
+        "description": "Conta desconectada com sucesso",
+        "status": "success"
+    },
+    "NEW_ACCOUNT_SUCCESS": {
+        "title": "Conta criado com sucesso!",
+        "description": "Conta criada e liberada para o uso",
+        "status": "success"
+    },
+    "NEW_ACCOUNT_ERROR": {
+        "title": "Falha na cricao!",
+        "description": "A conta nao foi criada, erro interno",
+        "status": "error"
+    },
+    "DELETE_ACCOUNT_SUCCESS": {
+        "title": "Conta deletada com sucesso!",
+        "description": "Conta deletada e retirada de uso",
+        "status": "success"
+    },
+    "DELETE_ACCOUNT_ERROR": {
+        "title": "Falha no delete!",
+        "description": "A conta nao foi deletada, erro interno",
+        "status": "error"
+    },
+    "NEW_TRANSACTION_SUCCESS": {
+        "title": "Transacao criada com sucesso!",
+        "description": "A transacao foi criada com sucesso",
+        "status": "success"
+    },
+    "NEW_TRANSACTION_ERROR": {
+        "title": "Falha na criacao!",
+        "description": "A transacao nao foi criada, erro interno",
+        "status": "error"
+    },
+    "DELETE_TRANSACTION_SUCCESS": {
+        "title": "Delete feito com sucesso!",
+        "description": "Transacao deletada da sua conta",
+        "status": "success"   
+    },
+    "DELETE_TRANSACTION_ERROR": {
+        "title": "Falha no delete!",
+        "description": "A transacao nao foi deletada da sua conta",
+        "status": "error"   
+    },
+    "EDIT_TRANSACTION_SUCCESS": {
+        "title": "Edicao feita com sucesso!",
+        "description": "A transacao foi editada e atualizada",
+        "status": "success"   
+    },
+    "EDIT_TRANSACTION_ERROR": {
+        "title": "Falha na edicao!",
+        "description": "A transacao nao foi editada",
+        "status": "error"   
+    }
+
+}

@@ -1,0 +1,51 @@
+.mainNotification {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    right: 0;
+    margin: 0 15px 0 0;
+    padding: 15px 25px;
+    width: 100%;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    box-shadow: 0px 0px 17px -10px rgba(0,0,0,0.75);
+    background-color: #fff;
+}
+
+.mainNotificationContent {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.mainNotificationLoader {
+    position: absolute;
+    height: 5px;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    animation: mainNotificationLoader 2s linear;
+
+}
+
+.error {
+    background-color: #F88117;
+
+}
+
+.success {
+    background-color: #63AB61;
+
+}
+
+@keyframes mainNotificationLoader {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}

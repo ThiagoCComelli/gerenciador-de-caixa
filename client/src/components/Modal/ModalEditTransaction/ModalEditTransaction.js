@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import {useDispatch,useSelector} from 'react-redux'
-import {removePost} from '../../../actions'
+import {removePost,putNotification} from '../../../actions'
 import {newTag,deleteTag,updateTransaction} from '../../../utils/api/db'
 import CloseIcon from '@material-ui/icons/Close';
 import Tag from '../../Tag/Tag'
@@ -75,7 +75,11 @@ const ModalEditTransaction = ({props}) => {
 
         if(res.data.message === "Update feito com sucesso!") {
             props.handleUpdate(state)
+            dispatch(putNotification("EDIT_TRANSACTION_SUCCESS"))
             dispatch(removePost())
+        } else {
+            dispatch(putNotification("EDIT_TRANSACTION_ERROR"))
+
         }
         
     }

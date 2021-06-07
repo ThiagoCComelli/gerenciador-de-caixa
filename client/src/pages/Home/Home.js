@@ -2,10 +2,10 @@ import React,{useState,useEffect} from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import {useDispatch,useSelector} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {putPost} from '../../actions'
+import {putNotification, putPost} from '../../actions'
 import {getAccounts,deleteAccount} from '../../utils/api/db'
-import './Home.css'
 import { useRef } from 'react';
+import './Home.css'
 
 const Account = ({conta,handleDelete}) => {
     const div = useRef(null)
@@ -42,12 +42,14 @@ const Account = ({conta,handleDelete}) => {
     )
 }
 
-const NewAccount = () => {
+const NewAccount = ({handleUpdate}) => {
     const dispatch = useDispatch()
 
     return (
         <div onClick={() => {
-            dispatch(putPost({id: "NEW_POST", content: null}))
+            dispatch(putPost({id: "NEW_POST", props:{
+                handleUpdate: handleUpdate
+            }}))
         }} className="mainHomeContentsItems">
             <div className="mainHomeContentsBox">
                 <AddIcon style={{fontSize: 45}}/>
@@ -61,12 +63,16 @@ const NewAccount = () => {
 const Home = () => {
     const [contas,setContas] = useState([])
     const user = useSelector(state => state.user)
+    const dispatch = useDispatch()
 
     const handleDelete = async (id) => {
         const res = await deleteAccount(user.email,id,localStorage.getItem("authToken"))
 
         if(res.data.message === "Delete feito com sucesso!") {
+            dispatch(putNotification("DELETE_ACCOUNT_SUCCESS"))
             setContas(contas.filter(item => item.id !== id))
+        } else {
+            dispatch(putNotification("DELETE_ACCOUNT_ERROR"))
         }
     }
 
@@ -77,6 +83,10 @@ const Home = () => {
         } catch {
             
         }
+    }
+
+    const handleUpdate = (account) => {
+        setContas([...contas,account])
     }
 
     useEffect(() => {
@@ -92,7 +102,7 @@ const Home = () => {
                     {contas.map((conta,index) => {
                         return <Account handleDelete={handleDelete} key={index} conta={conta}/>
                     })}
-                    <NewAccount />
+                    <NewAccount handleUpdate={handleUpdate}/>
                 </div>
             </div>
         </div>

@@ -1,8 +1,14 @@
 import axios from 'axios'
 
-const newAccount = async (data) => {
+const newAccount = async (user,account,token) => {
     try {
-        const result = await axios.post('http://localhost:8080/user/new-account', data)
+        const result = await axios.post('http://localhost:8080/user/new-account', {
+            data: {
+                user: user,
+                account: account,
+                token: token
+            }
+        })
         return result
     } catch {
         return null

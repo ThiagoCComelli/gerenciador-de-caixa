@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
+import {putNotification} from '../../actions'
 import {newTransaction} from '../../utils/api/db'
 import Tag from '../Tag/Tag'
 import './NewItem.css'
@@ -8,6 +9,7 @@ const NewItem = ({handleNewItem,accountId}) => {
     const [newItem, setNewItem] = useState({id:0,title:"",description:"",model:"Manual",type:"Entrada",value:0,date:null,tags:[]})
     const [tags,setTags] = useState([])
     const user = useSelector(state => state.user)
+    const dispatch = useDispatch()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -25,7 +27,10 @@ const NewItem = ({handleNewItem,accountId}) => {
         }})
 
         if(res.data.account !== undefined) {
+            dispatch(putNotification("NEW_TRANSACTION_SUCCESS"))
             handleNewItem(res.data.account)
+        } else {
+            dispatch(putNotification("NEW_TRANSACTION_ERROR"))
         }
 
     }

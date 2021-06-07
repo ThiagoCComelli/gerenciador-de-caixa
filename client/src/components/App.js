@@ -5,6 +5,7 @@ import Login from '../pages/Login/Login'
 import Home from '../pages/Home/Home'
 import Navbar from './Navbar/Navbar'
 import Modal from './Modal/Modal'
+import Notification from './Notification/Notification'
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute'
 import {verifyTokenAPI} from '../utils/api/auth'
 import {useDispatch,useSelector} from 'react-redux'
@@ -14,6 +15,7 @@ import './App.css';
 function App() {
   const havePost = useSelector(state => state.post)
   const isLogged = useSelector(state => state.user)
+  const allNotifications = useSelector(state => state.notifications)
   const [state,setState] = useState(false)
   const dispatch = useDispatch()
 
@@ -42,16 +44,25 @@ function App() {
     }
 
     setup()
+
     
     // eslint-disable-next-line
   },[])
-
+  
   if (state === false) {
     return <></>
   }
 
+  
+
   return (
     <div className="App">
+      <div className="AppNotifications">
+        {allNotifications.map((item) => {
+          return <Notification key={item.id} id={item.id} props={item.props}/>
+        })}
+      </div>
+      
       <Router>
         <Navbar />
         <Switch>

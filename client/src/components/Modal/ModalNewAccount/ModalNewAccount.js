@@ -1,12 +1,12 @@
 import React,{useState} from 'react';
-import {removePost} from '../../../actions'
+import {removePost,putNotification} from '../../../actions'
 import {useDispatch} from 'react-redux'
 import {newAccount} from '../../../utils/api/db'
 import {useSelector} from 'react-redux'
 import CloseIcon from '@material-ui/icons/Close';
 import './ModalNewAccount.css'
 
-const ModalNewAccount = () => {
+const ModalNewAccount = ({props}) => {
     const [state,setState] = useState({title:"",description:""})
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
@@ -22,16 +22,14 @@ const ModalNewAccount = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const res = await newAccount({
-            "data": {
-                "user": user,
-                "account": state,
-                "token": localStorage.getItem("authToken")
-            }
-        })
+        const res = await newAccount(user,state,localStorage.getItem("authToken"))
 
         if(res.data.account !== undefined) {
-            window.location.reload()
+            props.handleUpdate(res.data.account)
+            handleClose()
+            dispatch(putNotification("NEW_ACCOUNT_SUCCESS"))
+        } else {
+            dispatch(putNotification("NEW_ACCOUNT_ERROR"))
         }
 
     }

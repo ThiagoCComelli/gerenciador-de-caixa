@@ -2,14 +2,16 @@ import React, { useState,useEffect } from 'react';
 import {useHistory} from 'react-router-dom'
 import {getTransactions,deleteTransaction} from '../../utils/api/db'
 import NewItem from '../../components/NewItem/NewItem'
-import {useSelector} from 'react-redux'
+import {useSelector,useDispatch} from 'react-redux'
 import ItemsTable from '../../components/ItemsTable/ItemsTable'
 import './Dashboard.css'
+import { putNotification } from '../../actions';
 
 const Dashboard = (props) => {
     const user = useSelector(state => state.user)
     const [items, setItems] = useState([])
     const history = useHistory()
+    const dispatch = useDispatch()
 
     const handleNewItem = (newItem) => {
         setItems([...items,newItem])
@@ -30,9 +32,14 @@ const Dashboard = (props) => {
         
         try {
             if(res.data.message === "Delete feito com sucesso!") {
+                dispatch(putNotification("DELETE_TRANSACTION_SUCCESS"))
                 setItems(items.filter(item => item.id !== id))
+            } else {
+                dispatch(putNotification("DELETE_TRANSACTION_ERROR"))
+                
             }
         } catch {
+            dispatch(putNotification("DELETE_TRANSACTION_ERROR"))
 
         }
         

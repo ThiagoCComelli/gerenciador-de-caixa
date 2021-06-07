@@ -4,7 +4,7 @@ import ModalEditTransaction from './ModalEditTransaction/ModalEditTransaction'
 import './Modal.css'
 
 const Modal = ({component}) => {
-    const state = {NEW_POST: <ModalNewAccount />,EDIT_TRAN: <ModalEditTransaction props={component.props}/>}
+    const state = {NEW_POST: <ModalNewAccount props={component.props}/>,EDIT_TRAN: <ModalEditTransaction props={component.props}/>}
     
     return (
         <>
