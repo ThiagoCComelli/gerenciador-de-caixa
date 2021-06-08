@@ -22,7 +22,7 @@ function App() {
   useEffect(() => {
 
     const verify = async () => {
-      return await verifyTokenAPI({data:{token:localStorage.getItem("authToken")}})
+      return await verifyTokenAPI(localStorage.getItem("authToken"))
     }
 
     const setup = async () => {

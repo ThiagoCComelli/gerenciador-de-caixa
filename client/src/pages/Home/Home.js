@@ -7,7 +7,7 @@ import {getAccounts,deleteAccount} from '../../utils/api/db'
 import { useRef } from 'react';
 import './Home.css'
 
-const Account = ({conta,handleDelete}) => {
+const Account = ({account,handleDelete}) => {
     const div = useRef(null)
 
     const handleChange = (e) => {
@@ -29,13 +29,13 @@ const Account = ({conta,handleDelete}) => {
     return (
         <div onContextMenu={(e) => {handleChange(e)}} className="mainHomeContentsItems">
             <div className="mainHomeContentsBoxButton">
-                <button onClick={() => {handleDelete(conta.id)}}>Deletar</button>
+                <button onClick={() => {handleDelete(account.id)}}>Deletar</button>
             </div>
-            <Link style={{color:"#000"}} to={{pathname:"/dashboard",state:conta}}>
+            <Link style={{color:"#000"}} to={{pathname:"/dashboard",state:account}}>
                 <div ref={div} className="mainHomeContentsBox">
-                    <h4>{conta.nome}</h4>
-                    <small>{conta.descricao}</small>
-                    <span>{conta.id}</span>
+                    <h4>{account.title}</h4>
+                    <small>{account.description}</small>
+                    <span>{account.id}</span>
                 </div>
             </Link>
         </div>
@@ -61,7 +61,7 @@ const NewAccount = ({handleUpdate}) => {
 
 
 const Home = () => {
-    const [contas,setContas] = useState([])
+    const [accounts,setAccounts] = useState([])
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
 
@@ -69,14 +69,14 @@ const Home = () => {
         const res = await deleteAccount(user.email,id,localStorage.getItem("authToken"))
 
         try {
-            if(res.data.message === "Delete feito com sucesso!") {
-                dispatch(putNotification("DELETE_ACCOUNT_SUCCESS"))
-                setContas(contas.filter(item => item.id !== id))
+            if(res.data.status.code === "DELETE_ACCOUNT_SUCCESS") {
+                dispatch(putNotification(res.data.status))
+                setAccounts(accounts.filter(item => item.id !== id))
             } else {
-                dispatch(putNotification("DELETE_ACCOUNT_ERROR"))
+                dispatch(putNotification(res.data.status))
             }
         } catch {
-            dispatch(putNotification("SERVER_ERROR"))
+            dispatch(putNotification(res.data.status))
             
         }
         
@@ -85,14 +85,14 @@ const Home = () => {
     const getAccountsFromAPI = async () => {
         const res = await getAccounts(user.email,localStorage.getItem("authToken"))
         try {
-            setContas(res.data.accounts)
+            setAccounts(res.data.accounts)
         } catch {
-            dispatch(putNotification("SERVER_ERROR"))
+            dispatch(putNotification(res.data.status))
         }
     }
 
     const handleUpdate = (account) => {
-        setContas([...contas,account])
+        setAccounts([...accounts,account])
     }
 
     useEffect(() => {
@@ -105,8 +105,8 @@ const Home = () => {
             <div className="mainHomeContents">
                 <h3>Suas contas:</h3>
                 <div className="mainHomeContentsItemsBox">
-                    {contas.map((conta,index) => {
-                        return <Account handleDelete={handleDelete} key={index} conta={conta}/>
+                    {accounts.map((account,index) => {
+                        return <Account handleDelete={handleDelete} key={index} account={account}/>
                     })}
                     <NewAccount handleUpdate={handleUpdate}/>
                 </div>

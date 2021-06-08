@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const url = "http://192.168.0.18:8080"
+const url = "http://192.168.0.31:3100"
 
 const newAccount = async (user,account,token) => {
     try {
@@ -31,9 +31,18 @@ const getAccounts = async (email,token) => {
     
 }
 
-const newTransaction = async (data) => {
+const newTransaction = async (account_id,transaction,user,token) => {
     try {
-        const result = await axios.post(`${url}/user/new-transaction`, data)
+        const result = await axios.post(`${url}/user/new-transaction`, {
+            data: {
+                account: {
+                    id: account_id
+                },
+                transaction: transaction,
+                user: user,
+                token: token
+            }
+        })
         return result
     } catch {
         return null
@@ -83,9 +92,18 @@ const deleteAccount = async(email,id,token) => {
     
 }
 
-const newTag = async(data) => {
+const newTag = async(tag_title,user,transaction,token) => {
     try {
-        const result = await axios.post(`${url}/user/new-tag`, data)
+        const result = await axios.post(`${url}/user/new-tag`, {
+            data: {
+                user: user,
+                tag: {
+                    title: tag_title
+                },
+                transaction: transaction,
+                token: token
+            }
+        })
         return result
     } catch {
         return null
@@ -105,9 +123,15 @@ const deleteTag = async(email,id,token) => {
     }
 }
 
-const updateTransaction = async(data) => {
+const updateTransaction = async(transaction,user,token) => {
     try {
-        const result = await axios.post(`${url}/user/update-transaction`, data)
+        const result = await axios.post(`${url}/user/update-transaction`, {
+            data: {
+                transaction: transaction,
+                user: user,
+                token: token
+            }
+        })
         return result
     } catch {
         return null

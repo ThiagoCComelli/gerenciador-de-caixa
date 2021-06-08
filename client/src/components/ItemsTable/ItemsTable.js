@@ -6,7 +6,7 @@ import {useDispatch} from 'react-redux'
 import {randomstring} from 'randomstring-js'
 import './ItemsTable.css'
 
-const Item = ({item, setItems, handleUpdate, handleDelete}) => {
+const Item = ({item, handleUpdate, handleDelete}) => {
     const dispatch = useDispatch()
 
     const formatDate = (date) => {
@@ -26,20 +26,19 @@ const Item = ({item, setItems, handleUpdate, handleDelete}) => {
     const handleModal = () => {
         dispatch(putPost({id:"EDIT_TRAN",props:{
             item: item,
-            setItems: setItems,
             handleUpdate: handleUpdate
         }}))
     }
 
     return (
-        <tr className={item.tipo}>
+        <tr className={item.type}>
             <td>{item.id}</td>
-            <td>{item.titulo}</td>
-            <td>{item.descricao}</td>
-            <td>{item.modalidade}</td>
-            <td>{item.tipo}</td>
-            <td>R${item.valor}</td>
-            <td>{formatDate(item.dataMomento)}</td>
+            <td>{item.title}</td>
+            <td>{item.description}</td>
+            <td>{item.modality}</td>
+            <td>{item.type}</td>
+            <td>R${item.value}</td>
+            <td>{formatDate(item.date)}</td>
             <td><EditIcon onClick={() => {handleModal()}} className="cursor"/><DeleteIcon onClick={() => {handleDelete(item.id)}} className="cursor"/></td>
         </tr>
     )
@@ -50,10 +49,10 @@ const ItemsTable = ({items,handleDelete,handleUpdate}) => {
 
     useEffect(() => {
         items.map((item,index) => {
-            var res = new Date(item.dataMomento)
-            return items[index].dataMomento = res
+            var res = new Date(item.date)
+            return items[index].date = res
         })
-        setAllItems(items.sort((a,b) => b.dataMomento - a.dataMomento))
+        setAllItems(items.sort((a,b) => b.date - a.date))
     },[items])
 
     return (

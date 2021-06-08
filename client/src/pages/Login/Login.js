@@ -16,7 +16,7 @@ const LoginDiv = ({handleChange,changeScreen}) => {
             </div>
             <div className="formLoginDivInput">
                 <span>Senha</span>
-                <input id="senha" onChange={handleChange} type="password" required></input>
+                <input id="password" onChange={handleChange} type="password" required></input>
             </div>
             <div className="formLoginDivForgot">
                 <small></small>
@@ -37,7 +37,7 @@ const RegisterDiv = ({handleChange,changeScreen}) => {
         <div className="formLoginDiv">
             <div className="formLoginDivInput">
                 <span>Nome completo</span>
-                <input id="nome" onChange={handleChange} type="text" required></input>
+                <input id="name" onChange={handleChange} type="text" required></input>
             </div>
             <div className="formLoginDivInput">
                 <span>Email</span>
@@ -45,11 +45,11 @@ const RegisterDiv = ({handleChange,changeScreen}) => {
             </div>
             <div className="formLoginDivInput">
                 <span>Senha</span>
-                <input id="senha" onChange={handleChange} type="password" required></input>
+                <input id="password" onChange={handleChange} type="password" required></input>
             </div>
             <div className="formLoginDivInput">
                 <span>Confirme a senha</span>
-                <input id="senhaDenovo" onChange={handleChange} type="password" required></input>
+                <input id="passwordAgain" onChange={handleChange} type="password" required></input>
             </div>
             <div className="formLoginDivForgot">
                 <small></small>
@@ -65,7 +65,7 @@ const RegisterDiv = ({handleChange,changeScreen}) => {
 
 export default function Login(){
     const [state,setState] = useState(true)
-    const [dados,setDados] = useState({email:"",senha:"",senhaDenovo:"",nome:""})
+    const [data,setData] = useState({email:"",password:"",passwordAgain:"",name:""})
     const dispatch = useDispatch()
     const history = useHistory()
 
@@ -74,31 +74,30 @@ export default function Login(){
         var res
 
         if(state) {
-            res = await loginAPI({"data":{"email": dados.email,"senha": dados.senha}})
+            res = await loginAPI(data)
         } else {
-            res = await registerAPI({"data":{"nome":dados.nome,"email":dados.email,"senha":dados.senha}})
+            res = await registerAPI(data)
         }
         
         try {
             if(res.data.token) {
                 dispatch(signIn(res.data.user))
-                dispatch(putNotification("LOGIN_SUCCESS"))
+                dispatch(putNotification(res.data.status))
                 localStorage.setItem("authToken", res.data.token)
                 history.push("/")
             } else {
-                dispatch(putNotification("LOGIN_ERROR"))
+                dispatch(putNotification(res.data.status))
 
             }
-        } catch (e){
-            window.alert(res)
-            dispatch(putNotification("SERVER_ERROR"))
+        } catch {
+            dispatch(putNotification(res.data.status))
             
         }
         
     }
 
     const handleChange = (e) => {
-        setDados({...dados, [e.target.id]: e.target.value})
+        setData({...data, [e.target.id]: e.target.value})
     }
 
     return(

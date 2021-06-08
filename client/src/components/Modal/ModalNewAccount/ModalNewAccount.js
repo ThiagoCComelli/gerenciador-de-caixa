@@ -27,9 +27,9 @@ const ModalNewAccount = ({props}) => {
         if(res.data.account !== undefined) {
             props.handleUpdate(res.data.account)
             handleClose()
-            dispatch(putNotification("NEW_ACCOUNT_SUCCESS"))
+            dispatch(putNotification(res.data.status))
         } else {
-            dispatch(putNotification("NEW_ACCOUNT_ERROR"))
+            dispatch(putNotification(res.data.status))
         }
 
     }

@@ -7,7 +7,7 @@ import Tag from '../../Tag/Tag'
 import './ModalEditTransaction.css'
 
 const ModalEditTransaction = ({props}) => {
-    const [state, setState] = useState({id:props.item.id,titulo:props.item.titulo,descricao:props.item.descricao,modalidade:props.item.modalidade,tipo:props.item.tipo,valor:props.item.valor})
+    const [state, setState] = useState({id:props.item.id,title:props.item.title,description:props.item.description,modality:props.item.modality,type:props.item.type,value:props.item.value})
     const [tags,setTags] = useState([])
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
@@ -39,7 +39,7 @@ const ModalEditTransaction = ({props}) => {
             e.preventDefault()
             if (e.target.value !== "") {
                 const res = async () => {
-                    return await newTag({data:{tag:{titulo:e.target.value.toLowerCase()},user:user,transaction:props.item,token:localStorage.getItem("authToken")}})
+                    return await newTag(e.target.value.toLowerCase(),user,props.item,localStorage.getItem("authToken"))
                 } 
 
                 res().then((data) => {
@@ -63,7 +63,7 @@ const ModalEditTransaction = ({props}) => {
                     setTags(tags.filter((tag) => tag.id != data.data.tag.id))
                 }
             } catch {
-                dispatch(putNotification("SERVER_ERROR"))
+                dispatch(putNotification(res.data.status))
             }
             
         })
@@ -72,23 +72,19 @@ const ModalEditTransaction = ({props}) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const res = await updateTransaction({data:{
-            transaction: state,
-            user: user,
-            token: localStorage.getItem("authToken")
-        }})
+        const res = await updateTransaction(state,user,localStorage.getItem("authToken"))
 
         try {
-            if(res.data.message === "Update feito com sucesso!") {
+            if(res.data.status.code === "EDIT_TRANSACTION_SUCCESS") {
                 props.handleUpdate(state)
-                dispatch(putNotification("EDIT_TRANSACTION_SUCCESS"))
+                dispatch(putNotification(res.data.status))
                 dispatch(removePost())
             } else {
-                dispatch(putNotification("EDIT_TRANSACTION_ERROR"))
+                dispatch(putNotification(res.data.status))
                 
             }
         } catch {
-            dispatch(putNotification("SERVER_ERROR"))
+            dispatch(putNotification(res.data.status))
 
         }
         
@@ -109,11 +105,11 @@ const ModalEditTransaction = ({props}) => {
                     <div className="mainModalEditTransactionSection">
                         <div className="mainModalEditTransactionSectionItem">
                             <span>Titulo:</span>
-                            <input onChange={(e) => {handleChange(e)}} defaultValue={props.item.titulo} id="titulo" type="text" required></input>
+                            <input onChange={(e) => {handleChange(e)}} defaultValue={props.item.title} id="title" type="text" required></input>
                         </div>
                         <div className="mainModalEditTransactionSectionItem">
                             <span>Descrição:</span>
-                            <input onChange={(e) => {handleChange(e)}} defaultValue={props.item.descricao} id="descricao" type="text" required></input>
+                            <input onChange={(e) => {handleChange(e)}} defaultValue={props.item.description} id="description" type="text" required></input>
                         </div>
                     </div>
                     <div className="mainModalEditTransactionSection">
@@ -127,25 +123,25 @@ const ModalEditTransaction = ({props}) => {
                     <div className="mainModalEditTransactionSection">
                         <div className="mainModalEditTransactionSectionItem">
                             <span>Modalidade:</span>
-                            <select onChange={(e) => {handleChange(e)}} defaultValue={props.item.modalidade} id="modalidade" name="modalide">
+                            <select onChange={(e) => {handleChange(e)}} defaultValue={props.item.modality} id="modality" name="modalide">
                                 <option value="Manual">Manual</option>
                                 <option value="Recorrente">Recorrente</option>
                             </select>
                         </div>
                         <div className="mainModalEditTransactionSectionItem">
                             <span>Tipo:</span>
-                            <select onChange={(e) => {handleChange(e)}} defaultValue={props.item.tipo} id="tipo" name="tipo">
+                            <select onChange={(e) => {handleChange(e)}} defaultValue={props.item.type} id="type" name="tipo">
                                 <option value="Entrada">Entrada</option>
                                 <option value="Saida">Saida</option>
                             </select>
                         </div>
                         <div className="mainModalEditTransactionSectionItem">
                             <span>Valor:</span>
-                            <input onChange={(e) => {handleChange(e)}} defaultValue={props.item.valor} id="valor" min={0} step="0.01" type="number" required></input>
+                            <input onChange={(e) => {handleChange(e)}} defaultValue={props.item.value} id="value" min={0} step="0.01" type="number" required></input>
                         </div>
                         <div className="mainModalEditTransactionSectionItem">
                             <span>Data:</span>
-                            <input onChange={() => {}} style={{cursor: "not-allowed"}} onClick={(e) => {e.preventDefault()}} value={formatDate(props.item.dataMomento)} id="data" type="date" required></input>
+                            <input onChange={() => {}} style={{cursor: "not-allowed"}} onClick={(e) => {e.preventDefault()}} value={formatDate(props.item.date)} id="data" type="date" required></input>
                         </div>
                         <div className="mainModalEditTransactionSectionItem">
                             <span></span>

@@ -1,0 +1,159 @@
+{
+    "LOGIN_SUCCESS" : {
+        "title": "Logado com sucesso!",
+        "description": "Agora voce tem acesso ao sistema",
+        "status": "success",
+        "code": "LOGIN_SUCCESS"
+    },
+    "LOGIN_ERROR": {
+        "title": "Falha no login!",
+        "description": "Senha ou email incorrentos",
+        "status": "error",
+        "code": "LOGIN_ERROR"
+    },
+    "NEW_USER_SUCCESS" : {
+        "title": "Usuario criado com sucesso!",
+        "description": "Usuario criado, efetue o login!",
+        "status": "success",
+        "code": "NEW_USER_SUCCESS"
+    },
+    "NEW_USER_ERROR": {
+        "title": "Falha na crição!",
+        "description": "Usuario ja cadastrado no sistema",
+        "status": "error",
+        "code": "NEW_USER_ERROR"
+    },
+    "SIGN_OUT": {
+        "title": "Conta desconectada!",
+        "description": "Conta desconectada com sucesso",
+        "status": "success",
+        "code": "SIGN_OUT"
+    },
+    "NEW_ACCOUNT_SUCCESS": {
+        "title": "Conta criada com sucesso!",
+        "description": "Conta criada e liberada para o uso",
+        "status": "success",
+        "code": "NEW_ACCOUNT_SUCCESS"
+    },
+    "NEW_ACCOUNT_ERROR": {
+        "title": "Falha na crição!",
+        "description": "A conta nao foi criada, erro interno",
+        "status": "error",
+        "code": "NEW_ACCOUNT_ERROR"
+    },
+    "DELETE_ACCOUNT_SUCCESS": {
+        "title": "Conta deletada com sucesso!",
+        "description": "Conta deletada e retirada de uso",
+        "status": "success",
+        "code": "DELETE_ACCOUNT_SUCCESS"
+    },
+    "DELETE_ACCOUNT_ERROR": {
+        "title": "Falha no delete!",
+        "description": "A conta nao foi deletada, erro interno",
+        "status": "error",
+        "code": "DELETE_ACCOUNT_ERROR"
+    },
+    "NEW_TRANSACTION_SUCCESS": {
+        "title": "Transação criada com sucesso!",
+        "description": "A transação foi criada com sucesso",
+        "status": "success",
+        "code": "NEW_TRANSACTION_SUCCESS"
+    },
+    "NEW_TRANSACTION_ERROR": {
+        "title": "Falha na criação!",
+        "description": "A transação nao foi criada, erro interno",
+        "status": "error",
+        "code": "NEW_TRANSACTION_ERROR"
+    },
+    "DELETE_TRANSACTION_SUCCESS": {
+        "title": "Delete feito com sucesso!",
+        "description": "Transação deletada da sua conta",
+        "status": "success",
+        "code": "DELETE_TRANSACTION_SUCCESS"   
+    },
+    "DELETE_TRANSACTION_ERROR": {
+        "title": "Falha no delete!",
+        "description": "A transação nao foi deletada da sua conta",
+        "status": "error",
+        "code": "DELETE_TRANSACTION_ERROR"   
+    },
+    "EDIT_TRANSACTION_SUCCESS": {
+        "title": "Edição feita com sucesso!",
+        "description": "A transação foi editada e atualizada",
+        "status": "success",
+        "code": "EDIT_TRANSACTION_SUCCESS"   
+    },
+    "EDIT_TRANSACTION_ERROR": {
+        "title": "Falha na edição!",
+        "description": "A transação nao foi editada",
+        "status": "error",
+        "code": "EDIT_TRANSACTION_ERROR"   
+    },
+    "TOKEN_SUCCESS": {
+        "title": "Token valido!",
+        "description": "Token valido para operação",
+        "status": "success",
+        "code": "TOKEN_SUCCESS"
+    },
+    "TOKEN_ERROR": {
+        "title": "Token invalido!",
+        "description": "O token verificado nao é valido para operação",
+        "status": "error",
+        "code": "TOKEN_ERROR"
+    },
+    "GET_ACCOUNTS_SUCCESS": {
+        "title": "Busca feita com sucesso!",
+        "description": "Busca feita e resultado retornado",
+        "status": "success",
+        "code": "GET_ACCOUNTS_SUCCESS"
+    },
+    "GET_ACCOUNTS_ERROR": {
+        "title": "Falha na busca!",
+        "description": "Falha na busca realizada e nada realizado",
+        "status": "error",
+        "code": "GET_ACCOUNTS_ERROR"
+    },
+    "GET_TRANSACTIONS_SUCCESS": {
+        "title": "Busca feita com sucesso!",
+        "description": "Busca feita e resultado retornado",
+        "status": "success",
+        "code": "GET_TRANSACTIONS_SUCCESS"
+    },
+    "GET_TRANSACTIONS_ERROR": {
+        "title": "Falha na busca!",
+        "description": "Falha na busca realizada e nada realizado",
+        "status": "error",
+        "code": "GET_TRANSACTIONS_ERROR"
+    },
+    "NEW_TAG_SUCCESS": {
+        "title": "Tag criada com sucesso!",
+        "description": "A Tag foi criada com sucesso",
+        "status": "success",
+        "code": "NEW_TAG_SUCCESS"
+    },
+    "NEW_TAG_ERROR": {
+        "title": "Falha na criação!",
+        "description": "A Tag nao foi criada, erro interno",
+        "status": "error",
+        "code": "NEW_TAG_ERROR"
+    },
+    "DELETE_TAG_SUCCESS": {
+        "title": "Tag deletada com sucesso!",
+        "description": "A Tag foi deletada com sucesso",
+        "status": "success",
+        "code": "DELETE_TAG_SUCCESS"
+    },
+    "DELETE_TAG_ERROR": {
+        "title": "Falha no delete!",
+        "description": "A Tag nao foi deletada, erro interno",
+        "status": "error",
+        "code": "DELETE_TAG_ERROR"
+    },
+    "SERVER_ERROR": {
+        "title": "Erro interno!",
+        "description": "Servidor offline ou erro de conexao",
+        "status": "error",
+        "code": "SERVER_ERROR"  
+    }
+
+}

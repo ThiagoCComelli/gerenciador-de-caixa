@@ -16,7 +16,7 @@ app.get('/', (req,res) => {
 app.post('/user/register', async (req,res) => {
     if(req.body.data) {
         const response = await createUser(req.body.data)
-        res.status(response.status).send(response)
+        res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
     }
@@ -25,7 +25,7 @@ app.post('/user/register', async (req,res) => {
 app.post('/user/login', async (req,res) => {
     if(req.body.data) {
         const response = await loginUser(req.body.data)
-        res.status(response.status).send(response)
+        res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
     }
@@ -34,7 +34,7 @@ app.post('/user/login', async (req,res) => {
 app.post('/user/verify', async (req,res) => {
     if(req.body.data) {
         const response = await verifyUser(req.body.data)
-        res.status(response.status).send(response)
+        res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
     }
@@ -43,7 +43,7 @@ app.post('/user/verify', async (req,res) => {
 app.post('/user/new-account', async (req,res) => {
     if(req.body.data) {
         const response = await newAccount(req.body.data)
-        res.status(response.status).send(response)
+        res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
     }
@@ -52,7 +52,7 @@ app.post('/user/new-account', async (req,res) => {
 app.get('/user/get-accounts', async (req,res) => {
     if(req.query.email) {
         const response = await getAccounts(req.query)
-        res.status(response.status).send(response)
+        res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
     }
@@ -61,7 +61,7 @@ app.get('/user/get-accounts', async (req,res) => {
 app.post('/user/new-transaction', async (req,res) => {
     if(req.body.data) {
         const response = await newTransaction(req.body.data)
-        res.status(response.status).send(response)
+        res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
     }
@@ -70,7 +70,7 @@ app.post('/user/new-transaction', async (req,res) => {
 app.get('/user/get-transactions', async (req,res) => {
     if(req.query.account_id && req.query.email) {
         const response = await getTransactions(req.query)
-        res.status(response.status).send(response)
+        res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
     }
@@ -79,7 +79,7 @@ app.get('/user/get-transactions', async (req,res) => {
 app.delete('/user/delete-transaction', async (req,res) => {
     if(req.query.id && req.query.email) {
         const response = await deleteTransaction(req.query)
-        res.status(response.status).send(response)
+        res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
     }
@@ -88,7 +88,7 @@ app.delete('/user/delete-transaction', async (req,res) => {
 app.delete('/user/delete-account', async (req,res) => {
     if(req.query.id && req.query.email) {
         const response = await deleteAccount(req.query)
-        res.status(response.status).send(response)
+        res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
     }
@@ -97,7 +97,7 @@ app.delete('/user/delete-account', async (req,res) => {
 app.post('/user/new-tag', async (req,res) => {
     if(req.body.data) {
         const response = await newTag(req.body.data)
-        res.status(response.status).send(response)
+        res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
     }
@@ -106,7 +106,7 @@ app.post('/user/new-tag', async (req,res) => {
 app.delete('/user/delete-tag', async (req,res) => {
     if(req.query.id && req.query.email) {
         const response = await deleteTag(req.query)
-        res.status(response.status).send(response)
+        res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
     }
@@ -115,7 +115,7 @@ app.delete('/user/delete-tag', async (req,res) => {
 app.post('/user/update-transaction', async (req,res) => {
     if(req.body.data) {
         const response = await updateTransaction(req.body.data)
-        res.status(response.status).send(response)
+        res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
     }

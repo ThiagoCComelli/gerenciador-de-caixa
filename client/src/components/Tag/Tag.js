@@ -14,7 +14,7 @@ const Tag = ({tag,handleRemoveTag}) => {
     return (
         <>
         <div className="mainTag">
-            <span>{tag.titulo}</span>
+            <span>{tag.title}</span>
             <HighlightOffIcon onClick={() => {handleRemoveTag(state)}} className="tagIcon" style={{cursor: "pointer",fontSize: 15, color: "#000"}}/>
         </div>
         </>

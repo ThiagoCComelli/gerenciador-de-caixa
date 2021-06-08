@@ -31,15 +31,16 @@ const Dashboard = (props) => {
         const res = await deleteTransaction(user.email,id,localStorage.getItem("authToken"))
         
         try {
-            if(res.data.message === "Delete feito com sucesso!") {
-                dispatch(putNotification("DELETE_TRANSACTION_SUCCESS"))
+            if(res.data.status.code === "DELETE_TRANSACTION_SUCCESS") {
+                console.log(0)
+                dispatch(putNotification(res.data.status))
                 setItems(items.filter(item => item.id !== id))
             } else {
-                dispatch(putNotification("DELETE_TRANSACTION_ERROR"))
+                dispatch(putNotification(res.data.status))
                 
             }
         } catch {
-            dispatch(putNotification("SERVER_ERROR"))
+            dispatch(putNotification(res.data.status))
 
         }
         
@@ -69,9 +70,9 @@ const Dashboard = (props) => {
     return (
         <div className="mainDashboard">
             <div className="mainDashboardContents">
-                <h1>Conta: {props.location.state.nome}</h1>
-                <small>Descrição: {props.location.state.descricao}</small>
-                <NewItem accountId={props.location.state.id} handleNewItem={handleNewItem}/>
+                <h1>Conta: {props.location.state.title}</h1>
+                <small>Descrição: {props.location.state.description}</small>
+                <NewItem account_id={props.location.state.id} handleNewItem={handleNewItem}/>
                 <ItemsTable handleUpdate={handleUpdate} handleDelete={handleDelete} items={items}/>
             </div>
         </div>

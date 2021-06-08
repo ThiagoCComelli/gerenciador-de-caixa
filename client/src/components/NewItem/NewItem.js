@@ -5,8 +5,8 @@ import {newTransaction} from '../../utils/api/db'
 import Tag from '../Tag/Tag'
 import './NewItem.css'
 
-const NewItem = ({handleNewItem,accountId}) => {
-    const [newItem, setNewItem] = useState({id:0,title:"",description:"",model:"Manual",type:"Entrada",value:0,date:null,tags:[]})
+const NewItem = ({handleNewItem,account_id}) => {
+    const [newItem, setNewItem] = useState({id:0,title:"",description:"",modality:"Manual",type:"Entrada",value:0,date:null,tags:[]})
     const [tags,setTags] = useState([])
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
@@ -14,27 +14,20 @@ const NewItem = ({handleNewItem,accountId}) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        var objNewItem = newItem
-        objNewItem.tags = tags
+        var transaction = newItem
+        transaction.tags = tags
 
-        const res = await newTransaction({data:{
-            account: {
-                id: accountId
-            },
-            transaction: objNewItem,
-            user: user,
-            token: localStorage.getItem("authToken")
-        }})
+        const res = await newTransaction(account_id,transaction,user,localStorage.getItem("authToken"))
 
         try {
             if(res.data.account !== undefined) {
-                dispatch(putNotification("NEW_TRANSACTION_SUCCESS"))
+                dispatch(putNotification(res.data.status))
                 handleNewItem(res.data.account)
             } else {
-                dispatch(putNotification("NEW_TRANSACTION_ERROR"))
+                dispatch(putNotification(res.data.status))
             }
         } catch {
-            dispatch(putNotification("SERVER_ERROR"))
+            dispatch(putNotification(res.data.status))
 
         }
         
@@ -45,7 +38,7 @@ const NewItem = ({handleNewItem,accountId}) => {
         if(e.key === "Tab" || e.key === "Enter") {
             e.preventDefault()
             if (e.target.value !== "") {
-                setTags([...tags,{titulo:e.target.value.toLowerCase()}])
+                setTags([...tags,{title:e.target.value.toLowerCase()}])
                 e.target.value = ""
             }
         }
@@ -90,7 +83,7 @@ const NewItem = ({handleNewItem,accountId}) => {
                     <div className="mainNewItemSection">
                         <div className="mainNewItemSectionItem">
                             <span>Modalidade:</span>
-                            <select id="model" onChange={handleChange} name="modalide">
+                            <select id="modality" onChange={handleChange} name="modalide">
                                 <option value="Manual">Manual</option>
                                 <option value="Recorrente">Recorrente</option>
                             </select>

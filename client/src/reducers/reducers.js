@@ -1,5 +1,4 @@
 import { randomstring } from 'randomstring-js'
-import codes from '../utils/codes.json'
 
 const userReducer = (state = null, action) => {
     switch (action.type) {
@@ -26,7 +25,7 @@ const modalInterface = (state = null, action) => {
 const notificationsInterface = (state = [], action) => {
     switch (action.type) {
         case 'PUT_NOTIFICATION':
-            return [...state,{props:codes[action.payload],id:randomstring()}]
+            return [...state,{props:action.payload,id:randomstring()}]
         case 'REMOVE_NOTIFICATION':
             return state.filter((item) => item.id !== action.payload.id)
         default:
