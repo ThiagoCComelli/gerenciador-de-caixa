@@ -50,7 +50,7 @@ app.post('/user/new-account', async (req,res) => {
 })
 
 app.get('/user/get-accounts', async (req,res) => {
-    if(req.query.email) {
+    if(req.query.email && req.query.token) {
         const response = await getAccounts(req.query)
         res.status(200).send(response)
     } else {
