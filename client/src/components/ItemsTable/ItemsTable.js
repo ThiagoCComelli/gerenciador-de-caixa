@@ -1,13 +1,12 @@
 import React, {useEffect,useState} from 'react';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import {putPost} from '../../actions'
-import {useDispatch} from 'react-redux'
+import {putPost,putContext,removeContext} from '../../actions'
+import {useDispatch,useSelector} from 'react-redux'
 import {randomstring} from 'randomstring-js'
 import './ItemsTable.css'
 
 const Item = ({item, handleUpdate, handleDelete}) => {
     const dispatch = useDispatch()
+    const context = useSelector(state => state.context)
 
     const formatDate = (date) => {
         var d = new Date(date),
@@ -23,15 +22,32 @@ const Item = ({item, handleUpdate, handleDelete}) => {
         return [day, month, year].join('-');
     }
 
-    const handleModal = () => {
+    const handleModalEdit = () => {
         dispatch(putPost({id:"EDIT_TRAN",props:{
             item: item,
             handleUpdate: handleUpdate
         }}))
     }
 
+    const handleModalDelete = () => {
+        dispatch(putPost({id: "CONFIRM_DELETE", props: {
+            handleDelete: handleDelete_
+        }}))
+    }
+
+    const handleDelete_ = () => {
+        handleDelete(item.id)
+    }
+
+    const handleContext = (e) => {
+        e.preventDefault()
+
+        context ? dispatch(removeContext()) : dispatch(putContext({options:[{title:"Editar",function:handleModalEdit},{title:"Deletar",function:handleModalDelete}],position:{x:e.pageX,y:e.pageY}}))
+
+    }
+
     return (
-        <tr className={item.type}>
+        <tr onContextMenu={handleContext} className={item.type}>
             <td>{item.id}</td>
             <td>{item.title}</td>
             <td>{item.description}</td>
@@ -39,19 +55,22 @@ const Item = ({item, handleUpdate, handleDelete}) => {
             <td>{item.type}</td>
             <td>R${item.value}</td>
             <td>{formatDate(item.date)}</td>
-            <td><EditIcon onClick={() => {handleModal()}} className="cursor"/><DeleteIcon onClick={() => {handleDelete(item.id)}} className="cursor"/></td>
         </tr>
     )
 }
 
 const ItemsTable = ({items,handleDelete,handleUpdate}) => {
     const [allItems,setAllItems] = useState([])
+    const [money,setMoney] = useState(0)
 
     useEffect(() => {
+        var moneyTmp = 0
         items.map((item,index) => {
+            item.type === "Saida" ? moneyTmp -= item.value : moneyTmp += item.value
             var res = new Date(item.date)
             return items[index].date = res
         })
+        setMoney(moneyTmp)
         setAllItems(items.sort((a,b) => b.date - a.date))
     },[items])
 
@@ -68,7 +87,6 @@ const ItemsTable = ({items,handleDelete,handleUpdate}) => {
                             <th>Tipo</th>
                             <th>Valor</th>
                             <th>Data</th>
-                            <th>Edição</th>
                         </tr>
                         {allItems.map((item) => {
                             return (
@@ -77,6 +95,9 @@ const ItemsTable = ({items,handleDelete,handleUpdate}) => {
                         })}
                     </tbody>
                 </table>
+                <div className="mainItemsTableContentsFooter">
+                    <span>Total em caixa: R${money}</span>
+                </div>
             </div>
         </div>
     );

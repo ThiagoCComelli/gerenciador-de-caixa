@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux'
-import {userReducer,modalInterface,notificationsInterface} from './reducers'
+import {userReducer,modalInterface,notificationsInterface,contextMenu} from './reducers'
 
 const allReducers = combineReducers({
     user: userReducer,
     post: modalInterface,
-    notifications: notificationsInterface
+    notifications: notificationsInterface,
+    context: contextMenu
 })
 
 export default allReducers

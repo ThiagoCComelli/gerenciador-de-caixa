@@ -17,6 +17,7 @@ body {
   padding: 0;
   box-sizing: border-box;
   outline: none;
+  user-select: none;
 }
 
 .cursor {

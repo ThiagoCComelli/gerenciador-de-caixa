@@ -5,7 +5,7 @@ import NewItem from '../../components/NewItem/NewItem'
 import {useSelector,useDispatch} from 'react-redux'
 import ItemsTable from '../../components/ItemsTable/ItemsTable'
 import './Dashboard.css'
-import { putNotification } from '../../actions';
+import { putNotification, removePost } from '../../actions';
 
 const Dashboard = (props) => {
     const user = useSelector(state => state.user)
@@ -32,8 +32,8 @@ const Dashboard = (props) => {
         
         try {
             if(res.data.status.code === "DELETE_TRANSACTION_SUCCESS") {
-                console.log(0)
                 dispatch(putNotification(res.data.status))
+                dispatch(removePost())
                 setItems(items.filter(item => item.id !== id))
             } else {
                 dispatch(putNotification(res.data.status))

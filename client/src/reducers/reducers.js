@@ -33,4 +33,15 @@ const notificationsInterface = (state = [], action) => {
     }
 }
 
-export {userReducer,modalInterface,notificationsInterface}
+const contextMenu = (state = null, action) => {
+    switch (action.type) {
+        case 'PUT_CONTEXT':
+            return action.payload
+        case 'REMOVE_CONTEXT':
+            return null
+        default:
+            return state;
+    }
+}
+
+export {userReducer,modalInterface,notificationsInterface,contextMenu}

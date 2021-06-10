@@ -2,35 +2,35 @@ import React,{useState,useEffect} from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import {useDispatch,useSelector} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {putNotification, putPost} from '../../actions'
+import {putNotification,putPost,putContext,removeContext, removePost} from '../../actions'
 import {getAccounts,deleteAccount} from '../../utils/api/db'
 import { useRef } from 'react';
 import './Home.css'
 
 const Account = ({account,handleDelete}) => {
+    const context = useSelector(state => state.context)
+    const dispatch = useDispatch()
     const div = useRef(null)
+
+    const handleDelete_ = () => {
+        handleDelete(account.id)
+    }
+
+    const handleModal = () => {
+        dispatch(putPost({id: "CONFIRM_DELETE", props: {
+            handleDelete: handleDelete_
+        }}))
+    }
 
     const handleChange = (e) => {
         e.preventDefault()
-        if(!div.current.style.transform) {
-            div.current.style.transform = "translateY(-35px)"
-        } else {
-            div.current.style = ""
-        }
-        try {
-            setTimeout(() => {
-                if(div.current !== null) div.current.style = ""
-            },5000)
-        } catch {
-            
-        }
+
+        context ? dispatch(removeContext()) : dispatch(putContext({options:[{title:"Editar",function: () => {}},{title:"Deletar",function:handleModal}],position:{x:e.pageX,y:e.pageY}}))
+       
     }
 
     return (
-        <div onContextMenu={(e) => {handleChange(e)}} className="mainHomeContentsItems">
-            <div className="mainHomeContentsBoxButton">
-                <button onClick={() => {handleDelete(account.id)}}>Deletar</button>
-            </div>
+        <div onContextMenu={handleChange} className="mainHomeContentsItems">
             <Link style={{color:"#000"}} to={{pathname:"/dashboard",state:account}}>
                 <div ref={div} className="mainHomeContentsBox">
                     <h4>{account.title}</h4>
@@ -71,15 +71,14 @@ const Home = () => {
         try {
             if(res.data.status.code === "DELETE_ACCOUNT_SUCCESS") {
                 dispatch(putNotification(res.data.status))
+                dispatch(removePost())
                 setAccounts(accounts.filter(item => item.id !== id))
             } else {
                 dispatch(putNotification(res.data.status))
             }
         } catch {
             dispatch(putNotification(res.data.status))
-            
         }
-        
     }
 
     const getAccountsFromAPI = async () => {

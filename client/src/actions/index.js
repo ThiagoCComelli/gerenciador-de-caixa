@@ -37,3 +37,16 @@ export const removeNotification = (id) => {
         payload: id
     }
 }
+
+export const putContext = (context) => {
+    return {
+        type: 'PUT_CONTEXT',
+        payload: context
+    }
+}
+
+export const removeContext = () => {
+    return {
+        type: 'REMOVE_CONTEXT'
+    }
+}

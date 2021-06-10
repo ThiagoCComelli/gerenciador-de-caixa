@@ -18,6 +18,14 @@
 .mainItemsTableContents tr {
     height: 40px;
     text-align: center;
+    /* position: relative; */
+}
+
+.mainItemsTableContentsContext {
+    width: 100px;
+    height: 20px;
+    position: absolute;
+    background-color: red;
 }
 
 .mainItemsTableContents table tr:nth-child(even).Entrada {
@@ -34,6 +42,12 @@
 
 .mainItemsTableContents table tr:nth-child(odd).Saida {
     background-color: #ca23345e;
+}
+
+.mainItemsTableContentsFooter {
+    padding: 10px;
+    display: flex;
+    flex-direction: row-reverse;
 }
 
 @media screen and (max-width: 627px) {
