@@ -77,7 +77,7 @@ const Home = () => {
                 dispatch(putNotification(res.data.status))
             }
         } catch {
-            dispatch(putNotification(res.data.status))
+            // dispatch(putNotification(res.data.status))
         }
     }
 

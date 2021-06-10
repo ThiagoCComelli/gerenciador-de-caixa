@@ -84,7 +84,7 @@ const ModalEditTransaction = ({props}) => {
                 
             }
         } catch {
-            dispatch(putNotification(res.data.status))
+            // dispatch(putNotification(res.data.status))
 
         }
         
