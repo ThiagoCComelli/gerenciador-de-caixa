@@ -7,58 +7,57 @@ import {getAccounts,deleteAccount} from '../../utils/api/db'
 import { useRef } from 'react';
 import './Home.css'
 
-const Account = ({account,handleDelete}) => {
-    const context = useSelector(state => state.context)
-    const dispatch = useDispatch()
-    const div = useRef(null)
+// const Account = ({account,handleDelete}) => {
+//     const context = useSelector(state => state.context)
+//     const dispatch = useDispatch()
+//     const div = useRef(null)
 
-    const handleDelete_ = () => {
-        handleDelete(account.id)
-    }
+//     const handleDelete_ = () => {
+//         handleDelete(account.id)
+//     }
 
-    const handleModal = () => {
-        dispatch(putPost({id: "CONFIRM_DELETE", props: {
-            handleDelete: handleDelete_
-        }}))
-    }
+//     const handleModal = () => {
+//         dispatch(putPost({id: "CONFIRM_DELETE", props: {
+//             handleDelete: handleDelete_
+//         }}))
+//     }
 
-    const handleChange = (e) => {
-        e.preventDefault()
+//     const handleChange = (e) => {
+//         e.preventDefault()
 
-        context ? dispatch(removeContext()) : dispatch(putContext({options:[{title:"Editar",function: () => {}},{title:"Deletar",function:handleModal}],position:{x:e.pageX,y:e.pageY}}))
+//         context ? dispatch(removeContext()) : dispatch(putContext({options:[{title:"Editar",function: () => {}},{title:"Deletar",function:handleModal}],position:{x:e.pageX,y:e.pageY}}))
        
-    }
+//     }
 
-    return (
-        <div onContextMenu={handleChange} className="mainHomeContentsItems">
-            <Link style={{color:"#000"}} to={{pathname:"/dashboard",state:account}}>
-                <div ref={div} className="mainHomeContentsBox">
-                    <h4>{account.title}</h4>
-                    <small>{account.description}</small>
-                    <span>{account.id}</span>
-                </div>
-            </Link>
-        </div>
-    )
-}
+//     return (
+//         <div onContextMenu={handleChange} className="mainHomeContentsItems">
+//             <Link style={{color:"#000"}} to={{pathname:"/dashboard",state:account}}>
+//                 <div ref={div} className="mainHomeContentsBox">
+//                     <h4>{account.title}</h4>
+//                     <small>{account.description}</small>
+//                     <span>{account.id}</span>
+//                 </div>
+//             </Link>
+//         </div>
+//     )
+// }
 
-const NewAccount = ({handleUpdate}) => {
-    const dispatch = useDispatch()
+// const NewAccount = ({handleUpdate}) => {
+//     const dispatch = useDispatch()
 
-    return (
-        <div onClick={() => {
-            dispatch(putPost({id: "NEW_POST", props:{
-                handleUpdate: handleUpdate
-            }}))
-        }} className="mainHomeContentsItems">
-            <div className="mainHomeContentsBox">
-                <AddIcon style={{fontSize: 45}}/>
-                <h4>Nova conta</h4>
-            </div>
-        </div>
-    )
-}
-
+//     return (
+//         <div onClick={() => {
+//             dispatch(putPost({id: "NEW_POST", props:{
+//                 handleUpdate: handleUpdate
+//             }}))
+//         }} className="mainHomeContentsItems">
+//             <div className="mainHomeContentsBox">
+//                 <AddIcon style={{fontSize: 45}}/>
+//                 <h4>Nova conta</h4>
+//             </div>
+//         </div>
+//     )
+// }
 
 const Home = () => {
     const [accounts,setAccounts] = useState([])
@@ -102,16 +101,28 @@ const Home = () => {
     return (
         <div className="mainHome">
             <div className="mainHomeContents">
-                <h3>Suas contas:</h3>
-                <div className="mainHomeContentsItemsBox">
-                    {accounts.map((account,index) => {
-                        return <Account handleDelete={handleDelete} key={index} account={account}/>
-                    })}
-                    <NewAccount handleUpdate={handleUpdate}/>
+                <h1>Dashboard Menus</h1>
+                <div className="mainHomeContentsLanding">
+                    <div className="mainHomeContentsLandingItem"></div>
+                    <div className="mainHomeContentsLandingItem"></div>
+                    <div className="mainHomeContentsLandingItem"></div>
+                    <div className="mainHomeContentsLandingItem"></div>
+                </div>
+                <div className="mainHomeContentsAccounts">
+                    <h3>Contas</h3>
+                    <div className="mainHomeContentsAccountsItems"></div>
+                    <div className="mainHomeContentsAccountsItems"></div>
+                    <div className="mainHomeContentsAccountsItems"></div>
+                    <div className="mainHomeContentsAccountsItems"></div>
                 </div>
             </div>
         </div>
     )
 }
+
+// {accounts.map((account,index) => {
+//     return <Account handleDelete={handleDelete} key={index} account={account}/>
+// })}
+// <NewAccount handleUpdate={handleUpdate}/>
 
 export default Home;
