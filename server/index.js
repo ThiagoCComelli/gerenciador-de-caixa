@@ -90,7 +90,7 @@ app.post('/user/new-transaction', verifyToken, async (req,res) => {
 })
 
 app.get('/user/get-transactions', verifyToken, async (req,res) => {
-    if(req.query.account_id && req.query.email) {
+    if(req.query.account_id && req.query.email && req.query.pagination) {
         const response = await getTransactions(req.query)
         res.status(200).send(response)
     } else {

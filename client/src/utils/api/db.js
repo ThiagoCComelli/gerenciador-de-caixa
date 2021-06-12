@@ -91,11 +91,12 @@ const newTransaction = async (account_id,transaction,user,token) => {
     
 }
 
-const getTransactions = async (email,account_id,token) => {
+const getTransactions = async (email,pagination,account_id,token) => {
     try {
         const result = await axios.get(`${url}/user/get-transactions`, {params: {
             account_id: account_id,
-            email: email
+            email: email,
+            pagination: pagination
         },
         headers: {
             "Authorization" : `Bearer ${token}`

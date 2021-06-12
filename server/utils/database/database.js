@@ -85,7 +85,9 @@ const databaseFunctions = {
     },
     getAccount: getAccount = async({email,id}) => {
         res = await new Promise((resolve,reject) => {
-            con.query(`SELECT * FROM accounts WHERE accounts.id = "${id}" AND accounts.user_email="${email}";`, async (err,result,fields) => {
+            con.query(`SELECT * FROM accounts,` + 
+                      `(SELECT COUNT(*) AS total_transactions FROM transactions WHERE transactions.account_id="${id}" AND transactions.user_email="${email}") AS x,` +
+                      `(SELECT IFNULL(SUM(CASE WHEN type="Entrada" THEN value ELSE - value END),0) AS total_money FROM transactions WHERE transactions.account_id="${id}" AND transactions.user_email="${email}") as y WHERE id="${id}";`, async (err,result,fields) => { 
                 if(result === undefined) resolve({"status": codes.SERVER_ERROR})
                 else resolve({"status":codes.GET_ACCOUNTS_SUCCESS,"accounts":result})
             })
@@ -168,9 +170,9 @@ const databaseFunctions = {
         })
         return res
     },
-    getTransactions: getTransactions = async({email,account_id}) => {
+    getTransactions: getTransactions = async({email,account_id,pagination}) => {
         res = await new Promise((resolve,reject) => {
-            con.query(`SELECT * FROM transactions WHERE transactions.user_email = "${email}" AND transactions.account_id = "${account_id}";`, async (err,result,fields) => {
+            con.query(`SELECT * FROM transactions WHERE transactions.user_email = "${email}" AND transactions.account_id = "${account_id}" ORDER BY date DESC, id DESC LIMIT ${25*(pagination-1)},25;`, async (err,result,fields) => {
                 if(result === undefined) resolve({"status":codes.GET_TRANSACTIONS_ERROR})
                 else {
                     const result_ = async () => {

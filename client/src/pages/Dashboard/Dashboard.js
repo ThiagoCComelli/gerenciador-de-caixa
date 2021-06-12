@@ -77,11 +77,30 @@ const Item = ({item, handleUpdate, handleDelete}) => {
     )
 }
 
+const Pagination = ({pages,pagination,handlePagination}) => {
+    var rows = []
+
+    const renderPages = () => {
+        for(let i = 1; i < pages+1; i++) {
+            rows.push(<span onClick={() => {handlePagination(i)}} className={`${pagination === i ? 'mainItemsTablePaginationActive' : null}`}>{i}</span>)
+        }
+    }
+
+    renderPages()
+
+    return (
+        <>
+         {rows}
+        </>
+    )
+}
+
 const Dashboard = (props) => {
     const user = useSelector(state => state.user)
     const [items, setItems] = useState([])
     const [account,setAccount] = useState([])
     const [money, setMoney] = useState(0)
+    const [pagination,setPagination] = useState(1)
     const history = useHistory()
     const dispatch = useDispatch()
 
@@ -113,15 +132,29 @@ const Dashboard = (props) => {
             }
         } catch {
             // dispatch(putNotification(res.data.status))
-
         }
+    }
+
+    const handlePagination = async (page) => {
+        if(page !== pagination) {
+            var res = await getTransactions(user.email, page, props.match.params.accountId,localStorage.getItem("authToken"))
+            if(res) {
+                setItems(res.data.transactions)
+                setPagination(page)
+            }
+            res = await getAccount(user.email,localStorage.getItem("authToken"),props.match.params.accountId)
+            if(res) {
+                res.data.accounts[0] !== undefined ? setAccount({...res.data.accounts[0],total_transactions:res.data.accounts[0].total_transactions/25}) : history.push("/")
+            }
+        }
+        
         
     }
 
     useEffect(() => {
 
-        const getTransacoes = async () => {
-            const res = await getTransactions(user.email, props.match.params.accountId,localStorage.getItem("authToken"))
+        const getTransacoes = async (page) => {
+            const res = await getTransactions(user.email, page, props.match.params.accountId,localStorage.getItem("authToken"))
             if(res) {
                 setItems(res.data.transactions)
             }
@@ -130,14 +163,14 @@ const Dashboard = (props) => {
         const getAccounts = async () => {
             const res = await getAccount(user.email,localStorage.getItem("authToken"),props.match.params.accountId)
             if(res) {
-                res.data.accounts[0] !== undefined ? setAccount(res.data.accounts[0]) : history.push("/")
+                res.data.accounts[0] !== undefined ? setAccount({...res.data.accounts[0],total_transactions:res.data.accounts[0].total_transactions/25}) : history.push("/")
             }
         }
         
         if(props.match.params.accountId === undefined) {
             history.push("/")
         } else {
-            getTransacoes()
+            getTransacoes(1)
             getAccounts()
         }
     // eslint-disable-next-line
@@ -177,7 +210,7 @@ const Dashboard = (props) => {
                                     <th>Data</th>
                                 </tr>
                                 {items.map((item,index) => {
-                                    const test = () => {
+                                    const months = () => {
                                         try {
                                             return index !== 0 ? 
                                             (items[index].date.getMonth() !== items[index-1].date.getMonth() ? 
@@ -189,7 +222,7 @@ const Dashboard = (props) => {
                                     }
                                     return (
                                         <>
-                                        {test()}
+                                        {months()}
                                         <Item item={item} items={items} handleUpdate={handleUpdate} handleDelete={handleDelete} key={randomstring()}/>
                                         </>                                        
                                     )
@@ -200,6 +233,9 @@ const Dashboard = (props) => {
                             <span>Total em caixa: R${money.toFixed(2)}</span>
                         </div>
                     </div>
+                </div>
+                <div className="mainItemsTablePagination">
+                    <Pagination handlePagination={handlePagination} pagination={pagination} pages={account.total_transactions} />
                 </div>
             </div>
         </div>

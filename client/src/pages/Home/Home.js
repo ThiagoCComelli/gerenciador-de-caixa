@@ -83,7 +83,7 @@ const Home = () => {
         try {
             setAccounts(res.data.accounts)
         } catch {
-            dispatch(putNotification(res.data.status))
+            // dispatch(putNotification(res.data.status))
         }
     }
 
@@ -92,7 +92,7 @@ const Home = () => {
         try {
             setAccountsDetails(res.data.accounts[0])
         } catch {
-            dispatch(putNotification(res.data.status))
+            // dispatch(putNotification(res.data.status))
         }
     }
 
