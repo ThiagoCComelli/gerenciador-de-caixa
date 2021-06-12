@@ -52,7 +52,9 @@ function App() {
   },[])
 
   const handleContext = () => {
-    dispatch(removeContext())
+    if(haveContext) {
+      dispatch(removeContext())
+    }
   }
   
   if (state === false) {

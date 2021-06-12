@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     padding-top: 50px;
-    margin: 15px;
+    /* margin: 15px; */
 }
 
 .mainHomeContents {
@@ -12,6 +12,8 @@
     display: flex;
     flex-direction: column;
     gap: 40px;
+    padding: 0 20px;
+    margin-bottom: 80px;
 }
 
 .mainHomeContentsLanding {
@@ -21,11 +23,161 @@
 }
 
 .mainHomeContentsLandingItem {
-    height: 50px;
+    min-height: 200px;
     background-color: #fff;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 0px 16px -17px #000000;
+
+}
+
+.mainHomeLanding {
+    padding: 40px;
+    font-size: 3rem;
+    text-transform: uppercase;
+    font-weight: 200;
+    color: #4286F5;
+}
+
+.mainHomeLanding > span {
+    z-index: 10;
+}
+
+.mainHomeContentsLandingItem img {
+    height: calc(100% * 2);
+    object-fit: cover;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
 }
 
 .mainHomeContentsLandingItem:first-child {
     grid-column: 1 / 4;
 }
+
+.mainHomeLandingSub {
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.mainHomeLandingSub strong {
+    font-size: 2rem;
+}
+
+.mainHomeLandingSub > * {
+    flex: 1;
+    align-items: center;
+    display: flex;
+}
+
+.mainHomeContentsLandingItem svg {
+    color: #4286F5;
+}
+
+.mainHomeContentsLandingItem:nth-of-type(2) {
+    background-color: #4286F5;
+    color: #000;
+}
+
+.mainHomeContentsLandingItem:nth-of-type(2) svg {
+    background-color: #4286F5;
+    color: #fff;
+}
+
+.mainHomeContentsAccountsConfigs {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.mainHomeContentsAccountsConfigs h3 {
+    font-weight: 300;
+    font-size: 1.8rem;
+}
+
+.mainHomeContentsAccountsConfigs button {
+    position: absolute;
+    right: 0;
+    height: 40px;
+    border-radius: 40px;
+    padding: 10px 35px;
+    background-color: #F7F7F7;
+    border: solid 1px gainsboro;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: rgb(90, 90, 90);
+    cursor: pointer;
+}
+
+.mainHomeContentsAccounts {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    
+}
+
+.mainHomeContentsAccountsItems {
+    height: 100px;
+    width: 100%;
+    background-color: #fff;
+    padding: 25px 50px 25px 25px;
+    cursor: pointer;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 0px 16px -17px #000000;
+
+}
+
+.mainHomeContentsAccountsItemsEditIcon {
+    background-color: #fff;
+    box-shadow: 0px 0px 14px -10px #000000;
+    padding: 5px;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+}
+
+.mainHomeAccountsItemsInfos {
+    display: flex;
+    height: 100%;
+    gap: 20px;
+}
+
+.mainHomeAccountsItemsInfosText {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.mainHomeAccountsItemsInfosText span {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.mainHomeAccountsItemsInfosText small {
+    font-weight: 300;
+    font-size: .9rem;
+}
+
+.mainHomeAccountsItemsInfos img {
+    height: 100%;
+    object-fit: cover;
+}
+
 

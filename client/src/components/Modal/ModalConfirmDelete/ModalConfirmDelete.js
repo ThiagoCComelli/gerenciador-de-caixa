@@ -16,8 +16,6 @@ const ModalConfirmDelete = ({props}) => {
 
     }
 
-    console.log(props)
-
     return (
         <div className="mainModalDeleteOperation">
             <CloseIcon onClick={handleClose} style={{fontSize: 50}} className="closeIcon"/>
