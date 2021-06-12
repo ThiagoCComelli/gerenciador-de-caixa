@@ -33,9 +33,9 @@ const registerAPI = async ({email,password,name}) => {
 
 const verifyTokenAPI = async (token) => {
     try{
-        const result = await axios.post(`${url}/user/verify`, {
-            data: {
-                token: token
+        const result = await axios.post(`${url}/user/verify`, {}, {
+            headers: {
+                "Authorization" : `Bearer ${token}`
             }
         })
     return result

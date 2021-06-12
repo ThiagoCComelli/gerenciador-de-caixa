@@ -60,6 +60,18 @@
     /* position: relative; */
 }
 
+.trEspecial {
+    background-color: #F7F7F7;
+    font-weight: 400;
+    color: gainsboro;
+}
+
+.trEspecial td:last-of-type {
+    color: rgb(58, 58, 58);
+    font-weight: 700;
+}
+
+
 .mainItemsTableContentsContext {
     width: 100px;
     height: 20px;

@@ -9,6 +9,7 @@ import './Dashboard.css'
 
 const Item = ({item, handleUpdate, handleDelete}) => {
     const dispatch = useDispatch()
+    const months = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]
     const context = useSelector(state => state.context)
 
     const formatDate = (date) => {
@@ -46,15 +47,33 @@ const Item = ({item, handleUpdate, handleDelete}) => {
     }
 
     return (
-        <tr onContextMenu={handleContext} className={item.type}>
-            <td>{item.id}</td>
-            <td>{item.title}</td>
-            <td>{item.description}</td>
-            <td>{item.modality}</td>
-            <td>{item.type}</td>
-            <td>R${item.value}</td>
-            <td>{formatDate(item.date)}</td>
-        </tr>
+        <>
+        {item.special === undefined ? (
+            <>
+            <tr onContextMenu={handleContext} className={item.type}>
+                <td>{item.id}</td>
+                <td>{item.title}</td>
+                <td>{item.description}</td>
+                <td>{item.modality}</td>
+                <td>{item.type}</td>
+                <td>R${item.value}</td>
+                <td>{formatDate(item.date)}</td>
+            </tr>
+            </>
+        ) : (
+            <>
+            <tr className="trEspecial">
+                <td>#</td>
+                <td>#</td>
+                <td>#</td>
+                <td>#</td>
+                <td>#</td>
+                <td>#</td>
+                <td>{months[item.special]}</td>
+            </tr>
+            </>
+        )}
+        </>
     )
 }
 
@@ -107,7 +126,7 @@ const Dashboard = (props) => {
                 setItems(res.data.transactions)
             }
         }
-
+        
         const getAccounts = async () => {
             const res = await getAccount(user.email,localStorage.getItem("authToken"),props.match.params.accountId)
             if(res) {
@@ -135,10 +154,6 @@ const Dashboard = (props) => {
         setItems(items.sort((a,b) => b.date - a.date))
     },[items])
 
-    if(props.match.params.accountId === undefined && account === null) {
-        return <></>
-    }
-
     return (
         <div className="mainDashboard">
             <div className="mainDashboardContents">
@@ -161,15 +176,28 @@ const Dashboard = (props) => {
                                     <th>Valor</th>
                                     <th>Data</th>
                                 </tr>
-                                {items.map((item) => {
+                                {items.map((item,index) => {
+                                    const test = () => {
+                                        try {
+                                            return index !== 0 ? 
+                                            (items[index].date.getMonth() !== items[index-1].date.getMonth() ? 
+                                            <Item item={{special: items[index].date.getMonth()}} items={items} handleUpdate={() => {}} handleDelete={() => {}} key={randomstring()}/> : null
+                                            ) : <Item item={{special: items[index].date.getMonth()}} items={items} handleUpdate={() => {}} handleDelete={() => {}} key={randomstring()}/>
+                                        } catch (e) {
+
+                                        }
+                                    }
                                     return (
+                                        <>
+                                        {test()}
                                         <Item item={item} items={items} handleUpdate={handleUpdate} handleDelete={handleDelete} key={randomstring()}/>
+                                        </>                                        
                                     )
                                 })}
                             </tbody>
                         </table>
                         <div className="mainItemsTableContentsFooter">
-                            <span>Total em caixa: R${money}</span>
+                            <span>Total em caixa: R${money.toFixed(2)}</span>
                         </div>
                     </div>
                 </div>

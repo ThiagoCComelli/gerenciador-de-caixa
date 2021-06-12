@@ -8,7 +8,11 @@ const newAccount = async (user,account,token) => {
             data: {
                 user: user,
                 account: account,
-                token: token
+            }
+        }, 
+        {
+            headers: {
+                "Authorization" : `Bearer ${token}`
             }
         })
         return result
@@ -21,8 +25,10 @@ const newAccount = async (user,account,token) => {
 const getAccounts = async (email,token) => {
     try {
         const result = await axios.get(`${url}/user/get-accounts`, {params: {
-            email: email,
-            token: token
+            email: email
+        },
+        headers: {
+            "Authorization" : `Bearer ${token}`
         }})
         return result
     } catch {
@@ -35,8 +41,10 @@ const getAccount = async (email,token,id) => {
     try {
         const result = await axios.get(`${url}/user/get-account`, {params: {
             email: email,
-            token: token,
             id: id
+        },
+        headers: {
+            "Authorization" : `Bearer ${token}`
         }})
         return result
     } catch {
@@ -48,8 +56,10 @@ const getAccount = async (email,token,id) => {
 const getAccountsDetails = async (email,token) => {
     try {
         const result = await axios.get(`${url}/user/get-accounts-details`, {params: {
-            email: email,
-            token: token
+            email: email
+        },
+        headers: {
+            "Authorization" : `Bearer ${token}`
         }})
         return result
     } catch {
@@ -66,8 +76,12 @@ const newTransaction = async (account_id,transaction,user,token) => {
                     id: account_id
                 },
                 transaction: transaction,
-                user: user,
-                token: token
+                user: user
+            }
+        }, 
+        {
+            headers: {
+                "Authorization" : `Bearer ${token}`
             }
         })
         return result
@@ -81,8 +95,10 @@ const getTransactions = async (email,account_id,token) => {
     try {
         const result = await axios.get(`${url}/user/get-transactions`, {params: {
             account_id: account_id,
-            email: email,
-            token: token
+            email: email
+        },
+        headers: {
+            "Authorization" : `Bearer ${token}`
         }})
         return result
     } catch {
@@ -95,8 +111,10 @@ const deleteTransaction = async(email,id,token) => {
     try {
         const result = await axios.delete(`${url}/user/delete-transaction`, {params: {
             id: id,
-            email: email,
-            token: token
+            email: email
+        },
+        headers: {
+            "Authorization" : `Bearer ${token}`
         }})
         return result
     } catch {
@@ -109,8 +127,10 @@ const deleteAccount = async(email,id,token) => {
     try {
         const result = await axios.delete(`${url}/user/delete-account`, {params: {
             id: id,
-            email: email,
-            token: token
+            email: email
+        },
+        headers: {
+            "Authorization" : `Bearer ${token}`
         }})
         return result
     } catch {
@@ -127,8 +147,12 @@ const newTag = async(tag_title,user,transaction,token) => {
                 tag: {
                     title: tag_title
                 },
-                transaction: transaction,
-                token: token
+                transaction: transaction
+            }
+        }, 
+        {
+            headers: {
+                "Authorization" : `Bearer ${token}`
             }
         })
         return result
@@ -141,8 +165,10 @@ const deleteTag = async(email,id,token) => {
     try {
         const result = await axios.delete(`${url}/user/delete-tag`, {params: {
             id: id,
-            email: email,
-            token: token
+            email: email
+        },
+        headers: {
+            "Authorization" : `Bearer ${token}`
         }})
         return result
     } catch {
@@ -155,8 +181,12 @@ const updateTransaction = async(transaction,user,token) => {
         const result = await axios.post(`${url}/user/update-transaction`, {
             data: {
                 transaction: transaction,
-                user: user,
-                token: token
+                user: user
+            }
+        }, 
+        {
+            headers: {
+                "Authorization" : `Bearer ${token}`
             }
         })
         return result

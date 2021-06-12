@@ -16,7 +16,8 @@
 - [x] Criação e manipulação de novas contas
 - [x] Criação de transações
     - [x] Adicionar campo de tags para as transações
-    - [ ] Edição de transações
+    - [x] Edição de transações
+- [ ] Paginação
 - [ ] Tratamento dos dados para melhor visualização (gráficos e previsões)
 - [ ] Leitura de entradas e saidas a partir de extratos em PDF ou Excel
 - [ ] ...

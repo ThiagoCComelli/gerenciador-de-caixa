@@ -166,6 +166,18 @@
         "description": "Servidor offline ou erro de conexao",
         "status": "error",
         "code": "SERVER_ERROR"  
+    },
+    "BAD_REQUEST": {
+        "title": "Erro interno!",
+        "description": "Requisicao feita de forma errada",
+        "status": "error",
+        "code": "BAD_REQUEST"  
+    },
+    "AUTH_DENIED": {
+        "title": "Erro interno!",
+        "description": "Autenticacao negada",
+        "status": "error",
+        "code": "AUTH_DENIED"  
     }
 
 }

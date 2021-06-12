@@ -6,6 +6,7 @@ const {createUser,loginUser,verifyUser,newAccount,
        getAccounts,newTransaction, deleteTransaction,
        deleteAccount, newTag, updateTransaction, 
        getAccountsDetails,getAccount} = require('./utils/database/database')
+const { verifyToken } = require('./utils/auth/jwt')
 const app = express()
 const PORT = process.env.PORT
 
@@ -35,15 +36,15 @@ app.post('/user/login', async (req,res) => {
 })
 
 app.post('/user/verify', async (req,res) => {
-    if(req.body.data) {
-        const response = await verifyUser(req.body.data)
+    if(req.headers.authorization) {
+        const response = await verifyUser(req.headers.authorization)
         res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
     }
 })
 
-app.post('/user/new-account', async (req,res) => {
+app.post('/user/new-account', verifyToken ,async (req,res) => {
     if(req.body.data) {
         const response = await newAccount(req.body.data)
         res.status(200).send(response)
@@ -52,17 +53,17 @@ app.post('/user/new-account', async (req,res) => {
     }
 })
 
-app.get('/user/get-accounts', async (req,res) => {
-    if(req.query.email && req.query.token) {
-        const response = await getAccounts(req.query)
+app.get('/user/get-accounts', verifyToken, async (req,res) => {
+    if(req.query.email) {
+        const response = await getAccounts(req.query.email)
         res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
     }
 })
 
-app.get('/user/get-account', async (req,res) => {
-    if(req.query.email && req.query.token && req.query.id) {
+app.get('/user/get-account', verifyToken, async (req,res) => {
+    if(req.query.email && req.query.id) {
         const response = await getAccount(req.query)
         res.status(200).send(response)
     } else {
@@ -70,8 +71,8 @@ app.get('/user/get-account', async (req,res) => {
     }
 })
 
-app.get('/user/get-accounts-details', async (req,res) => {
-    if(req.query.email && req.query.token) {
+app.get('/user/get-accounts-details', verifyToken, async (req,res) => {
+    if(req.query.email) {
         const response = await getAccountsDetails(req.query)
         res.status(200).send(response)
     } else {
@@ -79,7 +80,7 @@ app.get('/user/get-accounts-details', async (req,res) => {
     }
 })
 
-app.post('/user/new-transaction', async (req,res) => {
+app.post('/user/new-transaction', verifyToken, async (req,res) => {
     if(req.body.data) {
         const response = await newTransaction(req.body.data)
         res.status(200).send(response)
@@ -88,7 +89,7 @@ app.post('/user/new-transaction', async (req,res) => {
     }
 })
 
-app.get('/user/get-transactions', async (req,res) => {
+app.get('/user/get-transactions', verifyToken, async (req,res) => {
     if(req.query.account_id && req.query.email) {
         const response = await getTransactions(req.query)
         res.status(200).send(response)
@@ -97,7 +98,7 @@ app.get('/user/get-transactions', async (req,res) => {
     }
 })
 
-app.delete('/user/delete-transaction', async (req,res) => {
+app.delete('/user/delete-transaction', verifyToken, async (req,res) => {
     if(req.query.id && req.query.email) {
         const response = await deleteTransaction(req.query)
         res.status(200).send(response)
@@ -106,7 +107,7 @@ app.delete('/user/delete-transaction', async (req,res) => {
     }
 })
 
-app.delete('/user/delete-account', async (req,res) => {
+app.delete('/user/delete-account', verifyToken, async (req,res) => {
     if(req.query.id && req.query.email) {
         const response = await deleteAccount(req.query)
         res.status(200).send(response)
@@ -115,7 +116,7 @@ app.delete('/user/delete-account', async (req,res) => {
     }
 })
 
-app.post('/user/new-tag', async (req,res) => {
+app.post('/user/new-tag', verifyToken, async (req,res) => {
     if(req.body.data) {
         const response = await newTag(req.body.data)
         res.status(200).send(response)
@@ -124,7 +125,7 @@ app.post('/user/new-tag', async (req,res) => {
     }
 })
 
-app.delete('/user/delete-tag', async (req,res) => {
+app.delete('/user/delete-tag', verifyToken, async (req,res) => {
     if(req.query.id && req.query.email) {
         const response = await deleteTag(req.query)
         res.status(200).send(response)
@@ -133,7 +134,7 @@ app.delete('/user/delete-tag', async (req,res) => {
     }
 })
 
-app.post('/user/update-transaction', async (req,res) => {
+app.post('/user/update-transaction', verifyToken, async (req,res) => {
     if(req.body.data) {
         const response = await updateTransaction(req.body.data)
         res.status(200).send(response)

@@ -115,7 +115,7 @@ const Home = () => {
                             <AccountBalanceWalletOutlinedIcon style={{fontSize: 40}}/>
                             <span>Dinheiro total *</span>
                             <strong onClick={() => {setShowMoney(!showMoney)}}>
-                                R${accountsDetails ? (showMoney ? accountsDetails.total_money.toFixed(2) : accountsDetails.total_money.toFixed(2).replace(/\d/g, '*')) : "?"}
+                                R${accountsDetails ? (showMoney ? accountsDetails.total_money.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : accountsDetails.total_money.toFixed(2).replace(/\d/g, '*')) : "?"}
                                 
                                 {showMoney ? <VisibilityOutlinedIcon /> : 
                                 <VisibilityOffOutlinedIcon />

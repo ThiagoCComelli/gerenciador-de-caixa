@@ -1,7 +1,7 @@
 const mysql = require('mysql')
 const bcrypt = require('bcrypt')
 const codes = require('../codes.json')
-const {createToken, verifyToken} = require('../auth/jwt')
+const {createToken, getToken} = require('../auth/jwt')
 
 const con = mysql.createConnection({
     host: "localhost",
@@ -46,84 +46,59 @@ const databaseFunctions = {
         
         return res
     },
-    verifyUser: verifyUser = async({token}) => {
-        var res = await verifyToken(token)
-        if(res.user) {
-            res = await new Promise((resolve,reject) => {
-                con.query(`SELECT * FROM users WHERE users.email = "${res.user.email}";`, async (err,result,fields) => {
-                    if(result[0] === undefined) resolve({"status":codes.TOKEN_ERROR})
-                    else {
-                        delete result[0]["password"]
-                        resolve({status:codes.TOKEN_SUCCESS,user:result[0]})
-                    }
-                })
+    verifyUser: verifyUser = async(token) => {
+        res = await new Promise((resolve,reject) => {
+            const user = getToken(token)
+            con.query(`SELECT * FROM users WHERE users.email = "${user.email}";`, async (err,result,fields) => {
+                if(result[0] === undefined) resolve({"status":codes.TOKEN_ERROR})
+                else {
+                    delete result[0]["password"]
+                    resolve({status:codes.TOKEN_SUCCESS,user:result[0]})
+                }
             })
-        } else {
-            res = {"status":codes.TOKEN_ERROR}
-        }
+        })
         return res
     },
-    newAccount: newAccount = async({user,account,token}) => {
-        var res = await verifyToken(token)
-        if(res.user === undefined) {
-            return res
-        } 
-        if(user.email === res.user.email) {
-            res = await new Promise((resolve,reject) => {
-                con.query(`INSERT INTO accounts VALUES (DEFAULT,"${account.title}","${account.description}","${user.email}");`, async (err,result,field) => {
-                    if(result === undefined) {
-                        resolve({"status":codes.NEW_ACCOUNT_ERROR})
-                    } else {
-                        con.query(`SELECT * FROM accounts WHERE accounts.id = ${result.insertId}`, async (err,result,field) => {
-                            if(result[0] === undefined) resolve({"status":codes.NEW_ACCOUNT_ERROR})
-                            else resolve({"status":codes.NEW_ACCOUNT_SUCCESS,"account":result[0]})
-                        })
-                    }
-                })
+    newAccount: newAccount = async({user,account}) => {
+        res = await new Promise((resolve,reject) => {
+            con.query(`INSERT INTO accounts VALUES (DEFAULT,"${account.title}","${account.description}","${user.email}");`, async (err,result,field) => {
+                if(result === undefined) {
+                    resolve({"status":codes.NEW_ACCOUNT_ERROR})
+                } else {
+                    con.query(`SELECT * FROM accounts WHERE accounts.id = ${result.insertId}`, async (err,result,field) => {
+                        if(result[0] === undefined) resolve({"status":codes.NEW_ACCOUNT_ERROR})
+                        else resolve({"status":codes.NEW_ACCOUNT_SUCCESS,"account":result[0]})
+                    })
+                }
             })
-        } 
+        })
         return res
     },
-    getAccounts: getAccounts = async({email,token}) => {
-        var res = await verifyToken(token)
-        if(res.user === undefined) {
-            return res
-        } else if(email === res.user.email) {
-            res = await new Promise((resolve,reject) => {
-                con.query(`SELECT * FROM accounts WHERE accounts.user_email = "${email}";`, async (err,result,fields) => {
-                    if(result === undefined) resolve({"status": codes.SERVER_ERROR})
-                    else resolve({"status":codes.GET_ACCOUNTS_SUCCESS,"accounts":result})
-                })
+    getAccounts: getAccounts = async(email) => {
+        res = await new Promise((resolve,reject) => {
+            con.query(`SELECT * FROM accounts WHERE user_email = "${email}";`, async (err,result,fields) => {
+                if(result === undefined) resolve({"status": codes.SERVER_ERROR})
+                else resolve({"status":codes.GET_ACCOUNTS_SUCCESS,"accounts":result})
             })
-        }
+        })
         return res
     },
-    getAccount: getAccount = async({email,token,id}) => {
-        var res = await verifyToken(token)
-        if(res.user === undefined) {
-            return res
-        } else if(email === res.user.email) {
-            res = await new Promise((resolve,reject) => {
-                con.query(`SELECT * FROM accounts WHERE accounts.id = "${id}" AND accounts.user_email="${email}";`, async (err,result,fields) => {
-                    if(result === undefined) resolve({"status": codes.SERVER_ERROR})
-                    else resolve({"status":codes.GET_ACCOUNTS_SUCCESS,"accounts":result})
-                })
+    getAccount: getAccount = async({email,id}) => {
+        res = await new Promise((resolve,reject) => {
+            con.query(`SELECT * FROM accounts WHERE accounts.id = "${id}" AND accounts.user_email="${email}";`, async (err,result,fields) => {
+                if(result === undefined) resolve({"status": codes.SERVER_ERROR})
+                else resolve({"status":codes.GET_ACCOUNTS_SUCCESS,"accounts":result})
             })
-        }
+        })
         return res
     },
-    getAccountsDetails: getAccountsDetails = async({email,token}) => {
-        var res = await verifyToken(token)
-        if(res.user === undefined) {
-            return res
-        } else if(email === res.user.email) {
-            res = await new Promise((resolve,reject) => {
-                con.query(`SELECT COUNT(*) AS total_transactions, IFNULL(SUM(CASE WHEN type="Entrada" THEN value ELSE - value END),0) AS total_money FROM transactions WHERE user_email="${email}";`, async (err,result,fields) => {
-                    if(result === undefined) resolve({"status": codes.SERVER_ERROR})
-                    else resolve({"status":codes.GET_ACCOUNTS_DETAILS_SUCCESS,"accounts":result})
-                })
+    getAccountsDetails: getAccountsDetails = async({email}) => {
+        res = await new Promise((resolve,reject) => {
+            con.query(`SELECT COUNT(*) AS total_transactions, IFNULL(SUM(CASE WHEN type="Entrada" THEN value ELSE - value END),0) AS total_money FROM transactions WHERE user_email="${email}";`, async (err,result,fields) => {
+                if(result === undefined) resolve({"status": codes.SERVER_ERROR})
+                else resolve({"status":codes.GET_ACCOUNTS_DETAILS_SUCCESS,"accounts":result})
             })
-        }
+        })
         return res
     },
     getTags: getTags = async (id) => {
@@ -143,142 +118,99 @@ const databaseFunctions = {
         })
         return res
     },
-    deleteTag: deleteTag = async ({id,email,token}) => {
-        var res = await verifyToken(token)
-        if(res.user === undefined) {
-            return res
-        } else if(email === res.user.email) {
-            res = await new Promise((resolve,reject) => {
-                con.query(`DELETE FROM tags WHERE tags.id = "${id}";`, async (err,result,fields) => {
-                    if(result === undefined) resolve({"status":codes.DELETE_TAG_ERROR})
-                    else resolve({"status":codes.DELETE_TAG_SUCCESS,"tag":{id:id}})
-                })
+    deleteTag: deleteTag = async ({id}) => {
+        res = await new Promise((resolve,reject) => {
+            con.query(`DELETE FROM tags WHERE tags.id = "${id}";`, async (err,result,fields) => {
+                if(result === undefined) resolve({"status":codes.DELETE_TAG_ERROR})
+                else resolve({"status":codes.DELETE_TAG_SUCCESS,"tag":{id:id}})
             })
-        }
-        
+        })
         return res
     },
-    newTag: newTag = async ({token,user,tag,transaction}) => {
-        var res = await verifyToken(token)
-        if(res.user === undefined) {
-            return res
-        } else if(user.email === res.user.email) {
-            res = await new Promise((resolve,reject) => {
-                con.query(`INSERT INTO tags VALUES (DEFAULT, "${tag.title}","${transaction.id}","${transaction.account_id}");`, async (err,result,field) => {
-                    if(result === undefined) resolve({"status":codes.NEW_TAG_ERROR})
-                    else resolve({"status":codes.NEW_TAG_SUCCESS,"tag":{id:result.insertId,title:tag.title,transaction_id:transaction.id,account_id:transaction.account_id}})
-                })
+    newTag: newTag = async ({tag,transaction}) => {
+        res = await new Promise((resolve,reject) => {
+            con.query(`INSERT INTO tags VALUES (DEFAULT, "${tag.title}","${transaction.id}","${transaction.account_id}");`, async (err,result,field) => {
+                if(result === undefined) resolve({"status":codes.NEW_TAG_ERROR})
+                else resolve({"status":codes.NEW_TAG_SUCCESS,"tag":{id:result.insertId,title:tag.title,transaction_id:transaction.id,account_id:transaction.account_id}})
             })
-        }
-        
+        })
         return res
     },
-    newTransaction: newTransaction = async({account,transaction,user,token}) => {
-        var res = await verifyToken(token)
-        if(res.user === undefined) {
-            return res
-        } else if(user.email === res.user.email) {
-            res = await new Promise((resolve,reject) => {
-                con.query(`INSERT INTO transactions VALUES (DEFAULT,"${user.email}","${account.id}","${transaction.title}","${transaction.description}","${transaction.modality}","${transaction.type}","${transaction.value}","${transaction.date}");`, async (err,result,field) => {
-                    if(result === undefined) {
-                        resolve({"status":codes.NEW_TRANSACTION_ERROR})
-                    } else {
-                        transaction.tags.map((tag) => {
-                            con.query(`INSERT INTO tags VALUES (DEFAULT, "${tag.title}", "${result.insertId}","${account.id}")`, async (err,result,fields) => {
-                                if(result === undefined) {
-                                    resolve({"status":codes.NEW_TRANSACTION_ERROR})
-                                }
-                            })
-                        })
-                        con.query(`SELECT * FROM transactions WHERE transactions.id = ${result.insertId}`, async (err,result,field) => {
-                            if(result[0] === undefined) resolve({"status":codes.NEW_TRANSACTION_ERROR})
-                            else {
-                                const result_ = async () => {
-                                    return Promise.all(result.map(async(item) => {
-                                        item.tags = await getTags(item.id)
-                                    }))
-                                }
-            
-                                result_().then(() => {
-                                    resolve({"status":codes.NEW_TRANSACTION_SUCCESS,"account":result[0]})
-                                })
+    newTransaction: newTransaction = async({account,transaction,user}) => {
+        res = await new Promise((resolve,reject) => {
+            con.query(`INSERT INTO transactions VALUES (DEFAULT,"${user.email}","${account.id}","${transaction.title}","${transaction.description}","${transaction.modality}","${transaction.type}","${transaction.value}","${transaction.date}");`, async (err,result,field) => {
+                if(result === undefined) {
+                    resolve({"status":codes.NEW_TRANSACTION_ERROR})
+                } else {
+                    transaction.tags.map((tag) => {
+                        con.query(`INSERT INTO tags VALUES (DEFAULT, "${tag.title}", "${result.insertId}","${account.id}")`, async (err,result,fields) => {
+                            if(result === undefined) {
+                                resolve({"status":codes.NEW_TRANSACTION_ERROR})
                             }
                         })
-                    }
-                })
-            })
-        }
-        return res
-    },
-    getTransactions: getTransactions = async({email,account_id,token}) => {
-        var res = await verifyToken(token)
-        if(res.user === undefined) {
-            return res
-        } else if(email === res.user.email) {
-            res = await new Promise((resolve,reject) => {
-                con.query(`SELECT * FROM transactions WHERE transactions.user_email = "${email}" AND transactions.account_id = "${account_id}";`, async (err,result,fields) => {
-                    if(result === undefined) resolve({"status":codes.GET_TRANSACTIONS_ERROR})
-                    else {
-                        const result_ = async () => {
-                            return Promise.all(result.map(async(item) => item.tags = await getTags(item.id)))
-                        }
-    
-                        result_().then(() => {
-                            resolve({"status":codes.GET_TRANSACTIONS_SUCCESS,"transactions":result})
-                        })
-                    }
-                })
-            })
-        }
-        return res
-    },
-    deleteTransaction: deleteTransaction = async({id,token,email}) => {
-        var res = await verifyToken(token)
-        if(res.user === undefined) {
-            return res
-        } else if(email === res.user.email) {
-            await deleteTags(id)
-            res = await new Promise((resolve,reject) => {
-                con.query(`DELETE FROM transactions WHERE transactions.id = "${id}" AND transactions.user_email = "${email}";`, async (err,result,fields) => {
-                    if(result === undefined) resolve({"status":codes.DELETE_TRANSACTION_ERROR})
-                    else resolve({"status":codes.DELETE_TRANSACTION_SUCCESS})
-                })
-            })
-        }
-        return res
-    },
-    updateTransaction: updateTransaction = async({token,user,transaction}) => {
-        var res = await verifyToken(token)
-        if(res.user === undefined) {
-            return res
-        } else if(user.email === res.user.email) {
-            res = await new Promise((resolve,reject) => {
-                con.query(`UPDATE transactions SET description="${transaction.description}", title="${transaction.title}", modality="${transaction.modality}", type="${transaction.type}", value="${transaction.value}" WHERE id="${transaction.id}" AND user_email="${user.email}";`, async (err,result,fields) => {
-                    if(result === undefined) resolve({"status":codes.EDIT_TRANSACTION_ERROR})
-                    else resolve({"status":codes.EDIT_TRANSACTION_SUCCESS})
-                })
-            })
-        }
-        return res
-    },
-    deleteAccount: deleteAccount = async({id,token,email}) => {
-        var res = await verifyToken(token)
-        if(res.user === undefined) {
-            return res
-        } else if(email === res.user.email) {
-            res = await new Promise((resolve,reject) => {
-                con.query(`DELETE FROM tags WHERE tags.account_id = "${id}";`, (err,result,fields) => {
-                    if(result === undefined) resolve({"status":codes.DELETE_ACCOUNT_ERROR})
-                    else con.query(`DELETE FROM transactions WHERE transactions.account_id = "${id}";`, async (err,result,fields) => {
-                        if(result === undefined) resolve({"status":codes.DELETE_ACCOUNT_ERROR})
-                        else con.query(`DELETE FROM accounts WHERE accounts.id = "${id}";`, async (err,result,fields) => {
-                            if(result === undefined) resolve({"status":codes.DELETE_ACCOUNT_ERROR})
-                            else resolve({"status":codes.DELETE_ACCOUNT_SUCCESS})
-                        })
                     })
-                })
+                    con.query(`SELECT * FROM transactions WHERE transactions.id = ${result.insertId}`, async (err,result,field) => {
+                        if(result[0] === undefined) resolve({"status":codes.NEW_TRANSACTION_ERROR})
+                        else {
+                            const result_ = async () => {
+                                return Promise.all(result.map(async(item) => {
+                                    item.tags = await getTags(item.id)
+                                }))
+                            }
+        
+                            result_().then(() => {
+                                resolve({"status":codes.NEW_TRANSACTION_SUCCESS,"account":result[0]})
+                            })
+                        }
+                    })
+                }
             })
-        }
+        })
+        return res
+    },
+    getTransactions: getTransactions = async({email,account_id}) => {
+        res = await new Promise((resolve,reject) => {
+            con.query(`SELECT * FROM transactions WHERE transactions.user_email = "${email}" AND transactions.account_id = "${account_id}";`, async (err,result,fields) => {
+                if(result === undefined) resolve({"status":codes.GET_TRANSACTIONS_ERROR})
+                else {
+                    const result_ = async () => {
+                        return Promise.all(result.map(async(item) => item.tags = await getTags(item.id)))
+                    }
+
+                    result_().then(() => {
+                        resolve({"status":codes.GET_TRANSACTIONS_SUCCESS,"transactions":result})
+                    })
+                }
+            })
+        })
+        return res
+    },
+    deleteTransaction: deleteTransaction = async({id,email}) => {
+        await deleteTags(id)
+        res = await new Promise((resolve,reject) => {
+            con.query(`DELETE FROM transactions WHERE transactions.id = "${id}" AND transactions.user_email = "${email}";`, async (err,result,fields) => {
+                if(result === undefined) resolve({"status":codes.DELETE_TRANSACTION_ERROR})
+                else resolve({"status":codes.DELETE_TRANSACTION_SUCCESS})
+            })
+        })
+        return res
+    },
+    updateTransaction: updateTransaction = async({user,transaction}) => {
+        res = await new Promise((resolve,reject) => {
+            con.query(`UPDATE transactions SET description="${transaction.description}", title="${transaction.title}", modality="${transaction.modality}", type="${transaction.type}", value="${transaction.value}" WHERE id="${transaction.id}" AND user_email="${user.email}";`, async (err,result,fields) => {
+                if(result === undefined) resolve({"status":codes.EDIT_TRANSACTION_ERROR})
+                else resolve({"status":codes.EDIT_TRANSACTION_SUCCESS})
+            })
+        })
+        return res
+    },
+    deleteAccount: deleteAccount = async({id,email}) => {
+        res = await new Promise((resolve,reject) => {
+            con.query(`DELETE FROM accounts WHERE id="${id}" AND user_email="${email}";`, (err,result,fields) => {
+                if(result === undefined) resolve({"status":codes.DELETE_ACCOUNT_ERROR})
+                else resolve({"status":codes.DELETE_ACCOUNT_SUCCESS})
+            })
+        })
         return res
     }
 }
