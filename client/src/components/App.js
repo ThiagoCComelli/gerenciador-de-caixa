@@ -74,7 +74,7 @@ function App() {
       <Router>
         <Navbar />
         <Switch>
-          <ProtectedRoute path="/dashboard" exact component={Dashboard} />
+          <ProtectedRoute path="/dashboard/:accountId" exact component={Dashboard} />
           <ProtectedRoute path="/" exact component={Home} />
           <Route path="/login" exact component={Login} />
         </Switch>

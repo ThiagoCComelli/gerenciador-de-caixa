@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import {useHistory} from 'react-router-dom'
-import {getTransactions,deleteTransaction} from '../../utils/api/db'
+import {getTransactions,deleteTransaction,getAccount} from '../../utils/api/db'
 import {useSelector,useDispatch} from 'react-redux'
 import {randomstring} from 'randomstring-js'
 import {putNotification,removePost,putPost,putContext,removeContext} from '../../actions';
@@ -61,6 +61,7 @@ const Item = ({item, handleUpdate, handleDelete}) => {
 const Dashboard = (props) => {
     const user = useSelector(state => state.user)
     const [items, setItems] = useState([])
+    const [account,setAccount] = useState([])
     const [money, setMoney] = useState(0)
     const history = useHistory()
     const dispatch = useDispatch()
@@ -101,16 +102,24 @@ const Dashboard = (props) => {
     useEffect(() => {
 
         const getTransacoes = async () => {
-            const res = await getTransactions(user.email, props.location.state.id,localStorage.getItem("authToken"))
+            const res = await getTransactions(user.email, props.match.params.accountId,localStorage.getItem("authToken"))
             if(res) {
                 setItems(res.data.transactions)
             }
         }
+
+        const getAccounts = async () => {
+            const res = await getAccount(user.email,localStorage.getItem("authToken"),props.match.params.accountId)
+            if(res) {
+                res.data.accounts[0] !== undefined ? setAccount(res.data.accounts[0]) : history.push("/")
+            }
+        }
         
-        if(props.location.state === undefined) {
+        if(props.match.params.accountId === undefined) {
             history.push("/")
         } else {
             getTransacoes()
+            getAccounts()
         }
     // eslint-disable-next-line
     },[])
@@ -126,16 +135,19 @@ const Dashboard = (props) => {
         setItems(items.sort((a,b) => b.date - a.date))
     },[items])
 
-    if(props.location.state === undefined) {
+    if(props.match.params.accountId === undefined && account === null) {
         return <></>
     }
 
     return (
         <div className="mainDashboard">
             <div className="mainDashboardContents">
-                <h1>Conta: {props.location.state.title}</h1>
-                <small>Descrição: {props.location.state.description}</small>
-                <NewItem account_id={props.location.state.id} handleNewItem={handleNewItem}/>
+                <div className="mainDashboardContentsInfos">
+                    <h1>Conta: {account.title}</h1>
+                    <small>Descrição: {account.description}</small>
+                    <button onClick={() => {history.push("/")}}>Voltar</button>
+                </div>
+                <NewItem account_id={account.id} handleNewItem={handleNewItem}/>
                 <div className="mainItemsTable">
                     <div className="mainItemsTableContents">
                         <table>

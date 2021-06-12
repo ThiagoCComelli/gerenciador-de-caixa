@@ -98,6 +98,34 @@ const databaseFunctions = {
         }
         return res
     },
+    getAccount: getAccount = async({email,token,id}) => {
+        var res = await verifyToken(token)
+        if(res.user === undefined) {
+            return res
+        } else if(email === res.user.email) {
+            res = await new Promise((resolve,reject) => {
+                con.query(`SELECT * FROM accounts WHERE accounts.id = "${id}" AND accounts.user_email="${email}";`, async (err,result,fields) => {
+                    if(result === undefined) resolve({"status": codes.SERVER_ERROR})
+                    else resolve({"status":codes.GET_ACCOUNTS_SUCCESS,"accounts":result})
+                })
+            })
+        }
+        return res
+    },
+    getAccountsDetails: getAccountsDetails = async({email,token}) => {
+        var res = await verifyToken(token)
+        if(res.user === undefined) {
+            return res
+        } else if(email === res.user.email) {
+            res = await new Promise((resolve,reject) => {
+                con.query(`SELECT COUNT(*) AS total_transactions, IFNULL(SUM(CASE WHEN type="Entrada" THEN value ELSE - value END),0) AS total_money FROM transactions WHERE user_email="${email}";`, async (err,result,fields) => {
+                    if(result === undefined) resolve({"status": codes.SERVER_ERROR})
+                    else resolve({"status":codes.GET_ACCOUNTS_DETAILS_SUCCESS,"accounts":result})
+                })
+            })
+        }
+        return res
+    },
     getTags: getTags = async (id) => {
         var res = await new Promise((resolve,reject) => {
             con.query(`SELECT * FROM tags WHERE transaction_id = ${id};`, (err,result,fields) => {

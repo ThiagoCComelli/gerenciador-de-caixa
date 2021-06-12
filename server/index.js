@@ -2,7 +2,10 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const {createUser,loginUser,verifyUser,newAccount,getAccounts,newTransaction, deleteTransaction, deleteAccount, newTag, updateTransaction} = require('./utils/database/database')
+const {createUser,loginUser,verifyUser,newAccount,
+       getAccounts,newTransaction, deleteTransaction,
+       deleteAccount, newTag, updateTransaction, 
+       getAccountsDetails,getAccount} = require('./utils/database/database')
 const app = express()
 const PORT = process.env.PORT
 
@@ -52,6 +55,24 @@ app.post('/user/new-account', async (req,res) => {
 app.get('/user/get-accounts', async (req,res) => {
     if(req.query.email && req.query.token) {
         const response = await getAccounts(req.query)
+        res.status(200).send(response)
+    } else {
+        res.status(400).send({"message":"Bad Request"})
+    }
+})
+
+app.get('/user/get-account', async (req,res) => {
+    if(req.query.email && req.query.token && req.query.id) {
+        const response = await getAccount(req.query)
+        res.status(200).send(response)
+    } else {
+        res.status(400).send({"message":"Bad Request"})
+    }
+})
+
+app.get('/user/get-accounts-details', async (req,res) => {
+    if(req.query.email && req.query.token) {
+        const response = await getAccountsDetails(req.query)
         res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})

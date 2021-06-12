@@ -16,7 +16,12 @@ const Navbar = () => {
 
     const handleLogin = () => {
         dispatch(signOut())
-        dispatch(putNotification("SIGN_OUT"))
+        dispatch(putNotification({
+            "title": "Conta desconectada!",
+            "description": "Conta desconectada com sucesso",
+            "status": "success",
+            "code": "SIGN_OUT"
+        }))
         history.push("/login")
         localStorage.removeItem("authToken")
     }

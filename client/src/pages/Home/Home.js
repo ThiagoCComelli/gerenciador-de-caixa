@@ -4,10 +4,12 @@ import ReceiptOutlinedIcon from '@material-ui/icons/ReceiptOutlined';
 import AccountTreeOutlinedIcon from '@material-ui/icons/AccountTreeOutlined';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import ListOutlinedIcon from '@material-ui/icons/ListOutlined';
+import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@material-ui/icons/VisibilityOffOutlined';
 import {useDispatch,useSelector} from 'react-redux'
-// import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {putNotification,putPost,putContext,removeContext, removePost} from '../../actions'
-import {getAccounts,deleteAccount} from '../../utils/api/db'
+import {getAccounts,getAccountsDetails,deleteAccount} from '../../utils/api/db'
 import './Home.css'
 
 const Account = ({account,handleDelete}) => {
@@ -29,13 +31,16 @@ const Account = ({account,handleDelete}) => {
 
     return (
         <div className="mainHomeContentsAccountsItems">
-            <div className="mainHomeAccountsItemsInfos">
-                <img alt="money" src={`${process.env.PUBLIC_URL}/images/logo.png`}></img>
-                <div className="mainHomeAccountsItemsInfosText">
-                    <span>{account.title}</span>
-                    <small>{account.description}</small>
+            <Link style={{textDecoration: "none", color: "#000",width: "100%",height: "100%"}} to={{pathname:`/dashboard/${account.id}`}}>
+                <div className="mainHomeAccountsItemsInfos">
+                    <img alt="money" src={`${process.env.PUBLIC_URL}/images/logo.png`}></img>
+                    <div className="mainHomeAccountsItemsInfosText">
+                        <span>{account.title}</span>
+                        <small>{account.description}</small>
+                    </div>
+                    <strong>#{account.id}</strong>
                 </div>
-            </div>
+            </Link>
             <div className="mainHomeContentsAccountsItemsEditIcon">
                 <ListOutlinedIcon onClick={handleChange} />
             </div>
@@ -45,6 +50,8 @@ const Account = ({account,handleDelete}) => {
 
 const Home = () => {
     const [accounts,setAccounts] = useState([])
+    const [accountsDetails,setAccountsDetails] = useState(null)
+    const [showMoney,setShowMoney] = useState(true)
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
 
@@ -55,6 +62,7 @@ const Home = () => {
             if(res.data.status.code === "DELETE_ACCOUNT_SUCCESS") {
                 dispatch(putNotification(res.data.status))
                 dispatch(removePost())
+                getAccountsDetailsFromAPI()
                 setAccounts(accounts.filter(item => item.id !== id))
             } else {
                 dispatch(putNotification(res.data.status))
@@ -79,8 +87,18 @@ const Home = () => {
         }
     }
 
+    const getAccountsDetailsFromAPI = async () => {
+        const res = await getAccountsDetails(user.email,localStorage.getItem("authToken"))
+        try {
+            setAccountsDetails(res.data.accounts[0])
+        } catch {
+            dispatch(putNotification(res.data.status))
+        }
+    }
+
     useEffect(() => {
         getAccountsFromAPI()
+        getAccountsDetailsFromAPI()
         // eslint-disable-next-line
     },[])
 
@@ -96,21 +114,27 @@ const Home = () => {
                         <div className="mainHomeLandingSub">
                             <AccountBalanceWalletOutlinedIcon style={{fontSize: 40}}/>
                             <span>Dinheiro total *</span>
-                            <strong>R$xx xxx</strong>
+                            <strong onClick={() => {setShowMoney(!showMoney)}}>
+                                R${accountsDetails ? (showMoney ? accountsDetails.total_money.toFixed(2) : accountsDetails.total_money.toFixed(2).replace(/\d/g, '*')) : "?"}
+                                
+                                {showMoney ? <VisibilityOutlinedIcon /> : 
+                                <VisibilityOffOutlinedIcon />
+                                }
+                            </strong>
                         </div>
                     </div>
                     <div className="mainHomeContentsLandingItem">
                         <div className="mainHomeLandingSub">
                             <ReceiptOutlinedIcon style={{fontSize: 40}}/>
                             <span>Transações totais *</span>
-                            <strong>x</strong>
+                            <strong>{accountsDetails ? accountsDetails.total_transactions : "?"}</strong>
                         </div>
                     </div>
                     <div className="mainHomeContentsLandingItem">
                         <div className="mainHomeLandingSub">
                             <AccountTreeOutlinedIcon style={{fontSize: 40}}/>
                             <span>Contas monitoradas *</span>
-                            <strong>{accounts.length}</strong>
+                            <strong>{accounts ? accounts.length : "?"}</strong>
                         </div>
                     </div>
                 </div>

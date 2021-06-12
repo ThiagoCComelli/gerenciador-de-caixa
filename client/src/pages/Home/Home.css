@@ -69,6 +69,8 @@
 
 .mainHomeLandingSub strong {
     font-size: 2rem;
+    gap: 20px;
+    cursor: pointer;
 }
 
 .mainHomeLandingSub > * {
@@ -131,13 +133,15 @@
     height: 100px;
     width: 100%;
     background-color: #fff;
-    padding: 25px 50px 25px 25px;
-    cursor: pointer;
+    padding: 25px 25px 25px 25px;
     justify-content: space-between;
     display: flex;
     align-items: center;
     box-shadow: 0px 0px 16px -17px #000000;
+}
 
+.mainHomeContentsAccountsItems > * {
+    height: 100%;
 }
 
 .mainHomeContentsAccountsItemsEditIcon {
@@ -150,12 +154,23 @@
     justify-content: center;
     align-items: center;
     border-radius: 40px;
+    cursor: pointer;
+    z-index: 1;
 }
 
 .mainHomeAccountsItemsInfos {
     display: flex;
     height: 100%;
     gap: 20px;
+    cursor: pointer;
+
+}
+
+.mainHomeAccountsItemsInfos strong {
+    color: #F7F7F7;
+    font-size: 4rem;
+    position: absolute;
+    right: 80px;
 }
 
 .mainHomeAccountsItemsInfosText {
@@ -163,6 +178,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    z-index: 1;
+
 }
 
 .mainHomeAccountsItemsInfosText span {

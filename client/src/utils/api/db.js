@@ -31,6 +31,33 @@ const getAccounts = async (email,token) => {
     
 }
 
+const getAccount = async (email,token,id) => {
+    try {
+        const result = await axios.get(`${url}/user/get-account`, {params: {
+            email: email,
+            token: token,
+            id: id
+        }})
+        return result
+    } catch {
+        return null
+    }
+    
+}
+
+const getAccountsDetails = async (email,token) => {
+    try {
+        const result = await axios.get(`${url}/user/get-accounts-details`, {params: {
+            email: email,
+            token: token
+        }})
+        return result
+    } catch {
+        return null
+    }
+    
+}
+
 const newTransaction = async (account_id,transaction,user,token) => {
     try {
         const result = await axios.post(`${url}/user/new-transaction`, {
@@ -139,4 +166,4 @@ const updateTransaction = async(transaction,user,token) => {
 }
 
 
-export {newAccount,getAccounts,newTransaction,getTransactions,deleteTransaction,deleteAccount,newTag,deleteTag,updateTransaction}
+export {newAccount,getAccounts,getAccount,newTransaction,getTransactions,deleteTransaction,deleteAccount,newTag,deleteTag,updateTransaction,getAccountsDetails}

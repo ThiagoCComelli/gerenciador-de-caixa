@@ -90,7 +90,7 @@ export default function Login(){
 
             }
         } catch {
-            dispatch(putNotification(res.data.status))
+            // dispatch(putNotification(res.data.status))
             
         }
         

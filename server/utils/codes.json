@@ -113,6 +113,18 @@
         "status": "error",
         "code": "GET_ACCOUNTS_ERROR"
     },
+    "GET_ACCOUNTS_DETAILS_SUCCESS": {
+        "title": "Busca feita com sucesso!",
+        "description": "Busca feita nos detalhes e resultado retornado",
+        "status": "success",
+        "code": "GET_ACCOUNTS_DETAILS_SUCCESS"
+    },
+    "GET_ACCOUNTS_DETAILS_ERROR": {
+        "title": "Falha na busca!",
+        "description": "Falha na busca realizada e nada realizado",
+        "status": "error",
+        "code": "GET_ACCOUNTS_DETAILS_ERROR"
+    },
     "GET_TRANSACTIONS_SUCCESS": {
         "title": "Busca feita com sucesso!",
         "description": "Busca feita e resultado retornado",
