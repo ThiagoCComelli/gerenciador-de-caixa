@@ -1,0 +1,29 @@
+.mainConsole {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+    z-index: 999999999999;
+}
+
+.mainConsole input {
+    border: none;
+    background-color: #FFFFFF;
+    padding: 8px;
+    width: 100%;
+    box-shadow: 0px 0px 10px -10px #000000;
+}
+
+.mainConsoleIcon {
+    user-select: none;
+    cursor: pointer;
+    transition: transform .2s ease-in-out !important;
+}
+
+.mainConsoleIconRotate {
+    transform: rotate(-90deg);
+}
+

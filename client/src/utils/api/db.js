@@ -1,10 +1,12 @@
 import axios from 'axios'
 
-const url = process.env.REACT_APP_IP
+const url = () => {
+    return localStorage.getItem("api") || process.env.REACT_APP_IP
+}
 
 const newAccount = async (user,account,token) => {
     try {
-        const result = await axios.post(`${url}/user/new-account`, {
+        const result = await axios.post(`${url()}/user/new-account`, {
             data: {
                 user: user,
                 account: account,
@@ -24,7 +26,7 @@ const newAccount = async (user,account,token) => {
 
 const getAccounts = async (email,token) => {
     try {
-        const result = await axios.get(`${url}/user/get-accounts`, {params: {
+        const result = await axios.get(`${url()}/user/get-accounts`, {params: {
             email: email
         },
         headers: {
@@ -39,7 +41,7 @@ const getAccounts = async (email,token) => {
 
 const getAccount = async (email,token,id) => {
     try {
-        const result = await axios.get(`${url}/user/get-account`, {params: {
+        const result = await axios.get(`${url()}/user/get-account`, {params: {
             email: email,
             id: id
         },
@@ -55,7 +57,7 @@ const getAccount = async (email,token,id) => {
 
 const getAccountsDetails = async (email,token) => {
     try {
-        const result = await axios.get(`${url}/user/get-accounts-details`, {params: {
+        const result = await axios.get(`${url()}/user/get-accounts-details`, {params: {
             email: email
         },
         headers: {
@@ -70,7 +72,7 @@ const getAccountsDetails = async (email,token) => {
 
 const newTransaction = async (account_id,transaction,user,token) => {
     try {
-        const result = await axios.post(`${url}/user/new-transaction`, {
+        const result = await axios.post(`${url()}/user/new-transaction`, {
             data: {
                 account: {
                     id: account_id
@@ -93,7 +95,7 @@ const newTransaction = async (account_id,transaction,user,token) => {
 
 const getTransactions = async (email,pagination,account_id,token) => {
     try {
-        const result = await axios.get(`${url}/user/get-transactions`, {params: {
+        const result = await axios.get(`${url()}/user/get-transactions`, {params: {
             account_id: account_id,
             email: email,
             pagination: pagination
@@ -110,7 +112,7 @@ const getTransactions = async (email,pagination,account_id,token) => {
 
 const deleteTransaction = async(email,id,token) => {
     try {
-        const result = await axios.delete(`${url}/user/delete-transaction`, {params: {
+        const result = await axios.delete(`${url()}/user/delete-transaction`, {params: {
             id: id,
             email: email
         },
@@ -126,7 +128,7 @@ const deleteTransaction = async(email,id,token) => {
 
 const deleteAccount = async(email,id,token) => {
     try {
-        const result = await axios.delete(`${url}/user/delete-account`, {params: {
+        const result = await axios.delete(`${url()}/user/delete-account`, {params: {
             id: id,
             email: email
         },
@@ -142,7 +144,7 @@ const deleteAccount = async(email,id,token) => {
 
 const newTag = async(tag_title,user,transaction,token) => {
     try {
-        const result = await axios.post(`${url}/user/new-tag`, {
+        const result = await axios.post(`${url()}/user/new-tag`, {
             data: {
                 user: user,
                 tag: {
@@ -164,7 +166,7 @@ const newTag = async(tag_title,user,transaction,token) => {
 
 const deleteTag = async(email,id,token) => {
     try {
-        const result = await axios.delete(`${url}/user/delete-tag`, {params: {
+        const result = await axios.delete(`${url()}/user/delete-tag`, {params: {
             id: id,
             email: email
         },
@@ -179,7 +181,7 @@ const deleteTag = async(email,id,token) => {
 
 const updateTransaction = async(transaction,user,token) => {
     try {
-        const result = await axios.post(`${url}/user/update-transaction`, {
+        const result = await axios.post(`${url()}/user/update-transaction`, {
             data: {
                 transaction: transaction,
                 user: user
