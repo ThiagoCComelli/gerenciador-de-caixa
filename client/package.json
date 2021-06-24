@@ -9,6 +9,8 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
+    "dotenv": "^10.0.0",
+    "public-ip": "^4.0.4",
     "randomstring-js": "^1.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

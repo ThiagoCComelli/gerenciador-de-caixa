@@ -16,29 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `transacoes`
+-- Table structure for table `accounts`
 --
 
-DROP TABLE IF EXISTS `transacoes`;
+DROP TABLE IF EXISTS `accounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `transacoes` (
+CREATE TABLE `accounts` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `usuario_email` varchar(255) NOT NULL,
-  `conta_id` int NOT NULL,
-  `titulo` varchar(255) NOT NULL,
-  `descricao` varchar(255) NOT NULL,
-  `modalidade` enum('Manual','Recorrente') NOT NULL,
-  `tipo` enum('Entrada','Saida') NOT NULL,
-  `valor` float NOT NULL,
-  `dataMomento` date NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `user_email` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `usuario_email` (`usuario_email`),
-  KEY `conta_id` (`conta_id`),
-  CONSTRAINT `transacoes_ibfk_1` FOREIGN KEY (`usuario_email`) REFERENCES `usuarios` (`email`),
-  CONSTRAINT `transacoes_ibfk_2` FOREIGN KEY (`conta_id`) REFERENCES `contas` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `user_email` (`user_email`),
+  CONSTRAINT `accounts_ibfk_1` FOREIGN KEY (`user_email`) REFERENCES `users` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `accounts`
+--
+
+LOCK TABLES `accounts` WRITE;
+/*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
+INSERT INTO `accounts` VALUES (5,'Fluxo principal - Thiago','Historico de dinheiro, todas as entradas e saidas','thiago.comelli@outlook.com'),(6,'Conta de testes','Conta para efetuar testes das funcoes','thiago.comelli@outlook.com');
+/*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -49,4 +52,4 @@ CREATE TABLE `transacoes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-06 16:00:47
+-- Dump completed on 2021-06-23 19:27:31

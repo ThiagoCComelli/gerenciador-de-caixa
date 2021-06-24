@@ -89,9 +89,8 @@ export default function Login(){
                 dispatch(putNotification(res.data.status))
 
             }
-        } catch {
+        } catch (e) {
             // dispatch(putNotification(res.data.status))
-            
         }
         
     }

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const url = "http://192.168.0.18:3100"
+const url = process.env.REACT_APP_IP
 
 const newAccount = async (user,account,token) => {
     try {

@@ -16,22 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `contas`
+-- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `contas`;
+DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `contas` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(255) NOT NULL,
-  `descricao` varchar(255) NOT NULL,
-  `usuario_email` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `usuario_email` (`usuario_email`),
-  CONSTRAINT `contas_ibfk_1` FOREIGN KEY (`usuario_email`) REFERENCES `usuarios` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `users` (
+  `cpf` char(14) DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (NULL,'Thiago Comelli','thiago.comelli@outlook.com','$2b$10$fgMPfZL7hBTkVtabDDlwb.czkrn7RdJ7CtkzqnA1J7AhviFtPt.k6');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -42,4 +50,4 @@ CREATE TABLE `contas` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-06 16:00:47
+-- Dump completed on 2021-06-23 19:27:31

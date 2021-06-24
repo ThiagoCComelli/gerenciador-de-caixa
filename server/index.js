@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 const {createUser,loginUser,verifyUser,newAccount,
        getAccounts,newTransaction, deleteTransaction,
        deleteAccount, newTag, updateTransaction, 
@@ -11,6 +12,7 @@ const app = express()
 const PORT = process.env.PORT
 
 app.use(cors())
+app.use(cookieParser())
 app.use(bodyParser.json())
 
 app.get('/', (req,res) => {
