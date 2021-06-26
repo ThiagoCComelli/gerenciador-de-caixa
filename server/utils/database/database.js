@@ -120,9 +120,11 @@ const databaseFunctions = {
         })
         return res
     },
-    deleteTag: deleteTag = async ({id}) => {
+    deleteTag: deleteTag = async ({id,email}) => {
         res = await new Promise((resolve,reject) => {
-            con.query(`DELETE FROM tags WHERE tags.id = "${id}";`, async (err,result,fields) => {
+            con.query(`DELETE tags FROM tags
+                            INNER JOIN transactions ON transactions.id = tags.transaction_id 
+                            WHERE transactions.user_email = "${email}" AND tags.id = ${id};`, async (err,result,fields) => {
                 if(result === undefined) resolve({"status":codes.DELETE_TAG_ERROR})
                 else resolve({"status":codes.DELETE_TAG_SUCCESS,"tag":{id:id}})
             })
@@ -131,9 +133,9 @@ const databaseFunctions = {
     },
     newTag: newTag = async ({tag,transaction}) => {
         res = await new Promise((resolve,reject) => {
-            con.query(`INSERT INTO tags VALUES (DEFAULT, "${tag.title}","${transaction.id}","${transaction.account_id}");`, async (err,result,field) => {
+            con.query(`INSERT INTO tags VALUES (DEFAULT, "${tag.title}","${transaction.id}");`, async (err,result,field) => {
                 if(result === undefined) resolve({"status":codes.NEW_TAG_ERROR})
-                else resolve({"status":codes.NEW_TAG_SUCCESS,"tag":{id:result.insertId,title:tag.title,transaction_id:transaction.id,account_id:transaction.account_id}})
+                else resolve({"status":codes.NEW_TAG_SUCCESS,"tag":{id:result.insertId,title:tag.title,transaction_id:transaction.id}})
             })
         })
         return res
