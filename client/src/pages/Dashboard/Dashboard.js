@@ -5,6 +5,7 @@ import {useSelector,useDispatch} from 'react-redux'
 import {randomstring} from 'randomstring-js'
 import {putNotification,removePost,putPost,putContext,removeContext} from '../../actions';
 import NewItem from '../../components/NewItem/NewItem'
+import ChartLine from '../../components/Charts/ChartLine/ChartLine'
 import './Dashboard.css'
 
 const Item = ({item, handleUpdate, handleDelete}) => {
@@ -188,6 +189,8 @@ const Dashboard = (props) => {
     },[items])
 
     return (
+        <>
+        <ChartLine />
         <div className="mainDashboard">
             <div className="mainDashboardContents">
                 <div className="mainDashboardContentsInfos">
@@ -239,6 +242,7 @@ const Dashboard = (props) => {
                 </div>
             </div>
         </div>
+        </>
     );
 }
 
