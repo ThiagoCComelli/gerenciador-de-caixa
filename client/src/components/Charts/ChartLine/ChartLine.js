@@ -1,28 +1,29 @@
-import React from 'react';
+import { randomstring } from 'randomstring-js';
+import React,{useEffect} from 'react';
 
 import './ChartLine.css'
 
-const ChartLine = () => {
+const ChartLine = ({rawData}) => {
+
+    useEffect(() => {
+        
+    },[rawData])
+
     const data = [
         [0, 0],
-        [0, 100],
-        [0, 100],
-        [1, 40],
-        [2, 30],
-        [3, 5],
-        [4, 45],
-        [5, 10],
-        [6, 45],
-        [7, 100],
-        [7, 100],
-        [7, 0]
+        [0, 4366.57],
+        [0, 4366.57],
+        [1, 5734.29],
+        [2, 7434.29],
+        [2, 7434.29],
+        [2, 0]
     ]
 
     const maximumXFromData = Math.max(...data.map(e => e[0]));
     const maximumYFromData = Math.max(...data.map(e => e[1]));
 
-    const chartWidth = 500
-    const chartHeight = 300
+    const chartWidth = 700
+    const chartHeight = 500
 
     const points = data.map(element => {
         const x = (element[0] / maximumXFromData) * chartWidth;
@@ -83,14 +84,13 @@ const ChartLine = () => {
         return (
             <>
             {points.map((point,index) => {
+                // eslint-disable-next-line
                 if(index === 0 || index === points.length-1) return
-                return <circle onMouseEnter={() => {alert(point[0])}} cx={point[0]} cy={point[1]} r="5" stroke="black" stroke-width="1" fill="#fff" />
+                return <circle key={randomstring()} cx={point[0]} cy={point[1]} r="5" stroke="black" strokeWidth="1" fill="#fff" />
             })}
             </>
         )
     }
-
-    
 
     return (
         <div className="mainChartLine">

@@ -4,8 +4,7 @@ import {getTransactions,deleteTransaction,getAccount} from '../../utils/api/db'
 import {useSelector,useDispatch} from 'react-redux'
 import {randomstring} from 'randomstring-js'
 import {putNotification,removePost,putPost,putContext,removeContext} from '../../actions';
-import NewItem from '../../components/NewItem/NewItem'
-import ChartLine from '../../components/Charts/ChartLine/ChartLine'
+import DashboardStats from '../../components/DashboardStats/DashboardStats';
 import './Dashboard.css'
 
 const Item = ({item, handleUpdate, handleDelete}) => {
@@ -83,7 +82,7 @@ const Pagination = ({pages,pagination,handlePagination}) => {
 
     const renderPages = () => {
         for(let i = 1; i < pages+1; i++) {
-            rows.push(<span onClick={() => {handlePagination(i)}} className={`${pagination === i ? 'mainItemsTablePaginationActive' : null}`}>{i}</span>)
+            rows.push(<span key={randomstring()} onClick={() => {handlePagination(i)}} className={`${pagination === i ? 'mainItemsTablePaginationActive' : null}`}>{i}</span>)
         }
     }
 
@@ -190,15 +189,9 @@ const Dashboard = (props) => {
 
     return (
         <>
-        <ChartLine />
         <div className="mainDashboard">
             <div className="mainDashboardContents">
-                <div className="mainDashboardContentsInfos">
-                    <h1>Conta: {account.title}</h1>
-                    <small>Descrição: {account.description}</small>
-                    <button onClick={() => {history.push("/")}}>Voltar</button>
-                </div>
-                <NewItem account_id={account.id} handleNewItem={handleNewItem}/>
+                <DashboardStats account={account} handleNewItem={handleNewItem}/>
                 <div className="mainItemsTable">
                     <div className="mainItemsTableContents">
                         <table>

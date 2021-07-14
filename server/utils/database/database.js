@@ -20,6 +20,7 @@ const databaseFunctions = {
 
                     con.query(`INSERT INTO users VALUES (NULL,"${name}","${email}","${hash}");`, (err,result) => {
                         if(result === undefined) {
+                            console.log(err)
                             resolve({"status":codes.NEW_USER_ERROR})
                         } else {
                             resolve({"status":codes.NEW_USER_SUCCESS})
@@ -99,6 +100,25 @@ const databaseFunctions = {
             con.query(`SELECT COUNT(*) AS total_transactions, IFNULL(SUM(CASE WHEN type="Entrada" THEN value ELSE - value END),0) AS total_money FROM transactions WHERE user_email="${email}";`, async (err,result,fields) => {
                 if(result === undefined) resolve({"status": codes.SERVER_ERROR})
                 else resolve({"status":codes.GET_ACCOUNTS_DETAILS_SUCCESS,"accounts":result})
+            })
+        })
+        return res
+    },
+    getAccountStats: getAccountStats = async({id,email}) => {
+        res = await new Promise((resolve,reject) => {
+            con.query(`SELECT t.date,
+                            FORMAT(t.rental_count,2) AS month_total,
+                            FORMAT(@running_total:=@running_total + t.rental_count,2) AS cumulative_sum
+                        FROM
+                            ( SELECT
+                                DATE_FORMAT(date,'%m-%Y') as date,
+                                IFNULL(SUM(CASE WHEN type="Entrada" THEN value ELSE - value END),0) as rental_count
+                                FROM transactions WHERE account_id = ${id} AND user_email = "${email}"
+                                GROUP BY DATE_FORMAT(date,'%m-%Y')
+                            ) t JOIN (SELECT @running_total:=0) r
+                        ORDER BY DATE_FORMAT(t.date,'%m-%Y');`, (err,result,fields) => {
+                if(result === undefined) resolve({"status":codes.GET_ACCOUNT_STATS_ERROR})
+                else resolve({"status":codes.GET_ACCOUNT_STATS_SUCCESS,"data":result})
             })
         })
         return res
@@ -217,6 +237,7 @@ const databaseFunctions = {
         })
         return res
     }
+    
 }
 
 module.exports = databaseFunctions

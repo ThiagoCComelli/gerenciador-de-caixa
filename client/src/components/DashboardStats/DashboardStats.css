@@ -1,0 +1,73 @@
+.mainDashboardStats {
+    width: 100%;
+    position: relative;
+    background-color: #FFFFFF;
+    margin-bottom: 30px;
+}
+
+.mainDashboardStatsOptions {
+    padding: 10px;
+    display: flex;
+    gap: 20px;
+    font-size: 1.35rem;
+}
+
+.mainDashboardStatsOptions span {
+    position: relative;
+    cursor: pointer;
+}
+
+.mainDashboardStatsOptions span::before {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 2px;
+    background-color: #4286F5;
+    bottom: -3px;
+    transition: all .2s ease-in-out;
+}
+
+.mainDashboardStatsOptions span:hover::before {
+    width: 100%;
+}
+
+span.mainDashboardStatsOptionsActual::before {
+    width: 100%;
+}
+
+.mainChartScreen {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    width: 100%;
+    flex-direction: row;
+}
+
+.mainChartScreenInfos {
+    position: relative;
+}
+
+.mainChartScreenInfosData {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    scrollbar-color: #ebebeb rgb(255, 255, 255); 
+    overflow-y: auto;
+    padding: 0px 10px 10px 20px;
+}
+
+.mainChartScreenInfosData > small {
+    margin-bottom: 20px;
+}
+
+.mainhartScreenItem {
+    font-weight: 300;
+    font-size: 1.5rem;
+}
+
+.mainhartScreenItem div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

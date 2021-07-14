@@ -70,6 +70,21 @@ const getAccountsDetails = async (email,token) => {
     
 }
 
+const getAccountStatus = async (email,id,token) => {
+    try {
+        const result = await axios.get(`${url()}/user/get-account-status`, {params: {
+            email: email,
+            id: id
+        },
+        headers: {
+            "Authorization" : `Bearer ${token}`
+        }})
+        return result
+    } catch {
+        return null
+    }
+}
+
 const newTransaction = async (account_id,transaction,user,token) => {
     try {
         const result = await axios.post(`${url()}/user/new-transaction`, {
@@ -199,4 +214,4 @@ const updateTransaction = async(transaction,user,token) => {
 }
 
 
-export {newAccount,getAccounts,getAccount,newTransaction,getTransactions,deleteTransaction,deleteAccount,newTag,deleteTag,updateTransaction,getAccountsDetails}
+export {newAccount,getAccounts,getAccount,newTransaction,getTransactions,deleteTransaction,deleteAccount,newTag,deleteTag,updateTransaction,getAccountsDetails,getAccountStatus}

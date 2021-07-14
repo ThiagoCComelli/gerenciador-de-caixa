@@ -178,6 +178,17 @@
         "description": "Autenticacao negada",
         "status": "error",
         "code": "AUTH_DENIED"  
+    },
+    "GET_ACCOUNT_STATS_SUCCESS": {
+        "title": "Busca feita com sucesso!",
+        "description": "Busca feita e resultado retornado",
+        "status": "success",
+        "code": "GET_ACCOUNT_STATS_SUCCESS"
+    },
+    "GET_ACCOUNT_STATS_ERROR": {
+        "title": "Falha na busca!",
+        "description": "Falha na busca realizada e nada realizado",
+        "status": "error",
+        "code": "GET_ACCOUNT_STATS_ERROR"
     }
-
 }

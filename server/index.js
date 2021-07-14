@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser')
 const {createUser,loginUser,verifyUser,newAccount,
        getAccounts,newTransaction, deleteTransaction,
        deleteAccount, newTag, updateTransaction, 
-       getAccountsDetails,getAccount} = require('./utils/database/database')
+       getAccountsDetails,getAccount,getAccountStats} = require('./utils/database/database')
 const { verifyToken } = require('./utils/auth/jwt')
 const app = express()
 const PORT = process.env.PORT
@@ -76,6 +76,15 @@ app.get('/user/get-account', verifyToken, async (req,res) => {
 app.get('/user/get-accounts-details', verifyToken, async (req,res) => {
     if(req.query.email) {
         const response = await getAccountsDetails(req.query)
+        res.status(200).send(response)
+    } else {
+        res.status(400).send({"message":"Bad Request"})
+    }
+})
+
+app.get('/user/get-account-status', verifyToken, async (req,res) => {
+    if(req.query.email) {
+        const response = await getAccountStats(req.query)
         res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
