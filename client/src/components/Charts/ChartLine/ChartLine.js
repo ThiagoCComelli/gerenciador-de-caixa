@@ -1,36 +1,44 @@
 import { randomstring } from 'randomstring-js';
-import React,{useEffect} from 'react';
+import React,{useEffect,useState} from 'react';
 
 import './ChartLine.css'
 
 const ChartLine = ({rawData}) => {
+    const [go,setGo] = useState(false)
+    var points = []
+    var data = []
 
     useEffect(() => {
-        
-    },[rawData])
+        const setupData = () => {
+            data.push([0,0])
+            data.push([1,rawData[0].cumulative_sum])
+            data.push([1,rawData[0].cumulative_sum])
+            for(let i = 1; i < rawData.length; i++) {
+                data.push([i+1,rawData[i].cumulative_sum])
+            }
+            data.push([rawData.length,rawData[rawData.length-1].cumulative_sum])
+            data.push([rawData.length,0])
 
-    const data = [
-        [0, 0],
-        [0, 4366.57],
-        [0, 4366.57],
-        [1, 5734.29],
-        [2, 7434.29],
-        [2, 7434.29],
-        [2, 0]
-    ]
+            
+            points = data.map(element => {
+                const x = (element[0] / maximumXFromData) * chartWidth;
+                const y = chartHeight - (element[1] / maximumYFromData) * chartHeight;
+                
+                return [x,y]
+            })
+            setGo(true)
+        }
+
+        if(rawData.length >= 2) {
+            setupData()
+        }
+    },[rawData])
 
     const maximumXFromData = Math.max(...data.map(e => e[0]));
     const maximumYFromData = Math.max(...data.map(e => e[1]));
 
     const chartWidth = 700
     const chartHeight = 500
-
-    const points = data.map(element => {
-        const x = (element[0] / maximumXFromData) * chartWidth;
-        const y = chartHeight - (element[1] / maximumYFromData) * chartHeight;
-        
-        return [x,y];
-    })
 
     const smoothing = 0.2
 
@@ -92,12 +100,22 @@ const ChartLine = ({rawData}) => {
         )
     }
 
+    if (data.length < 2) {
+        console.log(data)
+        return <></>
+    }
+
     return (
         <div className="mainChartLine">
-            <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
-                {svgPath(points, bezierCommand)}
-                {placePoints()}
-            </svg>
+            {go ? (<>
+                {console.log(data)}
+                {console.log(points)}
+                <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
+                    {svgPath(points, bezierCommand)}
+                    {placePoints()}
+                </svg>
+            </>) : null}
+            
         </div>
         
     )

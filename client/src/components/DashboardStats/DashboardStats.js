@@ -11,17 +11,21 @@ const ChartScreenItem = ({data,special}) => {
     return (
         <>
             <div className="mainhartScreenItem">
-                <div>
+                <div className="mainhartScreenItemContent">
                     <span>
                         :: {data.date}
                     </span>
-                    <ArrowForwardIcon style={{fontSize: 15}} /> 
                     <span>
-                        {data.month_total} <TrendingUpIcon style={{fontSize: 15, color: "green"}} />
+                        <ArrowForwardIcon style={{fontSize: 15}} /> 
                     </span>
-                    <ArrowForwardIcon style={{fontSize: 15}} /> 
                     <span>
-                        {data.cumulative_sum} <TrendingUpIcon style={{fontSize: 15, color: "green"}} />
+                        R$ {data.month_total} <TrendingUpIcon style={{fontSize: 15, color: "green"}} />
+                    </span>
+                    <span>
+                        <ArrowForwardIcon style={{fontSize: 15}} /> 
+                    </span>
+                    <span>
+                        R$ {data.cumulative_sum} <TrendingUpIcon style={{fontSize: 15, color: "green"}} />
                     </span>
                 </div>
             </div>

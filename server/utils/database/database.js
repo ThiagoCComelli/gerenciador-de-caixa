@@ -115,8 +115,8 @@ const databaseFunctions = {
                                 IFNULL(SUM(CASE WHEN type="Entrada" THEN value ELSE - value END),0) as rental_count
                                 FROM transactions WHERE account_id = ${id} AND user_email = "${email}"
                                 GROUP BY DATE_FORMAT(date,'%m-%Y')
-                            ) t JOIN (SELECT @running_total:=0) r
-                        ORDER BY DATE_FORMAT(t.date,'%m-%Y');`, (err,result,fields) => {
+                                ORDER BY MIN(date)
+                            ) t JOIN (SELECT @running_total:=0) r;`, (err,result,fields) => {
                 if(result === undefined) resolve({"status":codes.GET_ACCOUNT_STATS_ERROR})
                 else resolve({"status":codes.GET_ACCOUNT_STATS_SUCCESS,"data":result})
             })
