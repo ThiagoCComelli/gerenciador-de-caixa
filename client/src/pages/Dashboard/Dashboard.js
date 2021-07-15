@@ -99,7 +99,7 @@ const Dashboard = (props) => {
     const user = useSelector(state => state.user)
     const [items, setItems] = useState([])
     const [account,setAccount] = useState([])
-    const [money, setMoney] = useState(0)
+    const [showMonths,setShowMonths] = useState(false)
     const [pagination,setPagination] = useState(1)
     const history = useHistory()
     const dispatch = useDispatch()
@@ -152,11 +152,11 @@ const Dashboard = (props) => {
     }
 
     useEffect(() => {
-
         const getTransacoes = async (page) => {
             const res = await getTransactions(user.email, page, props.match.params.accountId,localStorage.getItem("authToken"))
             if(res) {
                 setItems(res.data.transactions)
+                setShowMonths(true)
             }
         }
         
@@ -177,13 +177,10 @@ const Dashboard = (props) => {
     },[])
 
     useEffect(() => {
-        var moneyTmp = 0
         items.map((item,index) => {
-            item.type === "Saida" ? moneyTmp -= item.value : moneyTmp += item.value
             var res = new Date(item.date)
             return items[index].date = res
         })
-        setMoney(moneyTmp)
         setItems(items.sort((a,b) => b.date - a.date))
     },[items])
 
@@ -218,16 +215,13 @@ const Dashboard = (props) => {
                                     }
                                     return (
                                         <>
-                                        {months()}
+                                        {showMonths ? months() : null}
                                         <Item item={item} items={items} handleUpdate={handleUpdate} handleDelete={handleDelete} key={randomstring()}/>
                                         </>                                        
                                     )
                                 })}
                             </tbody>
                         </table>
-                        <div className="mainItemsTableContentsFooter">
-                            <span>Total em caixa: R${money.toFixed(2)}</span>
-                        </div>
                     </div>
                 </div>
                 <div className="mainItemsTablePagination">

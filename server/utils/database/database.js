@@ -107,8 +107,8 @@ const databaseFunctions = {
     getAccountStats: getAccountStats = async({id,email}) => {
         res = await new Promise((resolve,reject) => {
             con.query(`SELECT t.date,
-                            FORMAT(t.rental_count,2) AS month_total,
-                            FORMAT(@running_total:=@running_total + t.rental_count,2) AS cumulative_sum
+                            t.rental_count AS month_total,
+                            @running_total:=@running_total + t.rental_count AS cumulative_sum
                         FROM
                             ( SELECT
                                 DATE_FORMAT(date,'%m-%Y') as date,

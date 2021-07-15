@@ -6,8 +6,9 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import TrendingDownIcon from '@material-ui/icons/TrendingDown';
 import './DashboardStats.css'
+import { randomstring } from 'randomstring-js';
 
-const ChartScreenItem = ({data,special}) => {
+const ChartScreenItem = ({data,lastData}) => {
     return (
         <>
             <div className="mainhartScreenItem">
@@ -19,13 +20,15 @@ const ChartScreenItem = ({data,special}) => {
                         <ArrowForwardIcon style={{fontSize: 15}} /> 
                     </span>
                     <span>
-                        R$ {data.month_total} <TrendingUpIcon style={{fontSize: 15, color: "green"}} />
+                        R$ {data.month_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} {data.month_total >= lastData.month_total ? <TrendingUpIcon style={{fontSize: 15, color: "green"}} /> :
+                        <TrendingDownIcon style={{fontSize: 15, color: "red"}} />}
                     </span>
                     <span>
                         <ArrowForwardIcon style={{fontSize: 15}} /> 
                     </span>
                     <span>
-                        R$ {data.cumulative_sum} <TrendingUpIcon style={{fontSize: 15, color: "green"}} />
+                        R$ {data.cumulative_sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} {data.cumulative_sum >= lastData.cumulative_sum ? <TrendingUpIcon style={{fontSize: 15, color: "green"}} /> :
+                        <TrendingDownIcon style={{fontSize: 15, color: "red"}} />}
                     </span>
                 </div>
             </div>
@@ -43,16 +46,22 @@ const ChartScreen = ({rawData,account}) => {
                 <div className="mainChartScreenInfosData">
                     <h2>{account.title}</h2>
                     <small>{account.description}</small>
-                    <div className="mainhartScreenItem">
-                        <div style={{marginBottom: 10}}>
-                            <strong>Data</strong>
-                            <strong>Entrada</strong>
-                            <strong>Total</strong>
+                    {rawData.length > 0 ? (<>
+                        <div className="mainhartScreenItem">
+                            <div style={{marginBottom: 10}}>
+                                <strong>Data</strong>
+                                <strong>Entrada</strong>
+                                <strong>Total</strong>
+                            </div>
                         </div>
-                    </div>
-                    {rawData.map((data) => {
-                        return <ChartScreenItem data={data}/>
-                    })}
+                        {rawData.map((data,index) => {
+                            if (index > 0) {
+                                return <ChartScreenItem key={randomstring()} data={data} lastData={rawData[index-1]}/>
+                            } else {
+                                return <ChartScreenItem key={randomstring()} data={data} lastData={data}/>
+                            }
+                        })}
+                    </>) : null }
                 </div>
             </div>
         </div>

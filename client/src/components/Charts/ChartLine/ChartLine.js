@@ -3,36 +3,7 @@ import React,{useEffect,useState} from 'react';
 
 import './ChartLine.css'
 
-const ChartLine = ({rawData}) => {
-    const [go,setGo] = useState(false)
-    var points = []
-    var data = []
-
-    useEffect(() => {
-        const setupData = () => {
-            data.push([0,0])
-            data.push([1,rawData[0].cumulative_sum])
-            data.push([1,rawData[0].cumulative_sum])
-            for(let i = 1; i < rawData.length; i++) {
-                data.push([i+1,rawData[i].cumulative_sum])
-            }
-            data.push([rawData.length,rawData[rawData.length-1].cumulative_sum])
-            data.push([rawData.length,0])
-
-            
-            points = data.map(element => {
-                const x = (element[0] / maximumXFromData) * chartWidth;
-                const y = chartHeight - (element[1] / maximumYFromData) * chartHeight;
-                
-                return [x,y]
-            })
-            setGo(true)
-        }
-
-        if(rawData.length >= 2) {
-            setupData()
-        }
-    },[rawData])
+const Chart = ({data}) => {
 
     const maximumXFromData = Math.max(...data.map(e => e[0]));
     const maximumYFromData = Math.max(...data.map(e => e[1]));
@@ -40,7 +11,14 @@ const ChartLine = ({rawData}) => {
     const chartWidth = 700
     const chartHeight = 500
 
-    const smoothing = 0.2
+    const smoothing = 0.15
+
+    const points = data.map(element => {
+        const x = (element[0] / maximumXFromData) * chartWidth;
+        const y = chartHeight - (element[1] / maximumYFromData) * chartHeight;
+        
+        return [x,y]
+    })
 
     const line = (pointA, pointB) => {
         const lengthX = pointB[0] - pointA[0]
@@ -100,22 +78,42 @@ const ChartLine = ({rawData}) => {
         )
     }
 
-    if (data.length < 2) {
-        console.log(data)
-        return <></>
-    }
+    return (
+        <>
+            <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
+                {svgPath(points, bezierCommand)}
+                {placePoints()}
+            </svg>
+        </>
+    )
+}
+
+const ChartLine = ({rawData}) => {
+    const [data,setData] = useState(null)
+
+    useEffect(() => {
+        const setupData = () => {
+            var dataTmp = []
+            
+            dataTmp.push([0,0])
+            dataTmp.push([0,rawData[0].cumulative_sum])
+            for(let i = 0; i < rawData.length; i++) {
+                dataTmp.push([i,rawData[i].cumulative_sum])
+            }
+            dataTmp.push([rawData.length-1,rawData[rawData.length-1].cumulative_sum])
+            dataTmp.push([rawData.length-1,0])
+
+            setData(dataTmp)
+        }
+
+        if(rawData.length >= 2) {
+            setupData()
+        }
+    },[rawData])
 
     return (
         <div className="mainChartLine">
-            {go ? (<>
-                {console.log(data)}
-                {console.log(points)}
-                <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
-                    {svgPath(points, bezierCommand)}
-                    {placePoints()}
-                </svg>
-            </>) : null}
-            
+            {data ? <Chart data={data} /> : null}
         </div>
         
     )
