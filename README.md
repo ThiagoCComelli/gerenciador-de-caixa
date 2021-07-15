@@ -17,8 +17,9 @@
 - [x] Criação de transações
     - [x] Adicionar campo de tags para as transações
     - [x] Edição de transações
-- [ ] Paginação
-- [ ] Tratamento dos dados para melhor visualização (gráficos e previsões)
+- [X] Paginação
+- [X] Tratamento dos dados para melhor visualização (gráficos e previsões no futuro)
+- [ ] Controle manual de gastos
 - [ ] Leitura de entradas e saidas a partir de extratos em PDF ou Excel
 - [ ] ...
 
