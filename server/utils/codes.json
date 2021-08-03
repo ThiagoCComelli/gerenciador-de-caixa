@@ -190,5 +190,29 @@
         "description": "Falha na busca realizada e nada realizado",
         "status": "error",
         "code": "GET_ACCOUNT_STATS_ERROR"
+    },
+    "GET_ANNOTATIONS_SUCCESS": {
+        "title": "Busca feita com sucesso!",
+        "description": "Busca feita e resultado retornado",
+        "status": "success",
+        "code": "GET_ANNOTATIONS_SUCCESS"
+    },
+    "GET_ANNOTATIONS_ERROR": {
+        "title": "Falha na busca!",
+        "description": "Falha na busca realizada e nada realizado",
+        "status": "error",
+        "code": "GET_ANNOTATIONS_ERROR"
+    },
+    "NEW_ANNOTATIONS_SUCCESS": {
+        "title": "Anotacao criada com sucesso!",
+        "description": "A Anotacao foi criada com sucesso",
+        "status": "success",
+        "code": "NEW_ANNOTATIONS_SUCCESS"
+    },
+    "NEW_ANNOTATIONS_ERROR": {
+        "title": "Falha na criação!",
+        "description": "A anotacao nao foi criada, erro interno",
+        "status": "error",
+        "code": "NEW_ANNOTATIONS_ERROR"
     }
 }

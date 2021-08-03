@@ -236,6 +236,46 @@ const databaseFunctions = {
             })
         })
         return res
+    },
+    newAnnotation: newAnnotation = async({id,value,title}) => {
+        res = await new Promise((resolve,reject) => {
+            con.query(`INSERT INTO annotations VALUES (DEFAULT, "${title}", "${value}", "${id}");`, (err,result,fields) => {
+                if(result === undefined) resolve({"status":codes.NEW_TAG_ERROR})
+                else resolve({"status":codes.NEW_TAG_SUCCESS, "annotation": {title: title, value: value, id: result.insertId, account_id: id}})
+            })
+        })
+        return res
+    },
+    getAnnotations: getAnnotations = async({id}) => {
+        res = await new Promise((resolve,reject) => {
+            con.query(`SELECT * FROM annotations WHERE account_id = "${id}";`, (err,result,fields) => {
+                if(result === undefined) resolve({"status":codes.NEW_TAG_ERROR})
+                else resolve({"status":codes.NEW_TAG_SUCCESS, "annotations": result})
+            })
+        })
+        return res
+    },
+    deleteAnnotation: deleteAnnotation = async({email, accountId, annotationId}) => {
+        res = await new Promise((resolve,reject) => {
+            con.query(`DELETE annotations FROM annotations INNER JOIN accounts ON 
+                            accounts.user_email = "${email}" WHERE 
+                            accounts.id = ${accountId} AND annotations.id = ${annotationId};`, async (err,result,fields) => {
+                if(result === undefined) resolve({"status":codes.DELETE_TAG_ERROR})
+                else resolve({"status":codes.DELETE_TAG_SUCCESS,"annotationId": annotationId})
+            })
+        })
+        return res
+    },
+    deleteAllAnnotations: deleteAllAnnotations = async({email, accountId}) => {
+        res = await new Promise((resolve,reject) => {
+            con.query(`DELETE annotations FROM annotations INNER JOIN accounts ON
+                            accounts.user_email = "${email}" WHERE
+                            annotations.account_id = ${accountId};`, async (err,result,fields) => {
+                if(result === undefined) resolve({"status":codes.DELETE_TAG_ERROR})
+                else resolve({"status":codes.DELETE_TAG_SUCCESS})
+            })
+        })
+        return res
     }
     
 }

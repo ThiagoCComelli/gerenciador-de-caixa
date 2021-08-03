@@ -213,5 +213,76 @@ const updateTransaction = async(transaction,user,token) => {
     }
 }
 
+const getAnnotations = async (email,id,token) => {
+    try {
+        const result = await axios.get(`${url()}/user/get-annotations`, {params: {
+            email: email,
+            id: id
+        },
+        headers: {
+            "Authorization" : `Bearer ${token}`
+        }})
+        return result
+    } catch {
+        return null
+    }
+    
+}
 
-export {newAccount,getAccounts,getAccount,newTransaction,getTransactions,deleteTransaction,deleteAccount,newTag,deleteTag,updateTransaction,getAccountsDetails,getAccountStatus}
+const deleteAnnotation = async(email,accountId,annotationId,token) => {
+    try {
+        const result = await axios.delete(`${url()}/user/delete-annotation`, {params: {
+            accountId: accountId,
+            annotationId: annotationId,
+            email: email
+        },
+        headers: {
+            "Authorization" : `Bearer ${token}`
+        }})
+        return result
+    } catch {
+        return null
+    }
+}
+
+const deleteAllAnnotations = async(email,accountId,token) => {
+    try {
+        const result = await axios.delete(`${url()}/user/delete-annotations`, {params: {
+            accountId: accountId,
+            email: email
+        },
+        headers: {
+            "Authorization" : `Bearer ${token}`
+        }})
+        return result
+    } catch {
+        return null
+    }
+}
+
+const newAnnotation = async(user,accountId,value,title,token) => {
+    try {
+        const result = await axios.post(`${url()}/user/new-annotation`, {
+            data: {
+                user: user,
+                annotation: {
+                    id: accountId,
+                    value: value,
+                    title: title
+                }
+            }
+        }, 
+        {
+            headers: {
+                "Authorization" : `Bearer ${token}`
+            }
+        })
+        return result
+    } catch {
+        return null
+    }
+}
+
+export {newAccount,getAccounts,getAccount,newTransaction,getTransactions,deleteTransaction,
+    deleteAccount,newTag,deleteTag,updateTransaction,getAccountsDetails,getAccountStatus,
+    getAnnotations,deleteAnnotation,deleteAllAnnotations,newAnnotation}

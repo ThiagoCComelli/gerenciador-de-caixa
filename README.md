@@ -19,7 +19,7 @@
     - [x] Edição de transações
 - [X] Paginação
 - [X] Tratamento dos dados para melhor visualização (gráficos e previsões no futuro)
-- [ ] Controle manual de gastos
+- [X] Controle manual de gastos
 - [ ] Leitura de entradas e saidas a partir de extratos em PDF ou Excel
 - [ ] ...
 

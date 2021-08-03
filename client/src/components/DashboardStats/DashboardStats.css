@@ -7,6 +7,12 @@
 }
 
 .mainDashboardStatsOptions {
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0px 0px 16px -17px #000000;
+}
+
+.mainDashboardStatsOptions > div {
     padding: 10px;
     display: flex;
     gap: 20px;
@@ -58,6 +64,7 @@ span.mainDashboardStatsOptionsActual::before {
     scrollbar-color: #ebebeb rgb(255, 255, 255); 
     overflow-y: auto;
     padding: 0px 10px 10px 20px;
+    padding-top: 10px;
 }
 
 .mainChartScreenInfosData > small {

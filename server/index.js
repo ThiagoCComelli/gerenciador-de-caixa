@@ -6,7 +6,9 @@ const cookieParser = require('cookie-parser')
 const {createUser,loginUser,verifyUser,newAccount,
        getAccounts,newTransaction, deleteTransaction,
        deleteAccount, newTag, updateTransaction, 
-       getAccountsDetails,getAccount,getAccountStats} = require('./utils/database/database')
+       getAccountsDetails,getAccount,getAccountStats,
+       getAnnotations, newAnnotation, deleteAnnotation,
+       deleteAllAnnotations} = require('./utils/database/database')
 const { verifyToken } = require('./utils/auth/jwt')
 const app = express()
 const PORT = process.env.PORT
@@ -148,6 +150,51 @@ app.delete('/user/delete-tag', verifyToken, async (req,res) => {
 app.post('/user/update-transaction', verifyToken, async (req,res) => {
     if(req.body.data) {
         const response = await updateTransaction(req.body.data)
+        res.status(200).send(response)
+    } else {
+        res.status(400).send({"message":"Bad Request"})
+    }
+})
+
+app.post('/user/new-tag', verifyToken, async (req,res) => {
+    if(req.body.data) {
+        const response = await newTag(req.body.data)
+        res.status(200).send(response)
+    } else {
+        res.status(400).send({"message":"Bad Request"})
+    }
+})
+
+app.post('/user/new-annotation', verifyToken, async (req,res) => {
+    if(req.body.data) {
+        const response = await newAnnotation(req.body.data.annotation)
+        res.status(200).send(response)
+    } else {
+        res.status(400).send({"message":"Bad Request"})
+    }
+})
+
+app.get('/user/get-annotations', verifyToken, async (req, res) => {
+    if(req.query.id && req.query.email) {
+        const response = await getAnnotations(req.query)
+        res.status(200).send(response)
+    } else {
+        res.status(400).send({"message":"Bad Request"})
+    }
+})
+
+app.delete('/user/delete-annotation', verifyToken, async (req,res) => {
+    if(req.query.accountId && req.query.email && req.query.annotationId) {
+        const response = await deleteAnnotation(req.query)
+        res.status(200).send(response)
+    } else {
+        res.status(400).send({"message":"Bad Request"})
+    }
+})
+
+app.delete('/user/delete-annotations', verifyToken, async (req,res) => {
+    if(req.query.accountId && req.query.email) {
+        const response = await deleteAllAnnotations(req.query)
         res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})
