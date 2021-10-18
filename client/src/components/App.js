@@ -63,8 +63,8 @@ function App() {
   }
 
   return (
-    <div onClick={handleContext} className="App">
-      <div className="AppNotifications">
+    <div onClick={handleContext} className="mainApp">
+      <div className="mainAppNotifications">
         {allNotifications.map((item) => {
           return <Notification key={item.id} id={item.id} props={item.props}/>
         })}
@@ -75,12 +75,12 @@ function App() {
       <Router>
         <Navbar />
         <Switch>
-          <ProtectedRoute path="/dashboard/:accountId" exact component={Dashboard} />
-          <ProtectedRoute path="/" exact component={Home} />
-          <Route path="/login" exact component={Login} />
+            <ProtectedRoute path="/" exact component={Home} />
+            <ProtectedRoute path="/dashboard/:accountId" exact component={Dashboard} />
+            <Route path="/login" exact component={Login} />
         </Switch>
       </Router>
-
+      
       <Console />
       {havePost ? <Modal component={havePost} /> : null}
     </div>

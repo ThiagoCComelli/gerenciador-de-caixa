@@ -42,9 +42,13 @@ const ModalEditTransaction = ({props}) => {
                     return await newTag(e.target.value.toLowerCase(),user,props.item,localStorage.getItem("authToken"))
                 } 
 
-                res().then((data) => {
-                    setTags([...tags,data.data.tag])
-                })
+                try {
+                    res().then((data) => {
+                        setTags([...tags,data.data.tag])
+                    })
+                } catch {
+                    
+                }
                 
                 e.target.value = ""
             }

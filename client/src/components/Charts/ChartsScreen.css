@@ -1,0 +1,18 @@
+.mainCharts {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 5px 1fr;
+}
+
+.mainCharts > span {
+    width: 1px;
+    min-height: 100px;
+    height: 100%;
+    background-color: #F7F7F7;
+}
+
+.mainChartItem {
+    min-width: 100%;
+    position: relative;
+    padding: 20px;
+}

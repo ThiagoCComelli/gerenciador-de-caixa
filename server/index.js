@@ -156,14 +156,14 @@ app.post('/user/update-transaction', verifyToken, async (req,res) => {
     }
 })
 
-app.post('/user/new-tag', verifyToken, async (req,res) => {
-    if(req.body.data) {
-        const response = await newTag(req.body.data)
-        res.status(200).send(response)
-    } else {
-        res.status(400).send({"message":"Bad Request"})
-    }
-})
+// app.post('/user/new-tag', verifyToken, async (req,res) => {
+//     if(req.body.data) {
+//         const response = await newTag(req.body.data)
+//         res.status(200).send(response)
+//     } else {
+//         res.status(400).send({"message":"Bad Request"})
+//     }
+// })
 
 app.post('/user/new-annotation', verifyToken, async (req,res) => {
     if(req.body.data) {

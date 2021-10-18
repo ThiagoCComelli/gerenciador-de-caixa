@@ -1,17 +1,25 @@
 .mainDashboard {
     width: 100vw;
-    display: flex;
     justify-content: center;
+    display: flex;
+    padding: 0 25px;
+}
+
+.mainDashboardBox {
+    width: 100%;
+    max-width: 1530px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 30px;
 }
 
 .mainDashboardContents {
     width: 100%;
-    max-width: 1280px;
+    /* max-width: 1280px; */
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin: 15px;
-    margin-top: 50px;
+    margin: 50px 0 15px 0;
 }
 
 .mainDashboardContentsInfos {

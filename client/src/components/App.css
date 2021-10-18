@@ -1,4 +1,4 @@
-.AppNotifications {
+.mainAppNotifications {
     position: absolute;
     right: 10px;
     width: 100%;
@@ -10,7 +10,7 @@
 }
 
 @media screen and (max-width: 650px) {
-    .AppNotifications {
+    .mainAppNotifications {
         right: 0;
         top: 0;
         position: fixed;

@@ -5,6 +5,7 @@ import {useSelector,useDispatch} from 'react-redux'
 import {randomstring} from 'randomstring-js'
 import {putNotification,removePost,putPost,putContext,removeContext} from '../../actions';
 import DashboardStats from '../../components/DashboardStats/DashboardStats';
+import SideNews from '../../components/SideNews/SideNews';
 import './Dashboard.css'
 
 const Item = ({item, handleUpdate, handleDelete}) => {
@@ -54,8 +55,8 @@ const Item = ({item, handleUpdate, handleDelete}) => {
                 <td>{item.id}</td>
                 <td>{item.title}</td>
                 <td>{item.description}</td>
-                <td>{item.modality}</td>
-                <td>{item.type}</td>
+                {/* <td>{item.modality}</td>
+                <td>{item.type}</td> */}
                 <td>R${item.value}</td>
                 <td>{formatDate(item.date)}</td>
             </tr>
@@ -66,8 +67,8 @@ const Item = ({item, handleUpdate, handleDelete}) => {
                 <td>#</td>
                 <td>#</td>
                 <td>#</td>
-                <td>#</td>
-                <td>#</td>
+                {/* <td>#</td>
+                <td>#</td> */}
                 <td>#</td>
                 <td>{months[item.special]}</td>
             </tr>
@@ -187,45 +188,50 @@ const Dashboard = (props) => {
     return (
         <>
         <div className="mainDashboard">
-            <div className="mainDashboardContents">
-                <DashboardStats account={account} handleNewItem={handleNewItem}/>
-                <div className="mainItemsTable">
-                    <div className="mainItemsTableContents">
-                        <table>
-                            <tbody>
-                                <tr key={randomstring()}>
-                                    <th>Numero</th>
-                                    <th>Titulo</th>
-                                    <th>Descrição</th>
-                                    <th>Modalidade</th>
-                                    <th>Tipo</th>
-                                    <th>Valor</th>
-                                    <th>Data</th>
-                                </tr>
-                                {items.map((item,index) => {
-                                    const months = () => {
-                                        try {
-                                            return index !== 0 ? 
-                                            (items[index].date.getMonth() !== items[index-1].date.getMonth() ? 
-                                            <Item item={{special: items[index].date.getMonth()}} items={items} handleUpdate={() => {}} handleDelete={() => {}} key={randomstring()}/> : null
-                                            ) : <Item item={{special: items[index].date.getMonth()}} items={items} handleUpdate={() => {}} handleDelete={() => {}} key={randomstring()}/>
-                                        } catch (e) {
+            <div className="mainDashboardBox">
+                <div className="mainDashboardContents">
+                    <DashboardStats account={account} handleNewItem={handleNewItem}/>
+                    <div className="mainItemsTable">
+                        <div className="mainItemsTableContents">
+                            <table>
+                                <tbody>
+                                    <tr key={randomstring()}>
+                                        <th>Numero</th>
+                                        <th>Titulo</th>
+                                        <th>Descrição</th>
+                                        {/* <th>Modalidade</th>
+                                        <th>Tipo</th> */}
+                                        <th>Valor</th>
+                                        <th>Data</th>
+                                    </tr>
+                                    {items.map((item,index) => {
+                                        const months = () => {
+                                            try {
+                                                return index !== 0 ? 
+                                                (items[index].date.getMonth() !== items[index-1].date.getMonth() ? 
+                                                <Item item={{special: items[index].date.getMonth()}} items={items} handleUpdate={() => {}} handleDelete={() => {}} key={randomstring()}/> : null
+                                                ) : <Item item={{special: items[index].date.getMonth()}} items={items} handleUpdate={() => {}} handleDelete={() => {}} key={randomstring()}/>
+                                            } catch (e) {
 
+                                            }
                                         }
-                                    }
-                                    return (
-                                        <>
-                                        {showMonths ? months() : null}
-                                        <Item item={item} items={items} handleUpdate={handleUpdate} handleDelete={handleDelete} key={randomstring()}/>
-                                        </>                                        
-                                    )
-                                })}
-                            </tbody>
-                        </table>
+                                        return (
+                                            <React.Fragment key={index}>
+                                                {showMonths ? months() : null}
+                                                <Item item={item} items={items} handleUpdate={handleUpdate} handleDelete={handleDelete} key={randomstring()}/>
+                                            </React.Fragment>                                        
+                                        )
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div className="mainItemsTablePagination">
+                        <Pagination handlePagination={handlePagination} pagination={pagination} pages={account.total_transactions} />
                     </div>
                 </div>
-                <div className="mainItemsTablePagination">
-                    <Pagination handlePagination={handlePagination} pagination={pagination} pages={account.total_transactions} />
+                <div className="mainDashboardSide">
+                    <SideNews account={account}/>
                 </div>
             </div>
         </div>
