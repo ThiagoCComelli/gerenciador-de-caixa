@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import {Link} from 'react-router-dom'
+import { getAccounts } from '../../utils/api/db'
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
@@ -30,7 +32,7 @@ const SideNewsHead = ({user,account}) => {
 }
 
 const SideNewsMoney = () => {
-    const [state,setState] = useState(false)
+    const [state,setState] = useState(true)
 
     const handleActive = () => {
         setState(!state)
@@ -67,12 +69,54 @@ const SideNewsMoney = () => {
     )
 }
 
+const SideNewsAccounts = ({user}) => {
+    const [state,setState] = useState(true)
+    const [accounts, setAccounts] = useState([])
+
+    const handleActive = () => {
+        setState(!state)
+    }
+
+    useEffect(() => {
+        const getData = async () => {
+            const res = await getAccounts(user.email, localStorage.getItem("authToken"))
+            try {
+                setAccounts(res.data.accounts)
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        getData()
+        // eslint-disable-next-line
+    },[])
+
+    return (
+        <div className={`mainSideNewsAccounts ${state ? 'active' : null}`}>
+            <h4 onClick={handleActive}>Outras contas: {!state ? <ExpandLessIcon style={{cursor: "pointer"}}/> : <ExpandMoreIcon style={{cursor: "pointer"}}/>}</h4>
+            {accounts.map((item,index) => {
+                return (
+                    <Link key={index} style={{textDecoration: "none", color: "#000",width: "100%",height: "100%"}} to={{pathname:`/dashboard/${item.id}`}}>
+                        <div id={item.id} className="mainSideNewsAccountsBox">
+                            <strong>#<span>{item.id}</span></strong>
+                            <div className="mainSideNewsAccountsBoxText">
+                                <b>{item.title}</b>
+                                <b>{item.description}</b>
+                            </div>
+                        </div>
+                    </Link>
+                )
+            })}
+        </div>
+    )
+}
+
 const SideNews = ({account}) => {
     const user = useSelector(state => state.user)
 
     return (
         <div className="mainSideNews">
             <SideNewsHead account={account} user={user}/>
+            <SideNewsAccounts user={user}/>
             <SideNewsMoney />
         </div>
     )

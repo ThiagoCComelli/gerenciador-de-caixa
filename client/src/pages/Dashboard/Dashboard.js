@@ -153,6 +153,7 @@ const Dashboard = (props) => {
     }
 
     useEffect(() => {
+        setShowMonths(false)
         const getTransacoes = async (page) => {
             const res = await getTransactions(user.email, page, props.match.params.accountId,localStorage.getItem("authToken"))
             if(res) {
@@ -174,8 +175,8 @@ const Dashboard = (props) => {
             getTransacoes(1)
             getAccounts()
         }
-    // eslint-disable-next-line
-    },[])
+        // eslint-disable-next-line
+    },[props.match.params.accountId])
 
     useEffect(() => {
         items.map((item,index) => {
@@ -183,7 +184,7 @@ const Dashboard = (props) => {
             return items[index].date = res
         })
         setItems(items.sort((a,b) => b.date - a.date))
-    },[items])
+    },[items,props.match.params.accountId])
 
     return (
         <>

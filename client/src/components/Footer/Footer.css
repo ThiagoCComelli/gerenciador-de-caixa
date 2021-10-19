@@ -1,0 +1,57 @@
+
+.mainFooter {
+    width: 100vw;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mainFooterContent {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    padding: 50px;
+}
+
+.mainFooterContentItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 25%;
+    gap: 20px;
+}
+
+.mainFooterContentItem strong {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #4286F5;
+}
+
+.mainFooter > span {
+    padding: 10px 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: #4286F5;
+    color: #fff;
+    font-weight: 500;
+}
+
+.mainFooterContentItemIcons {
+    gap: 10px;
+    display: flex;
+    color: #000000;
+}
+
+.mainFooterContentItemIcons a > * {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.mainFooterContentItemIcons a{
+    background-color: transparent;
+    color: #000;
+}

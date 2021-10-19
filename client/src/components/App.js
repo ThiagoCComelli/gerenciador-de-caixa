@@ -4,6 +4,7 @@ import Dashboard from '../pages/Dashboard/Dashboard'
 import Login from '../pages/Login/Login'
 import Home from '../pages/Home/Home'
 import Navbar from './Navbar/Navbar'
+import Footer from './Footer/Footer'
 import Modal from './Modal/Modal'
 import Notification from './Notification/Notification'
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute'
@@ -79,6 +80,7 @@ function App() {
             <ProtectedRoute path="/dashboard/:accountId" exact component={Dashboard} />
             <Route path="/login" exact component={Login} />
         </Switch>
+        <Footer />
       </Router>
       
       <Console />

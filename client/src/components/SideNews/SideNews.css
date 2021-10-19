@@ -12,12 +12,13 @@
     box-shadow: 0px 0px 16px -17px #000000;
     display: flex;
     flex-direction: column;
+    padding: 20px;
+    gap: 20px;
 }
 
 .mainSideNewsHeadProfile {
     display: flex;
     flex-direction: row;
-    padding: 20px;
     gap: 15px;
 }
 
@@ -50,12 +51,11 @@
 }
 
 .mainSideNewsHead > hr {
-    margin: 0 20px 20px 20px;
     color: #f7f7f738;
 }
 
 .mainSideNewsHeadStats {
-    padding: 0 20px 20px;
+    /* padding: 0 20px 20px; */
     font-size: 3rem;
     display: flex;
     flex-direction: row;
@@ -91,21 +91,15 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    height: 60px;
+    max-height: 60px;
     overflow: hidden;
     transition: all .2s ease-in-out;
+
 }
 
 .mainSideNewsMoney.active {
-    height: 275px;
-}
-
-.mainSideNewsMoney .mainSideNewsMoneyItem {
-    opacity: 0;
-}
-
-.mainSideNewsMoney.active .mainSideNewsMoneyItem {
-    opacity: 1;
+    max-height: 700px;
+    overflow: auto;
 }
 
 .mainSideNewsMoney h4 {
@@ -164,3 +158,72 @@
     align-items: center;
 }
 
+.mainSideNewsAccounts {
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 60px;
+    overflow: hidden;
+    transition: all .2s ease-in-out;
+}
+
+.mainSideNewsAccounts h4 {
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mainSideNewsAccountsBox {
+    position: relative;
+    font-size: 3rem;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.mainSideNewsAccountsBox::before {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #4286F5;
+    transition: all .2s ease-in-out;
+}
+
+.mainSideNewsAccountsBox:hover::before {
+    height: 100%;
+}
+
+.mainSideNewsAccountsBox strong > span {
+    font-weight: 500;
+    color: #000;
+}
+
+.mainSideNewsAccountsBox strong {
+    color: #4286F5;
+}
+
+.mainSideNewsAccountsBoxText {
+    font-size: .75rem;
+    font-weight: 300;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.mainSideNewsAccounts.active {
+    max-height: 700px;
+    overflow: auto;
+}
+
+.mainSideNewsAccounts .mainSideNewsMoneyItem {
+    opacity: 0;
+}
+
+.mainSideNewsAccounts.active .mainSideNewsMoneyItem {
+    opacity: 1;
+}
