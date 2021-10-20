@@ -312,7 +312,7 @@ const databaseFunctions = {
     newAnnotation: newAnnotation = async({id,value,title}) => {
         res = await new Promise((resolve,reject) => {
             mysql.getConnection((error,conn) => {
-                conn.query(`INSERT INTO annotations VALUES (DEFAULT, "${title}", "${value}", "${id}");`, (err,result,fields) => {
+                conn.query(`INSERT INTO annotations VALUES (DEFAULT, "${id}", "${title}", "${value}");`, (err,result,fields) => {
                     conn.release()
                     if(result === undefined) resolve({"status":codes.NEW_TAG_ERROR})
                     else resolve({"status":codes.NEW_TAG_SUCCESS, "annotation": {title: title, value: value, id: result.insertId, account_id: id}})

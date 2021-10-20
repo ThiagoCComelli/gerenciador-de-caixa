@@ -1,13 +1,18 @@
 import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom'
 import NewItem from '../NewItem/NewItem'
+import ManualControl from '../ManualControl/ManualControl'
 import ChartsScreen from '../Charts/ChartsScreen'
 import './DashboardStats.css'
 
 const Dashboardstats = ({account, handleNewItem}) => {
     const [currentScreen, setCurrentScreen] = useState("values")
     const history = useHistory()
-    const screens = {"values": <ChartsScreen account_id={account.id} />,"newTransaction": <NewItem account_id={account.id} handleNewItem={handleNewItem}/>}
+    const screens = {
+        "values": <ChartsScreen account_id={account.id} />,
+        "newTransaction": <NewItem account_id={account.id} handleNewItem={handleNewItem}/>,
+        "manualControl": <ManualControl account_id={account.id}/>
+    }
 
     const handleScreen = (e) => {
         setCurrentScreen(e.target.id)

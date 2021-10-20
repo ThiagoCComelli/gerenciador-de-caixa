@@ -260,16 +260,12 @@ const deleteAllAnnotations = async(email,accountId,token) => {
     }
 }
 
-const newAnnotation = async(user,accountId,value,title,token) => {
+const newAnnotation = async(user,annotation,token) => {
     try {
         const result = await axios.post(`${url()}/user/new-annotation`, {
             data: {
                 user: user,
-                annotation: {
-                    id: accountId,
-                    value: value,
-                    title: title
-                }
+                annotation: annotation
             }
         }, 
         {
