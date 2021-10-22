@@ -72,6 +72,9 @@ const databaseFunctions = {
                         conn.release()
                         resolve({"status":codes.NEW_ACCOUNT_ERROR})
                     } else {
+                        conn.query(`INSERT INTO annotationsArticles VALUES (${result.insertId},"")`, async (err, result, field) => {
+                            
+                        })
                         conn.query(`SELECT * FROM accounts WHERE accounts.id = ${result.insertId}`, async (err,result,field) => {
                             conn.release()
                             if(result[0] === undefined) resolve({"status":codes.NEW_ACCOUNT_ERROR})
@@ -364,8 +367,33 @@ const databaseFunctions = {
             
         })
         return res
-    }
-    
+    },
+    getAnnotationsArticles: getAnnotationsArticles = async({id}) => {
+        res = await new Promise((resolve,reject) => {
+            mysql.getConnection((error,conn) => {
+                conn.query(`SELECT * FROM annotationsArticles WHERE id = "${id}";`, (err,result,fields) => {
+                    conn.release()
+                    if(result === undefined) resolve({"status":codes.NEW_TAG_ERROR})
+                    else resolve({"status":codes.NEW_TAG_SUCCESS, "annotationsArticles": result})
+                })
+            })
+            
+        })
+        return res
+    },
+    updateAnnotationsArticles: updateAnnotationsArticles = async({user,annotationsArticles}) => {
+        res = await new Promise((resolve,reject) => {
+            mysql.getConnection((error,conn) => {
+                conn.query(`UPDATE annotationsArticles SET content="${annotationsArticles.content}" WHERE id="${annotationsArticles.id}";`, async (err,result,fields) => {
+                    conn.release()
+                    if(result === undefined) resolve({"status":codes.NEW_TAG_ERROR})
+                    else resolve({"status":codes.NEW_TAG_SUCCESS})
+                })
+            })
+            
+        })
+        return res
+    },
 }
 
 module.exports = databaseFunctions

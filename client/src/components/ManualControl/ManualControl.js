@@ -3,7 +3,8 @@ import {useSelector,useDispatch} from 'react-redux'
 import {putNotification} from '../../actions/index'
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import {getAnnotations,newAnnotation,deleteAnnotation,deleteAllAnnotations} from '../../utils/api/db'
+import {getAnnotations,newAnnotation,deleteAnnotation,deleteAllAnnotations,
+        getAnnotationsArticles,updateAnnotationsArticles} from '../../utils/api/db'
 import './ManualControl.css'
 
 const AnnotationItem = ({item,handleDelete}) => {
@@ -18,6 +19,7 @@ const AnnotationItem = ({item,handleDelete}) => {
 
 const ManualControl = ({account_id}) => {
     const [annotations,setAnnotations] = useState([])
+    const [annotationsArticles,setAnnotationsArticles] = useState({id:null,content:null})
     const [state,setState] = useState({title:null,value:null,id:account_id})
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
@@ -60,6 +62,17 @@ const ManualControl = ({account_id}) => {
         }
     }
 
+    const handleUpdateArticle = async () => {
+        const res = await updateAnnotationsArticles(annotationsArticles,user,localStorage.getItem("authToken"))
+        try {
+            if (res.data.status.status === "success") {
+                dispatch(putNotification(res.data.status))
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     useEffect(() => {
         const getData = async () => {
             const res = await getAnnotations(user.email, account_id, localStorage.getItem("authToken"))
@@ -69,7 +82,20 @@ const ManualControl = ({account_id}) => {
                 console.log(e)
             }
         }
+
+        const getDataAnnotationsArticles = async () => {
+            const res = await getAnnotationsArticles(user.email, account_id, localStorage.getItem("authToken"))
+            try {
+                if (res.data.status.status === "success") {
+                    setAnnotationsArticles(res.data.annotationsArticles[0])
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
         getData()
+        getDataAnnotationsArticles()
         // eslint-disable-next-line
     }, [account_id])
 
@@ -79,7 +105,7 @@ const ManualControl = ({account_id}) => {
                 <div className="mainManualControlInputDiv">
                     <SearchOutlinedIcon />
                     <input onChange={(e) => {setState({...state,title:e.target.value})}} type="text" placeholder="Ex:. iFood"/>
-                    <input onChange={(e) => {setState({...state,value:parseInt(e.target.value)})}} type="number" placeholder="Valor"/>
+                    <input onChange={(e) => {setState({...state,value:parseFloat(e.target.value)})}} type="number" placeholder="Valor" step=".5"/>
                 </div>
                 <div className="mainManualControlInputButtons">
                     <button onClick={handleDeleteAll}>Limpar</button>
@@ -99,7 +125,8 @@ const ManualControl = ({account_id}) => {
                 </div>
             </div>
             <div className="mainManualControlBoxes">
-                <textarea placeholder="Sem Anotações até o momento :("></textarea>
+                <button onClick={handleUpdateArticle}>sync</button>
+                <textarea value={annotationsArticles.content} onChange={(e) => {setAnnotationsArticles({...annotationsArticles,content:e.target.value})}} defaultValue={annotationsArticles.content} placeholder="Sem Anotações até o momento :("></textarea>
             </div>
         </div>
     );

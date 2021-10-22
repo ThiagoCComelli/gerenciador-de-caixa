@@ -279,6 +279,42 @@ const newAnnotation = async(user,annotation,token) => {
     }
 }
 
+const getAnnotationsArticles = async (email,id,token) => {
+    try {
+        const result = await axios.get(`${url()}/user/get-annotations-articles`, {params: {
+            email: email,
+            id: id
+        },
+        headers: {
+            "Authorization" : `Bearer ${token}`
+        }})
+        return result
+    } catch {
+        return null
+    }
+    
+}
+
+const updateAnnotationsArticles = async(annotationsArticles,user,token) => {
+    try {
+        const result = await axios.post(`${url()}/user/update-annotations-articles`, {
+            data: {
+                annotationsArticles: annotationsArticles,
+                user: user
+            }
+        }, 
+        {
+            headers: {
+                "Authorization" : `Bearer ${token}`
+            }
+        })
+        return result
+    } catch {
+        return null
+    }
+}
+
 export {newAccount,getAccounts,getAccount,newTransaction,getTransactions,deleteTransaction,
     deleteAccount,newTag,deleteTag,updateTransaction,getAccountsDetails,getAccountStatus,
-    getAnnotations,deleteAnnotation,deleteAllAnnotations,newAnnotation}
+    getAnnotations,deleteAnnotation,deleteAllAnnotations,newAnnotation,getAnnotationsArticles,
+    updateAnnotationsArticles}
