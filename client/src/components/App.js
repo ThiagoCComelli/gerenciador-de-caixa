@@ -3,6 +3,7 @@ import React, {useEffect,useState} from 'react'
 import Dashboard from '../pages/Dashboard/Dashboard'
 import Login from '../pages/Login/Login'
 import Home from '../pages/Home/Home'
+import News from '../pages/News/News'
 import Navbar from './Navbar/Navbar'
 import Footer from './Footer/Footer'
 import Modal from './Modal/Modal'
@@ -77,6 +78,8 @@ function App() {
         <Navbar />
         <Switch>
             <ProtectedRoute path="/" exact component={Home} />
+            <ProtectedRoute path="/news/" exact component={News} />
+            <ProtectedRoute path="/news/:category" exact component={News} />
             <ProtectedRoute path="/dashboard/:accountId" exact component={Dashboard} />
             <Route path="/login" exact component={Login} />
         </Switch>

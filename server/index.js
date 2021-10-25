@@ -1,6 +1,4 @@
 require('dotenv').config()
-const fs = require('fs')
-const https = require('https')
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
@@ -11,19 +9,10 @@ const {createUser,loginUser,verifyUser,newAccount,
        getAccountsDetails,getAccount,getAccountStats,
        getAnnotations, newAnnotation, deleteAnnotation,
        deleteAllAnnotations, getAnnotationsArticles,
-       updateAnnotationsArticles} = require('./utils/database/database')
+       updateAnnotationsArticles, getPosts} = require('./utils/database/database')
 const { verifyToken } = require('./utils/auth/jwt')
 const app = express()
 const PORT = process.env.PORT
-
-var key = fs.readFileSync(__dirname + "/key.pem")
-var cert = fs.readFileSync(__dirname + "/cert.pem")
-var csr = fs.readFileSync(__dirname + "/csr.pem")
-var options = {
-    key: key,
-    cert: cert,
-    csr: csr
-}
 
 app.use(cors())
 app.use(cookieParser())
@@ -222,8 +211,15 @@ app.post('/user/update-annotations-articles', verifyToken, async (req,res) => {
     }
 })
 
-var server = https.createServer(options,app)
+app.get('/get-posts', async (req,res) => {
+    if(req.query.pagination) {
+        const response = await getPosts(req.query)
+        res.status(200).send(response)
+    } else {
+        res.status(400).send({"message":"Bad Request"})
+    }
+})
 
-server.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Server running in http://localhost:${PORT}`)
 })

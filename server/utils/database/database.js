@@ -394,6 +394,19 @@ const databaseFunctions = {
         })
         return res
     },
+    getPosts: getPosts = async({pagination}) => {
+        res = await new Promise((resolve,reject) => {
+            mysql.getConnection((error,conn) => {
+                conn.query(`SELECT * FROM news;`, async (err,result,fields) => {
+                    conn.release()
+                    if(result === undefined) resolve({"status":codes.GET_TRANSACTIONS_ERROR})
+                    else resolve({"status":codes.GET_TRANSACTIONS_SUCCESS,"posts":result})
+                })
+            })
+            
+        })
+        return res
+    }
 }
 
 module.exports = databaseFunctions

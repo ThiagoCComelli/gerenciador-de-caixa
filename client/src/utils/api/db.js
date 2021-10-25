@@ -314,7 +314,19 @@ const updateAnnotationsArticles = async(annotationsArticles,user,token) => {
     }
 }
 
+const getPosts = async (pagination) => {
+    try {
+        const result = await axios.get(`${url()}/get-posts`, {params: {
+            pagination: pagination
+        }})
+        return result
+    } catch {
+        return null
+    }
+    
+}
+
 export {newAccount,getAccounts,getAccount,newTransaction,getTransactions,deleteTransaction,
     deleteAccount,newTag,deleteTag,updateTransaction,getAccountsDetails,getAccountStatus,
     getAnnotations,deleteAnnotation,deleteAllAnnotations,newAnnotation,getAnnotationsArticles,
-    updateAnnotationsArticles}
+    updateAnnotationsArticles,getPosts}
