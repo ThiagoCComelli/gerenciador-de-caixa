@@ -1,5 +1,6 @@
 .mainHome {
     width: 100vw;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     padding-top: 50px;

@@ -10,7 +10,7 @@ import Modal from './Modal/Modal'
 import Notification from './Notification/Notification'
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute'
 import ModalContextItemTable from './Modal/ModalContextItemTable/ModalContextItemTable'
-import Console from './Console/Console'
+// import Console from './Console/Console'
 import {verifyTokenAPI} from '../utils/api/auth'
 import {useDispatch,useSelector} from 'react-redux'
 import {signIn,removeContext} from '../actions'
@@ -86,7 +86,7 @@ function App() {
         <Footer />
       </Router>
       
-      <Console />
+      {/* <Console /> */}
       {havePost ? <Modal component={havePost} /> : null}
     </div>
   )

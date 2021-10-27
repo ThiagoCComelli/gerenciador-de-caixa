@@ -326,7 +326,41 @@ const getPosts = async (pagination) => {
     
 }
 
+const getNewsComments = async (website) => {
+    try {
+        const result = await axios.get(`${url()}/get-posts-comments`, {params: {
+            website: website
+        }})
+        return result
+    } catch {
+        return null
+    }
+    
+}
+
+const newNewsComment = async (user,website,content,token) => {
+    try {
+        const result = await axios.post(`${url()}/user/new-post-comment`, {
+            data: {
+                user: user,
+                comment: {
+                    website: website,
+                    content: content
+                }
+            }
+        }, 
+        {
+            headers: {
+                "Authorization" : `Bearer ${token}`
+            }
+        })
+        return result
+    } catch {
+        return null
+    }
+}
+
 export {newAccount,getAccounts,getAccount,newTransaction,getTransactions,deleteTransaction,
     deleteAccount,newTag,deleteTag,updateTransaction,getAccountsDetails,getAccountStatus,
     getAnnotations,deleteAnnotation,deleteAllAnnotations,newAnnotation,getAnnotationsArticles,
-    updateAnnotationsArticles,getPosts}
+    updateAnnotationsArticles,getPosts,getNewsComments,newNewsComment}

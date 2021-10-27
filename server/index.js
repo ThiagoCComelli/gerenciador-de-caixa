@@ -9,7 +9,8 @@ const {createUser,loginUser,verifyUser,newAccount,
        getAccountsDetails,getAccount,getAccountStats,
        getAnnotations, newAnnotation, deleteAnnotation,
        deleteAllAnnotations, getAnnotationsArticles,
-       updateAnnotationsArticles, getPosts} = require('./utils/database/database')
+       updateAnnotationsArticles, getPosts, getNewsComments,
+       postNewComment} = require('./utils/database/database')
 const { verifyToken } = require('./utils/auth/jwt')
 const app = express()
 const PORT = process.env.PORT
@@ -19,6 +20,7 @@ app.use(cookieParser())
 app.use(bodyParser.json())
 
 app.get('/', (req,res) => {
+    console.log(req.ip)
     res.status(200).send({msg: "ok"})
 })
 
@@ -214,6 +216,24 @@ app.post('/user/update-annotations-articles', verifyToken, async (req,res) => {
 app.get('/get-posts', async (req,res) => {
     if(req.query.pagination) {
         const response = await getPosts(req.query)
+        res.status(200).send(response)
+    } else {
+        res.status(400).send({"message":"Bad Request"})
+    }
+})
+
+app.get('/get-posts-comments', async (req,res) => {
+    if(req.query.website) {
+        const response = await getNewsComments(req.query)
+        res.status(200).send(response)
+    } else {
+        res.status(400).send({"message":"Bad Request"})
+    }
+})
+
+app.post('/user/new-post-comment',verifyToken , async (req,res) => {
+    if(req.body.data) {
+        const response = await postNewComment(req.body.data)
         res.status(200).send(response)
     } else {
         res.status(400).send({"message":"Bad Request"})

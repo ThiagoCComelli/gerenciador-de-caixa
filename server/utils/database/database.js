@@ -406,7 +406,33 @@ const databaseFunctions = {
             
         })
         return res
-    }
+    },
+    getNewsComments: getNewsComments = async({website}) => {
+        res = await new Promise((resolve,reject) => {
+            mysql.getConnection((error,conn) => {
+                conn.query(`SELECT * FROM newsComments WHERE website="${website}";`, async (err,result,fields) => {
+                    conn.release()
+                    if(result === undefined) resolve({"status":codes.GET_TRANSACTIONS_ERROR})
+                    else resolve({"status":codes.GET_TRANSACTIONS_SUCCESS,"comments":result})
+                })
+            })
+            
+        })
+        return res
+    },
+    postNewComment: postNewComment = async ({user,comment}) => {
+        res = await new Promise((resolve,reject) => {
+            mysql.getConnection((error,conn) => {
+                conn.query(`INSERT INTO newsComments VALUES (DEFAULT, "${user.name}","${user.email}","${comment.content}","${comment.website}");`, async (err,result,field) => {
+                    conn.release()
+                    if(result === undefined) resolve({"status":codes.NEW_TAG_ERROR})
+                    else resolve({"status":codes.NEW_TAG_SUCCESS,"comment":{id:result.insertId,content:comment.content,author_email:user.email,author_name:user.name}})
+                })
+            })
+            
+        })
+        return res
+    },
 }
 
 module.exports = databaseFunctions

@@ -1,5 +1,6 @@
 .mainDashboard {
     width: 100vw;
+    min-height: 100vh;
     justify-content: center;
     display: flex;
     padding: 0 25px;
