@@ -16,23 +16,22 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tags`
+-- Table structure for table `news`
 --
 
-DROP TABLE IF EXISTS `tags`;
+DROP TABLE IF EXISTS `news`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tags` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL,
-  `transaction_id` int NOT NULL,
-  `account_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `transaction_id` (`transaction_id`),
-  KEY `account_id` (`account_id`),
-  CONSTRAINT `tags_ibfk_1` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `tags_ibfk_2` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=351 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `news` (
+  `owner` varchar(255) NOT NULL,
+  `title` text NOT NULL,
+  `website` varchar(512) NOT NULL,
+  `description` text NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `downvotes` int NOT NULL DEFAULT '0',
+  `upvotes` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`website`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
